@@ -3,15 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 export const uiSlice = createSlice({
   name: 'ui',
   initialState: {
-    isDrawerOpen: false,
+    activeScreen: null,
   },
   reducers: {
-    setIsDrawerOpen: (state, action) => {
-      state.isDrawerOpen = action.payload
+    setActiveScreen: (state, action) => {
+      state.activeScreen = action.payload
     },
   },
 })
 
-export const { setIsDrawerOpen } = uiSlice.actions
+export const { setActiveScreen } = uiSlice.actions
 
 export default uiSlice.reducer
