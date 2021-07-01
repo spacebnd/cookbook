@@ -1,7 +1,7 @@
 import React from 'react'
 
-function Login() {
+function LoginScreen() {
   return <div>Login</div>
 }
 
-export default Login
+export default LoginScreen

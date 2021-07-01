@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import Home from './pages/Home.js'
-import Login from './pages/Login.js'
+import HomeScreen from './screens/HomeScreen.js'
+import LoginScreen from './screens/LoginScreen.js'
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <HomeScreen />
         </Route>
         <Route path="/login">
-          <Login />
+          <LoginScreen />
         </Route>
       </Switch>
     </BrowserRouter>

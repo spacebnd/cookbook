@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const uiSlice = createSlice({
   name: 'ui',
   initialState: {
-    activeScreen: null,
+    activeScreen: 'recipes-container',
   },
   reducers: {
     setActiveScreen: (state, action) => {
