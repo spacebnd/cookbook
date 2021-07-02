@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ENTITIES } from '../../common/constants.js'
 import { setActiveScreen } from '../../store/modules/ui.js'
 
-function NavigationBar() {
+export default function NavigationBar() {
   const activeScreen = useSelector((state) => state.ui.activeScreen)
   const dispatch = useDispatch()
 
@@ -38,5 +38,3 @@ function NavigationBar() {
     </BottomNavigation>
   )
 }
-
-export default NavigationBar

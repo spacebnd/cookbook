@@ -1,7 +1,5 @@
 import React from 'react'
 
-function CategoriesContainer() {
+export default function CategoriesContainer() {
   return <div>CategoriesContainer</div>
 }
-
-export default CategoriesContainer

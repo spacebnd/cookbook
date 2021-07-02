@@ -2,7 +2,7 @@ import React from 'react'
 import NavigationBar from '../components/common/NavigationBar.js'
 import ScreenContent from '../components/common/ScreenContent.js'
 
-function HomeScreen() {
+export default function HomeScreen() {
   return (
     <div className="home-screen__container">
       <ScreenContent />
@@ -10,5 +10,3 @@ function HomeScreen() {
     </div>
   )
 }
-
-export default HomeScreen

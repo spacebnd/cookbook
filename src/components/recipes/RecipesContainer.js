@@ -1,7 +1,5 @@
 import React from 'react'
 
-function RecipesContainer() {
+export default function RecipesContainer() {
   return <div>RecipesContainer</div>
 }
-
-export default RecipesContainer

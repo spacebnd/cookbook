@@ -5,7 +5,7 @@ import CategoriesContainer from '../categories/CategoriesContainer.js'
 import { useSelector } from 'react-redux'
 import { ENTITIES } from '../../common/constants.js'
 
-function ScreenContent() {
+export default function ScreenContent() {
   const activeScreen = useSelector((state) => state.ui.activeScreen)
 
   let screenContent
@@ -19,5 +19,3 @@ function ScreenContent() {
 
   return <div className="screen-content__container">{screenContent}</div>
 }
-
-export default ScreenContent
