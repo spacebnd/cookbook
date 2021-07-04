@@ -5,24 +5,24 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   root: {
-    marginRight: '5px',
-    padding: '2px 5px',
+    padding: '1px',
     fontSize: '12px',
+    textTransform: 'lowercase',
   },
 }))
 
-const CategoryButton = (props) => {
+const IngredientButton = (props) => {
   const classes = useStyles()
 
   return (
     <Button className={classes.root} variant="outlined" size="small">
-      {props.category}
+      {props.ingredient}
     </Button>
   )
 }
 
-CategoryButton.propTypes = {
-  category: PropTypes.string,
+IngredientButton.propTypes = {
+  ingredient: PropTypes.string,
 }
 
-export default CategoryButton
+export default IngredientButton

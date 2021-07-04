@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
+import { ENTITIES } from '../../common/constants.js'
 import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -11,8 +12,8 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { Typography } from '@material-ui/core'
 import CategoryButton from '../categories/CategoryButton.js'
+import IngredientButton from '../ingredients/IngredientButton.js'
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -20,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
   },
   categories: {
     flexWrap: 'wrap',
+    padding: '5px 10px',
+  },
+  ingredientsHeader: {
+    margin: '5px 0 15px',
+  },
+  description: {
+    padding: '0 10px',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -73,8 +81,12 @@ export default function RecipeItem() {
       </CardActions>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography>{recipeItem.description}</Typography>
+        <CardContent className={classes.description}>
+          <h3 className={classes.ingredientsHeader}>{ENTITIES.INGREDIENTS.label}</h3>
+          {recipeItem.ingredients.map((ingredient) => (
+            <IngredientButton key={ingredient} ingredient={ingredient} />
+          ))}
+          <section>{recipeItem.description}</section>
         </CardContent>
       </Collapse>
     </Card>
