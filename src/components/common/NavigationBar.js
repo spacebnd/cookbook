@@ -1,11 +1,22 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setActiveScreen } from '../../store/modules/ui.js'
+import { ENTITIES } from '../../common/constants.js'
+import { makeStyles } from '@material-ui/core/styles'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import FavoriteIcon from '@material-ui/icons/Favorite.js'
-import { useDispatch, useSelector } from 'react-redux'
-import { ENTITIES } from '../../common/constants.js'
-import { setActiveScreen } from '../../store/modules/ui.js'
+
+const useStyles = makeStyles(() => ({
+  root: {
+    position: 'fixed',
+    bottom: 0,
+    width: '100%',
+  },
+}))
 
 export default function NavigationBar() {
+  const classes = useStyles()
+
   const activeScreen = useSelector((state) => state.ui.activeScreen)
   const dispatch = useDispatch()
 
@@ -15,7 +26,7 @@ export default function NavigationBar() {
 
   return (
     <BottomNavigation
-      className="navigation-bar__container"
+      className={classes.root}
       value={activeScreen}
       onChange={onNavigationItemClick}
       showLabels
