@@ -8,13 +8,13 @@ import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
-import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import CategoryButton from '../categories/CategoryButton.js'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Collapse from '@material-ui/core/Collapse'
+import { Box, Typography, Menu, MenuItem } from '@material-ui/core'
 import IngredientButton from '../ingredients/IngredientButton.js'
-import { Box, Typography } from '@material-ui/core'
+import CategoryButton from '../categories/CategoryButton.js'
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -49,8 +49,18 @@ const useStyles = makeStyles((theme) => ({
 export default function RecipeItem() {
   const classes = useStyles()
   const allRecipes = useSelector((state) => state.entities.allRecipes)
-  const recipeItem = allRecipes[0]
   const [expanded, setExpanded] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const recipeItem = allRecipes[0]
+
+  const handleSettingsClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleSettingsClose = () => {
+    setAnchorEl(null)
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -60,9 +70,30 @@ export default function RecipeItem() {
     <Card>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <>
+            <IconButton
+              aria-label="settings"
+              aria-controls="settings-menu"
+              aria-haspopup="true"
+              onClick={handleSettingsClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="settings-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleSettingsClose}
+            >
+              <MenuItem onClick={handleSettingsClose}>
+                <Typography>Изменить</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleSettingsClose}>
+                <Typography color="error">Удалить</Typography>
+              </MenuItem>
+            </Menu>
+          </>
         }
         title={recipeItem.name}
       />
@@ -100,7 +131,7 @@ export default function RecipeItem() {
           <Typography variant="h6" className={classes.header}>
             Способ приготовления
           </Typography>
-          <Typography className={classes.method}>{recipeItem.description}</Typography>
+          <Typography>{recipeItem.description}</Typography>
         </CardContent>
       </Collapse>
     </Card>
