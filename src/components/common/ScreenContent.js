@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import RecipesContainer from '../recipes/RecipesContainer.js'
 import IngredientsContainer from '../ingredients/IngredientsContainer.js'
 import CategoriesContainer from '../categories/CategoriesContainer.js'
+import { Box } from '@material-ui/core'
 
 const useStyles = makeStyles(() => {
   const navigationBarHeight = 56
@@ -35,5 +36,9 @@ export default function ScreenContent() {
     screenContent = <CategoriesContainer />
   }
 
-  return <div className={classes.root}>{screenContent}</div>
+  return (
+    <Box component="div" className={classes.root}>
+      {screenContent}{' '}
+    </Box>
+  )
 }

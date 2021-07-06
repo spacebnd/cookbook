@@ -14,6 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CategoryButton from '../categories/CategoryButton.js'
 import IngredientButton from '../ingredients/IngredientButton.js'
+import { Box, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -21,13 +22,17 @@ const useStyles = makeStyles((theme) => ({
   },
   categories: {
     flexWrap: 'wrap',
-    padding: '5px 10px',
-  },
-  ingredientsHeader: {
-    margin: '5px 0 15px',
   },
   description: {
-    padding: '0 10px',
+    padding: '0 8px',
+  },
+  header: {
+    margin: '0 0 10px',
+  },
+  ingredients: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginBottom: '5px',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -82,11 +87,20 @@ export default function RecipeItem() {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className={classes.description}>
-          <h3 className={classes.ingredientsHeader}>{ENTITIES.INGREDIENTS.label}</h3>
-          {recipeItem.ingredients.map((ingredient) => (
-            <IngredientButton key={ingredient} ingredient={ingredient} />
-          ))}
-          <section>{recipeItem.description}</section>
+          <Typography variant="h6" className={classes.header}>
+            {ENTITIES.INGREDIENTS.label}
+          </Typography>
+
+          <Box component="div" className={classes.ingredients}>
+            {recipeItem.ingredients.map((ingredient) => (
+              <IngredientButton key={ingredient} ingredient={ingredient} />
+            ))}
+          </Box>
+
+          <Typography variant="h6" className={classes.header}>
+            Способ приготовления
+          </Typography>
+          <Typography className={classes.method}>{recipeItem.description}</Typography>
         </CardContent>
       </Collapse>
     </Card>

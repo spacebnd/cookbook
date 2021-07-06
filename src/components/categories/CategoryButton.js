@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(() => ({
   root: {
     marginRight: '5px',
-    padding: '2px 5px',
     fontSize: '12px',
   },
 }))

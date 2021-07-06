@@ -1,6 +1,7 @@
 import React from 'react'
 import RecipeItem from './RecipeItem.js'
 import { makeStyles } from '@material-ui/core/styles'
+import { Box } from '@material-ui/core'
 
 export default function RecipesContainer() {
   const useStyles = makeStyles(() => ({
@@ -11,8 +12,8 @@ export default function RecipesContainer() {
 
   const classes = useStyles()
   return (
-    <div className={classes.recipesContainer}>
+    <Box component="div" className={classes.recipesContainer}>
       <RecipeItem />
-    </div>
+    </Box>
   )
 }

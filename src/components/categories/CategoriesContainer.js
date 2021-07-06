@@ -1,5 +1,6 @@
 import React from 'react'
+import { Typography } from '@material-ui/core'
 
 export default function CategoriesContainer() {
-  return <div>CategoriesContainer</div>
+  return <Typography>CategoriesContainer</Typography>
 }
