@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => {
       boxSizing: 'border-box',
       padding: '10px',
       backgroundColor: 'lightgray',
+      overflowY: 'auto',
     },
   }
 })
