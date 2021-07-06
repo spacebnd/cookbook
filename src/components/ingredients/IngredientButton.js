@@ -10,7 +10,15 @@ const useStyles = makeStyles(() => ({
     margin: '0 5px 5px 0',
     fontSize: '12px',
     textTransform: 'lowercase',
-    backgroundColor: variables.ingredientColor,
+    backgroundColor: variables.ingredientButton.mainColor,
+    '&:hover': {
+      backgroundColor: variables.ingredientButton.mainColor,
+      boxShadow: 'none',
+    },
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: variables.ingredientButton.focusColor,
+    },
   },
 }))
 

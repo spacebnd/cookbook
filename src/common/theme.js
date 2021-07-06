@@ -21,6 +21,12 @@ export const theme = createMuiTheme({
 })
 
 export const variables = {
-  ingredientColor: '#ceded8',
-  categoryColor: '#7683cb',
+  ingredientButton: {
+    mainColor: '#ceded8',
+    focusColor: '#aed5cc',
+  },
+  categoryButton: {
+    mainColor: '#8d95c2',
+    focusColor: '#7884c6',
+  },
 }

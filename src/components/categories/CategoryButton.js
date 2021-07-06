@@ -8,7 +8,15 @@ const useStyles = makeStyles(() => ({
   root: {
     marginRight: '5px',
     fontSize: '12px',
-    backgroundColor: variables.categoryColor,
+    backgroundColor: variables.categoryButton.mainColor,
+    '&:hover': {
+      backgroundColor: variables.categoryButton.mainColor,
+      boxShadow: 'none',
+    },
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: variables.categoryButton.focusColor,
+    },
   },
 }))
 
