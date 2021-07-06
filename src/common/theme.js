@@ -19,3 +19,8 @@ export const theme = createMuiTheme({
     fontFamily: 'Montserrat',
   },
 })
+
+export const variables = {
+  ingredientColor: '#ceded8',
+  categoryColor: '#7683cb',
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { variables } from '../../common/theme.js'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -9,6 +10,7 @@ const useStyles = makeStyles(() => ({
     margin: '0 5px 5px 0',
     fontSize: '12px',
     textTransform: 'lowercase',
+    backgroundColor: variables.ingredientColor,
   },
 }))
 
