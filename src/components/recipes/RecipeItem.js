@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import clsx from 'clsx'
@@ -17,6 +17,9 @@ import IngredientButton from '../ingredients/IngredientButton.js'
 import CategoryButton from '../categories/CategoryButton.js'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: '10px',
+  },
   image: {
     height: '200px',
   },
@@ -46,13 +49,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function RecipeItem() {
+RecipeItem.propTypes = {
+  recipe: PropTypes.object,
+}
+
+export default function RecipeItem(props) {
   const classes = useStyles()
-  const allRecipes = useSelector((state) => state.entities.allRecipes)
+  const { recipe } = props
   const [expanded, setExpanded] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null)
-
-  const recipeItem = allRecipes[0]
 
   const handleSettingsClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -67,7 +72,7 @@ export default function RecipeItem() {
   }
 
   return (
-    <Card>
+    <Card className={classes.root}>
       <CardHeader
         action={
           <>
@@ -95,13 +100,13 @@ export default function RecipeItem() {
             </Menu>
           </>
         }
-        title={recipeItem.name}
+        title={recipe.name}
       />
 
-      <CardMedia className={classes.image} image={recipeItem.image} />
+      <CardMedia className={classes.image} image={recipe.image} />
 
       <CardActions className={classes.categories} disableSpacing>
-        {recipeItem.categories.map((category) => (
+        {recipe.categories.map((category) => (
           <CategoryButton key={category} category={category} />
         ))}
         <IconButton
@@ -123,7 +128,7 @@ export default function RecipeItem() {
           </Typography>
 
           <Box component="div" className={classes.ingredients}>
-            {recipeItem.ingredients.map((ingredient) => (
+            {recipe.ingredients.map((ingredient) => (
               <IngredientButton key={ingredient} ingredient={ingredient} />
             ))}
           </Box>
@@ -131,7 +136,7 @@ export default function RecipeItem() {
           <Typography variant="h6" className={classes.header}>
             Способ приготовления
           </Typography>
-          <Typography>{recipeItem.description}</Typography>
+          <Typography>{recipe.description}</Typography>
         </CardContent>
       </Collapse>
     </Card>
