@@ -1,6 +1,16 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Box } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import CategoryItem from './CategoryItem.js'
 
 export default function CategoriesContainer() {
-  return <Typography>CategoriesContainer</Typography>
+  const allCategories = useSelector((state) => state.entities.allCategories)
+
+  return (
+    <Box component="div">
+      {allCategories.map((category) => (
+        <CategoryItem key={category.id} category={category} />
+      ))}
+    </Box>
+  )
 }
