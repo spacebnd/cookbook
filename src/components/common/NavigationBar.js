@@ -1,10 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveScreen } from '../../store/modules/ui.js'
-import { ENTITIES } from '../../common/constants.js'
+import { SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
-import FavoriteIcon from '@material-ui/icons/Favorite.js'
+import SubjectIcon from '@material-ui/icons/Subject'
+import SearchIcon from '@material-ui/icons/Search'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,19 +34,19 @@ export default function NavigationBar() {
       showLabels
     >
       <BottomNavigationAction
-        value={ENTITIES.RECIPES.value}
-        label={ENTITIES.RECIPES.label}
-        icon={<FavoriteIcon />}
+        value={SCREENS.RECIPES.value}
+        label={SCREENS.RECIPES.label}
+        icon={<SubjectIcon />}
       />
       <BottomNavigationAction
-        value={ENTITIES.INGREDIENTS.value}
-        label={ENTITIES.INGREDIENTS.label}
-        icon={<FavoriteIcon />}
+        value={SCREENS.SEARCH.value}
+        label={SCREENS.SEARCH.label}
+        icon={<SearchIcon />}
       />
       <BottomNavigationAction
-        value={ENTITIES.CATEGORIES.value}
-        label={ENTITIES.CATEGORIES.label}
-        icon={<FavoriteIcon />}
+        value={SCREENS.MANAGEMENT.value}
+        label={SCREENS.MANAGEMENT.label}
+        icon={<SettingsIcon />}
       />
     </BottomNavigation>
   )

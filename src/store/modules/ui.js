@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ENTITIES } from '../../common/constants.js'
+import { SCREENS } from '../../common/constants.js'
 
 export const uiSlice = createSlice({
   name: 'ui',
   initialState: {
-    activeScreen: ENTITIES.RECIPES.value,
+    activeScreen: SCREENS.RECIPES.value,
   },
   reducers: {
     setActiveScreen: (state, action) => {
