@@ -74,8 +74,9 @@ function CategorySearch() {
             setSelectedValue(newValue)
           }}
           options={options}
-          getOptionLabel={(option) => option.name}
           groupBy={(option) => option.firstLetter}
+          getOptionSelected={(option, value) => option.id === value.id}
+          getOptionLabel={(option) => option.name}
           renderTags={(tagValue, getTagProps) =>
             tagValue.map((option, index) => (
               <Chip label={option.name} {...getTagProps({ index })} />

@@ -66,8 +66,8 @@ function IngredientsSearch() {
             setSelectedValue(newValue)
           }}
           options={allIngredients}
-          getOptionLabel={(option) => option.name}
           groupBy={(option) => option.type}
+          getOptionLabel={(option) => option.name}
           renderTags={(tagValue, getTagProps) =>
             tagValue.map((option, index) => (
               <Chip label={option.name} {...getTagProps({ index })} />
