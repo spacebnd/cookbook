@@ -13,8 +13,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Collapse from '@material-ui/core/Collapse'
 import { Box, Typography, Menu, MenuItem } from '@material-ui/core'
-import IngredientButton from '../ingredients/IngredientButton.js'
-import CategoryButton from '../categories/CategoryButton.js'
+import IngredientButton from './IngredientButton.js'
+import CategoryButton from './CategoryButton.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
