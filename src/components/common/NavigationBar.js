@@ -5,7 +5,6 @@ import { SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import SubjectIcon from '@material-ui/icons/Subject'
-import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
 
 const useStyles = makeStyles(() => ({
@@ -37,11 +36,6 @@ export default function NavigationBar() {
         value={SCREENS.RECIPES.value}
         label={SCREENS.RECIPES.label}
         icon={<SubjectIcon />}
-      />
-      <BottomNavigationAction
-        value={SCREENS.SEARCH.value}
-        label={SCREENS.SEARCH.label}
-        icon={<SearchIcon />}
       />
       <BottomNavigationAction
         value={SCREENS.MANAGEMENT.value}

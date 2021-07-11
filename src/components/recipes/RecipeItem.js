@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
@@ -56,8 +56,8 @@ RecipeItem.propTypes = {
 export default function RecipeItem(props) {
   const classes = useStyles()
   const { recipe } = props
-  const [expanded, setExpanded] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [expanded, setExpanded] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const handleSettingsClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -102,9 +102,7 @@ export default function RecipeItem(props) {
         }
         title={recipe.name}
       />
-
       <CardMedia className={classes.image} image={recipe.image} />
-
       <CardActions className={classes.categories} disableSpacing>
         {recipe.categories.map((category) => (
           <CategoryButton key={category} category={category} />

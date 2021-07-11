@@ -2,9 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
-import RecipesContainer from '../recipes/RecipesContainer.js'
 import { Box } from '@material-ui/core'
-import SearchContainer from '../search/SearchContainer.js'
+import RecipesContainer from '../recipes/RecipesContainer.js'
 import ManagementContainer from '../management/ManagementContainer.js'
 
 const useStyles = makeStyles(() => {
@@ -30,8 +29,6 @@ export default function ScreenContent() {
   let screenContent
   if (activeScreen === SCREENS.RECIPES.value) {
     screenContent = <RecipesContainer />
-  } else if (activeScreen === SCREENS.SEARCH.value) {
-    screenContent = <SearchContainer />
   } else if (activeScreen === SCREENS.MANAGEMENT.value) {
     screenContent = <ManagementContainer />
   }

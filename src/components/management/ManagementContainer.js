@@ -1,8 +1,6 @@
 import React from 'react'
 import { Box } from '@material-ui/core'
 
-function ManagementContainer() {
-  return <Box component="div">ManagementContainer</Box>
+export default function ManagementContainer() {
+  return <Box component="div">Ингридиенты / Категории </Box>
 }
-
-export default ManagementContainer

@@ -21,7 +21,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const IngredientButton = (props) => {
+IngredientButton.propTypes = {
+  ingredient: PropTypes.string,
+}
+
+export default function IngredientButton(props) {
   const classes = useStyles()
 
   return (
@@ -30,9 +34,3 @@ const IngredientButton = (props) => {
     </Button>
   )
 }
-
-IngredientButton.propTypes = {
-  ingredient: PropTypes.string,
-}
-
-export default IngredientButton

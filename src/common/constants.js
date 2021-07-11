@@ -3,10 +3,6 @@ export const SCREENS = {
     value: 'recipes',
     label: 'Рецепты',
   },
-  SEARCH: {
-    value: 'search',
-    label: 'Поиск',
-  },
   MANAGEMENT: {
     value: 'management',
     label: 'Управление',

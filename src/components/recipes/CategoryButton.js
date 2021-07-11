@@ -20,7 +20,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const CategoryButton = (props) => {
+CategoryButton.propTypes = {
+  category: PropTypes.string,
+}
+
+export default function CategoryButton(props) {
   const classes = useStyles()
 
   return (
@@ -29,9 +33,3 @@ const CategoryButton = (props) => {
     </Button>
   )
 }
-
-CategoryButton.propTypes = {
-  category: PropTypes.string,
-}
-
-export default CategoryButton

@@ -25,6 +25,17 @@ export const TEST_INGREDIENTS = [
   { id: 'i2', name: 'Морковь', type: 'Овощи' },
   { id: 'i3', name: 'Помидор', type: 'Овощи' },
   { id: 'i4', name: 'Яблоко', type: 'Фрукты' },
+  { id: 'i5', name: 'Name1', type: 'Type' },
+  { id: 'i6', name: 'Name2', type: 'Type' },
+  { id: 'i7', name: 'Name3', type: 'Type' },
+  { id: 'i8', name: 'Name4', type: 'Type' },
+  { id: 'i9', name: 'Name5', type: 'Type' },
+  { id: 'i10', name: 'Name6', type: 'Type' },
+  { id: 'i11', name: 'Name7', type: 'Type' },
+  { id: 'i12', name: 'Name8', type: 'Type' },
+  { id: 'i13', name: 'Name9', type: 'Type' },
+  { id: 'i14', name: 'Name10', type: 'Type' },
+  { id: 'i15', name: 'Name11', type: 'Type' },
 ]
 
 export const TEST_CATEGORIES = [
