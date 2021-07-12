@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
-import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
-import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Collapse from '@material-ui/core/Collapse'
@@ -16,7 +14,7 @@ import { Box, Typography, Menu, MenuItem } from '@material-ui/core'
 import IngredientButton from './IngredientButton.js'
 import CategoryButton from './CategoryButton.js'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     marginBottom: '10px',
   },
@@ -36,16 +34,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     marginBottom: '5px',
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
   },
 }))
 
@@ -76,14 +64,7 @@ export default function RecipeItem(props) {
       <CardHeader
         action={
           <>
-            <IconButton
-              aria-label="settings"
-              aria-controls="settings-menu"
-              aria-haspopup="true"
-              onClick={handleSettingsClick}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            <MoreVertIcon onClick={handleSettingsClick} />
             <Menu
               id="settings-menu"
               anchorEl={anchorEl}
@@ -107,16 +88,7 @@ export default function RecipeItem(props) {
         {recipe.categories.map((category) => (
           <CategoryButton key={category} category={category} />
         ))}
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
+          <ExpandMoreIcon onClick={handleExpandClick}/>
       </CardActions>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>

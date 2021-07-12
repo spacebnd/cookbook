@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '@material-ui/core'
+import { Chip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { variables } from '../../common/theme.js'
 
@@ -27,9 +27,5 @@ CategoryButton.propTypes = {
 export default function CategoryButton(props) {
   const classes = useStyles()
 
-  return (
-    <Button className={classes.root} variant="outlined" size="small">
-      {props.category}
-    </Button>
-  )
+  return <Chip className={classes.root} component="button" label={props.category} />
 }

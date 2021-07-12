@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '@material-ui/core'
+import {  Chip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { variables } from '../../common/theme.js'
 
@@ -28,9 +28,5 @@ IngredientButton.propTypes = {
 export default function IngredientButton(props) {
   const classes = useStyles()
 
-  return (
-    <Button className={classes.root} variant="outlined" size="small">
-      {props.ingredient}
-    </Button>
-  )
+  return <Chip className={classes.root} component="button" label={props.ingredient} />
 }
