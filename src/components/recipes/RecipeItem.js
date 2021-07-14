@@ -37,10 +37,6 @@ const useStyles = makeStyles(() => ({
   description: {
     padding: '0 8px',
   },
-  ingredients: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   cardActions: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -121,7 +117,7 @@ export default function RecipeItem(props) {
             {ENTITIES.INGREDIENTS.label}
           </Typography>
 
-          <Box component="div" className={classes.ingredients}>
+          <Box component="div">
             {recipe.ingredients.map((ingredient) => (
               <IngredientButton key={ingredient} ingredient={ingredient} />
             ))}

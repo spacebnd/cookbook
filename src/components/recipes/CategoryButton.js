@@ -8,6 +8,8 @@ const useStyles = makeStyles(() => ({
   root: {
     ...customStyles.customButtonBase,
     ...customStyles.customButtonCategory,
+    padding: '4px',
+    margin: '0 5px 5px 0',
   },
 }))
 

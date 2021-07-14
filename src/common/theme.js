@@ -22,8 +22,6 @@ export const theme = createMuiTheme({
 
 export const customStyles = {
   customButtonBase: {
-    margin: '0 5px 5px 0',
-    padding: '4px',
     fontFamily: 'Montserrat',
     fontSize: '14px',
     textTransform: 'lowercase',
