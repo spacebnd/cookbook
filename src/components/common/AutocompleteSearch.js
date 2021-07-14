@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Chip, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles(() => ({
   listbox: {
@@ -19,27 +19,46 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function AutocompleteSearch() {
+AutocompleteSearch.propTypes = {
+  options: PropTypes.array,
+  label: PropTypes.string,
+  groupBy: PropTypes.string,
+}
+
+export default function AutocompleteSearch(props) {
   const classes = useStyles()
-  const allIngredients = useSelector((state) => state.entities.allIngredients)
+  const { label, initialOptions, groupBy } = props
   const [selectedValue, setSelectedValue] = useState([])
+
+  const groupByHandler = groupBy ? (option) => option[groupBy] : null
+  let options = initialOptions
+
+  if (groupBy === 'firstLetter')
+    options = initialOptions.map((option) => {
+      const firstLetter = option.name[0].toUpperCase()
+      return {
+        firstLetter,
+        ...option,
+      }
+    })
 
   return (
     <Autocomplete
-      id="autocomplete-search"
-      multiple
       classes={{
         listbox: classes.listbox,
         option: classes.option,
         groupLabel: classes.groupLabel,
       }}
+      size="small"
+      multiple
       value={selectedValue}
       onChange={(event, newValue) => {
         setSelectedValue(newValue)
       }}
-      size="small"
-      options={allIngredients}
-      groupBy={(option) => option.type}
+      options={options}
+      getOptionSelected={(option, value) => option.id === value.id}
+      noOptionsText="Нет совпадений"
+      groupBy={groupByHandler}
       getOptionLabel={(option) => option.name}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
@@ -47,86 +66,8 @@ export default function AutocompleteSearch() {
         ))
       }
       renderInput={(params) => (
-        <TextField size="small" {...params} variant="outlined" label="Ингредиенты" />
+        <TextField size="small" {...params} variant="outlined" label={label} />
       )}
-      noOptionsText="Нет совпадений"
     />
   )
 }
-
-// import React, { useState } from 'react'
-// import Card from '@material-ui/core/Card'
-// import { Chip, TextField, Typography } from '@material-ui/core'
-// import { ENTITIES } from '../../common/constants.js'
-// import IconButton from '@material-ui/core/IconButton'
-// import clsx from 'clsx'
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore.js'
-// import Collapse from '@material-ui/core/Collapse'
-// import { makeStyles } from '@material-ui/core/styles'
-// import Autocomplete from '@material-ui/lab/Autocomplete'
-// import { useSelector } from 'react-redux'
-//
-// const useStyles = makeStyles((theme) => ({
-//   categoryContainer: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     paddingLeft: '15px',
-//   },
-//   categoryHeader: {
-//     display: 'flex',
-//     alignItems: 'center',
-//   },
-//   expand: {
-//     transform: 'rotate(0deg)',
-//     marginLeft: 'auto',
-//     transition: theme.transitions.create('transform', {
-//       duration: theme.transitions.duration.shortest,
-//     }),
-//   },
-//   expandOpen: {
-//     transform: 'rotate(180deg)',
-//   },
-// }))
-//
-// function CategorySearch() {
-//   const classes = useStyles()
-//   const allCategories = useSelector((state) => state.entities.allCategories)
-//   const [expanded, setExpanded] = useState(false)
-//   const [selectedValue, setSelectedValue] = useState([])
-//
-//   const options = allCategories.map((option) => {
-//     const firstLetter = option.name[0].toUpperCase()
-//     return {
-//       firstLetter,
-//       ...option,
-//     }
-//   })
-//
-//   const handleExpandClick = () => {
-//     setExpanded(!expanded)
-//   }
-//
-//   return (
-//     <Autocomplete
-//       multiple
-//       id="categories-search-autocomplete"
-//       value={selectedValue}
-//       onChange={(event, newValue) => {
-//         setSelectedValue(newValue)
-//       }}
-//       options={options}
-//       groupBy={(option) => option.firstLetter}
-//       getOptionSelected={(option, value) => option.id === value.id}
-//       getOptionLabel={(option) => option.name}
-//       renderTags={(tagValue, getTagProps) =>
-//         tagValue.map((option, index) => <Chip label={option.name} {...getTagProps({ index })} />)
-//       }
-//       renderInput={(params) => (
-//         <TextField {...params} variant="outlined" placeholder="Поиск по категориям" />
-//       )}
-//       noOptionsText="Нет совпадений"
-//     />
-//   )
-// }
-//
-// export default CategorySearch
