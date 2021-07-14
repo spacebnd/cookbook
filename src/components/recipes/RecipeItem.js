@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import Collapse from '@material-ui/core/Collapse'
 import { Box, Typography, Menu, MenuItem } from '@material-ui/core'
 import IngredientButton from './IngredientButton.js'
@@ -17,23 +17,39 @@ import CategoryButton from './CategoryButton.js'
 const useStyles = makeStyles(() => ({
   root: {
     marginBottom: '10px',
+    paddingBottom: '10px',
+  },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0 8px',
+  },
+  header: {
+    margin: '10px 0',
   },
   image: {
     height: '200px',
   },
   categories: {
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   description: {
     padding: '0 8px',
   },
-  header: {
-    margin: '0 0 10px',
-  },
   ingredients: {
     display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: '5px',
+    flexDirection: 'column',
+  },
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0 8px',
+    marginTop: '10px',
+  },
+  moreIcon: {
+    border: 'none',
+    backgroundColor: 'inherit',
   },
 }))
 
@@ -61,34 +77,42 @@ export default function RecipeItem(props) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        action={
-          <>
-            <MoreVertIcon onClick={handleSettingsClick} />
-            <Menu
-              id="settings-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleSettingsClose}
-            >
-              <MenuItem onClick={handleSettingsClose}>
-                <Typography>Изменить</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleSettingsClose}>
-                <Typography color="error">Удалить</Typography>
-              </MenuItem>
-            </Menu>
-          </>
-        }
-        title={recipe.name}
-      />
+      <Box className={classes.headerContainer}>
+        <Typography className={classes.header} variant="h5">
+          {recipe.name}
+        </Typography>
+        <Box component="button" className={classes.moreIcon}>
+          <MoreVertIcon onClick={handleSettingsClick} />
+        </Box>
+
+        <Menu
+          id="settings-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleSettingsClose}
+        >
+          <MenuItem onClick={handleSettingsClose}>
+            <Typography>Изменить</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleSettingsClose}>
+            <Typography color="error">Удалить</Typography>
+          </MenuItem>
+        </Menu>
+      </Box>
+
       <CardMedia className={classes.image} image={recipe.image} />
-      <CardActions className={classes.categories} disableSpacing>
-        {recipe.categories.map((category) => (
-          <CategoryButton key={category} category={category} />
-        ))}
-          <ExpandMoreIcon onClick={handleExpandClick}/>
+      <CardActions disableSpacing className={classes.cardActions}>
+        <Box className={classes.categories}>
+          {recipe.categories.map((category) => (
+            <CategoryButton key={category} category={category} />
+          ))}
+        </Box>
+        {expanded ? (
+          <ExpandLessIcon onClick={handleExpandClick} />
+        ) : (
+          <ExpandMoreIcon onClick={handleExpandClick} />
+        )}
       </CardActions>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
