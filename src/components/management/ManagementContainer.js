@@ -1,13 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views'
-import { useTheme } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Box from '@material-ui/core/Box'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { ENTITIES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
+import { TextField } from '@material-ui/core'
+
+const useStyles = makeStyles(() => {
+  return {
+    tabs: {
+      marginBottom: '10px',
+    },
+  }
+})
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -39,6 +48,7 @@ TabPanel.propTypes = {
 }
 
 export default function ManagementContainer() {
+  const classes = useStyles()
   const theme = useTheme()
   const [value, setValue] = React.useState(0)
 
@@ -52,19 +62,21 @@ export default function ManagementContainer() {
 
   return (
     <Box>
-      <AppBar position="static" color="default">
+      <AppBar className={classes.tabs} position="static" color="default">
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
-          aria-label="full width tabs example"
         >
           <Tab label={ENTITIES.INGREDIENTS.label} {...a11yProps(0)} />
           <Tab label={ENTITIES.CATEGORIES.label} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
+
+      <TextField variant="outlined" size="small" fullWidth placeholder="Поиск" />
+
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}

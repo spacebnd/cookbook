@@ -11,7 +11,10 @@ import { ENTITIES } from '../../common/constants.js'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
-    margin: '15px 0',
+    marginTop: '15px',
+  },
+  recipes: {
+    marginTop: '15px',
   },
 }))
 
@@ -52,9 +55,11 @@ export default function RecipesContainer() {
           />
         </Box>
       </Collapse>
-      {allRecipes.map((recipe) => (
-        <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
-      ))}
+      <Box className={classes.recipes}>
+        {allRecipes.map((recipe) => (
+          <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
+        ))}
+      </Box>
     </Box>
   )
 }
