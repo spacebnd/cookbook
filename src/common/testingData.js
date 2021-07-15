@@ -39,8 +39,8 @@ export const TEST_INGREDIENTS = [
 ]
 
 export const TEST_CATEGORIES = [
-  { id: 'с1', name: 'AПервое' },
+  { id: 'с1', name: 'Первое' },
   { id: 'с2', name: 'Супы' },
   { id: 'с3', name: 'Салаты' },
-  { id: 'с4', name: 'ЯЗакуски' },
+  { id: 'с4', name: 'Закуски' },
 ]
