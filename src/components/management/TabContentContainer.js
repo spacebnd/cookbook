@@ -24,6 +24,7 @@ export default function TabContentContainer(props) {
   const { entity, sortBy } = props
 
   const allItems = useSelector((state) => state.entities[`all${_startCase(entity)}`])
+
   const sortedItems = convertArrayToAlphabeticalGrouping(allItems)
     .slice()
     .sort((a, b) => {
@@ -36,7 +37,7 @@ export default function TabContentContainer(props) {
     <Box className={classes.root}>
       <List component="div">
         {sortedItems.map((item) => (
-          <TabContentItem key={item.id} item={item} />
+          <TabContentItem key={entity + item.id} item={item} />
         ))}
       </List>
     </Box>

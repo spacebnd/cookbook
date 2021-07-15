@@ -53,7 +53,7 @@ export default function RecipesContainer() {
         </Box>
       </Collapse>
       {allRecipes.map((recipe) => (
-        <RecipeItem key={recipe.id} recipe={recipe} />
+        <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
       ))}
     </Box>
   )

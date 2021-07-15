@@ -101,7 +101,7 @@ export default function RecipeItem(props) {
       <CardActions disableSpacing className={classes.cardActions}>
         <Box className={classes.categories}>
           {recipe.categories.map((category) => (
-            <CategoryButton key={category} category={category} />
+            <CategoryButton key={recipe.id + category} category={category} />
           ))}
         </Box>
         {expanded ? (
@@ -119,7 +119,7 @@ export default function RecipeItem(props) {
 
           <Box component="div">
             {recipe.ingredients.map((ingredient) => (
-              <IngredientButton key={ingredient} ingredient={ingredient} />
+              <IngredientButton key={recipe.id + ingredient} ingredient={ingredient} />
             ))}
           </Box>
 
