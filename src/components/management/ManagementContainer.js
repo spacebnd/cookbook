@@ -8,12 +8,19 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { ENTITIES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
-import { TextField } from '@material-ui/core'
+import { Fab, TextField } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles(() => {
   return {
     tabs: {
       marginBottom: '10px',
+    },
+    addButton: {
+      position: 'fixed',
+      bottom: '75px',
+      right: '20px',
+      zIndex: '1000',
     },
   }
 })
@@ -89,6 +96,12 @@ export default function ManagementContainer() {
           <TabContentContainer entity={ENTITIES.CATEGORIES.value} sortBy="firstLetter" />
         </TabPanel>
       </SwipeableViews>
+
+      <Box className={classes.addButton}>
+        <Fab size="large" color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Box>
     </Box>
   )
 }
