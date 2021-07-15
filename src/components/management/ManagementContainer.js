@@ -71,10 +71,10 @@ export default function ManagementContainer() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <TabContentContainer type={ENTITIES.INGREDIENTS.value} />
+          <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <TabContentContainer type={ENTITIES.CATEGORIES.value} />
+          <TabContentContainer entity={ENTITIES.CATEGORIES.value} sortBy="firstLetter" />
         </TabPanel>
       </SwipeableViews>
     </Box>

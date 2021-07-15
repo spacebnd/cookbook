@@ -3,6 +3,7 @@ import { Chip, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import PropTypes from 'prop-types'
+import { convertArrayToAlphabeticalGrouping } from '../../common/utils.js'
 
 const useStyles = makeStyles(() => ({
   listbox: {
@@ -33,14 +34,9 @@ export default function AutocompleteSearch(props) {
   const groupByHandler = groupBy ? (option) => option[groupBy] : null
   let options = initialOptions
 
-  if (groupBy === 'firstLetter')
-    options = initialOptions.map((option) => {
-      const firstLetter = option.name[0].toUpperCase()
-      return {
-        firstLetter,
-        ...option,
-      }
-    })
+  if (groupBy === 'firstLetter') {
+    options = convertArrayToAlphabeticalGrouping(initialOptions)
+  }
 
   return (
     <Autocomplete
