@@ -79,11 +79,11 @@ export default function ManagementContainer() {
 
   const selectItem = (value) => {
     if (value === ENTITIES.RECIPES.value) {
-      console.log('value', value)
+      console.log('select', value)
     } else if (value === ENTITIES.INGREDIENTS.value) {
-      console.log('value', value)
+      console.log('select', value)
     } else if (value === ENTITIES.CATEGORIES.value) {
-      console.log('value', value)
+      console.log('select', value)
     }
 
     closeAddItemDropdown()
@@ -99,8 +99,9 @@ export default function ManagementContainer() {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label={ENTITIES.INGREDIENTS.label.plural} {...a11yProps(0)} />
-          <Tab label={ENTITIES.CATEGORIES.label.plural} {...a11yProps(1)} />
+          <Tab label={ENTITIES.RECIPES.label.plural} {...a11yProps(0)} />
+          <Tab label={ENTITIES.INGREDIENTS.label.plural} {...a11yProps(1)} />
+          <Tab label={ENTITIES.CATEGORIES.label.plural} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
 
@@ -112,9 +113,12 @@ export default function ManagementContainer() {
         onChangeIndex={changeActiveTabSwipeIndex}
       >
         <TabPanel value={activeTab} index={0} dir={theme.direction}>
-          <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
+          <TabContentContainer entity={ENTITIES.RECIPES.value} sortBy="firstLetter" />
         </TabPanel>
         <TabPanel value={activeTab} index={1} dir={theme.direction}>
+          <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
+        </TabPanel>
+        <TabPanel value={activeTab} index={2} dir={theme.direction}>
           <TabContentContainer entity={ENTITIES.CATEGORIES.value} sortBy="firstLetter" />
         </TabPanel>
       </SwipeableViews>
