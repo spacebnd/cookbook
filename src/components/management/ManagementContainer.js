@@ -26,9 +26,7 @@ const useStyles = makeStyles(() => {
   }
 })
 
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props
-
+const TabPanel = ({ children, value, index, ...other }) => {
   return (
     <Box
       role="tabpanel"

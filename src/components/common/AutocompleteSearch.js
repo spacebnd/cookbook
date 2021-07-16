@@ -26,9 +26,8 @@ AutocompleteSearch.propTypes = {
   groupBy: PropTypes.string,
 }
 
-export default function AutocompleteSearch(props) {
+export default function AutocompleteSearch({ label, initialOptions, groupBy }) {
   const classes = useStyles()
-  const { label, initialOptions, groupBy } = props
   const [selectedValue, setSelectedValue] = useState([])
 
   const groupByHandler = groupBy ? (option) => option[groupBy] : null

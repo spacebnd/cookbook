@@ -19,9 +19,8 @@ TabContentContainer.propTypes = {
   sortBy: PropTypes.string,
 }
 
-export default function TabContentContainer(props) {
+export default function TabContentContainer({ entity, sortBy }) {
   const classes = useStyles()
-  const { entity, sortBy } = props
   const allItems = useSelector((state) => state.entities[`all${_startCase(entity)}`])
   const sortedItems = convertArrayToAlphabeticalGrouping(allItems)
     .slice()

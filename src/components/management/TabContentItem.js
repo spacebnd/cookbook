@@ -21,8 +21,7 @@ TabContentItem.propTypes = {
   entity: PropTypes.string,
 }
 
-export default function TabContentItem(props) {
-  const { item, entity } = props
+export default function TabContentItem({ item, entity }) {
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = React.useState(false)
 
   const openDeleteConfirmModal = () => {

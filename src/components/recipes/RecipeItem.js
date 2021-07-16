@@ -49,9 +49,8 @@ RecipeItem.propTypes = {
   recipe: PropTypes.object,
 }
 
-export default function RecipeItem(props) {
+export default function RecipeItem({ recipe }) {
   const classes = useStyles()
-  const { recipe } = props
   const [expanded, setExpanded] = useState(false)
 
   const handleExpandClick = () => {
