@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -8,20 +8,13 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { ENTITIES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
-import { Fab, Menu, MenuItem, TextField, Typography } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import _startCase from 'lodash/startCase'
+import { TextField } from '@material-ui/core'
+import CreateItemButton from './CreateItemButton.js'
 
 const useStyles = makeStyles(() => {
   return {
     tabs: {
       marginBottom: '10px',
-    },
-    addButton: {
-      position: 'fixed',
-      bottom: '75px',
-      right: '20px',
-      zIndex: '1000',
     },
   }
 })
@@ -57,7 +50,6 @@ export default function ManagementContainer() {
   const classes = useStyles()
   const theme = useTheme()
   const [activeTab, setActiveTab] = React.useState(0)
-  const [dropdownAnchor, setDropdownAnchor] = useState(null)
 
   const changeActiveTab = (event, newValue) => {
     setActiveTab(newValue)
@@ -65,14 +57,6 @@ export default function ManagementContainer() {
 
   const changeActiveTabSwipeIndex = (index) => {
     setActiveTab(index)
-  }
-
-  const openAddItemDropdown = (event) => {
-    setDropdownAnchor(event.currentTarget)
-  }
-
-  const closeAddItemDropdown = () => {
-    setDropdownAnchor(null)
   }
 
   const selectItem = (value) => {
@@ -83,8 +67,6 @@ export default function ManagementContainer() {
     } else if (value === ENTITIES.CATEGORIES.value) {
       console.log('select', value)
     }
-
-    closeAddItemDropdown()
   }
 
   return (
@@ -121,25 +103,7 @@ export default function ManagementContainer() {
         </TabPanel>
       </SwipeableViews>
 
-      <Box className={classes.addButton}>
-        <Fab size="large" color="primary" aria-label="add" onClick={openAddItemDropdown}>
-          <AddIcon />
-        </Fab>
-      </Box>
-
-      <Menu
-        id="add-item-menu"
-        anchorEl={dropdownAnchor}
-        keepMounted
-        open={Boolean(dropdownAnchor)}
-        onClose={closeAddItemDropdown}
-      >
-        {Object.values(ENTITIES).map((item, index) => (
-          <MenuItem key={item.value + index} onClick={() => selectItem(item.value)}>
-            <Typography>{_startCase(item.label.singular)}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
+      <CreateItemButton selectItemHandler={selectItem} />
     </Box>
   )
 }
