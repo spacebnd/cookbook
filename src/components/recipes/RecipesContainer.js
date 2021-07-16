@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
+import _startCase from 'lodash/startCase'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -43,14 +44,14 @@ export default function RecipesContainer() {
         <Box className={classes.searchContainer}>
           <AutocompleteSearch
             initialOptions={allIngredients}
-            label={ENTITIES.INGREDIENTS.label}
+            label={_startCase(ENTITIES.INGREDIENTS.label.plural)}
             groupBy={'type'}
           />
         </Box>
         <Box className={classes.searchContainer}>
           <AutocompleteSearch
             initialOptions={allCategories}
-            label={ENTITIES.CATEGORIES.label}
+            label={_startCase(ENTITIES.CATEGORIES.label.plural)}
             groupBy={'firstLetter'}
           />
         </Box>

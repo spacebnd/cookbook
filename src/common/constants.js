@@ -12,14 +12,23 @@ export const SCREENS = {
 export const ENTITIES = {
   RECIPES: {
     value: 'recipes',
-    label: 'Рецепты',
+    label: {
+      singular: 'рецепт',
+      plural: 'рецепты',
+    },
   },
   INGREDIENTS: {
     value: 'ingredients',
-    label: 'Ингредиенты',
+    label: {
+      singular: 'ингредиент',
+      plural: 'ингредиенты',
+    },
   },
   CATEGORIES: {
     value: 'categories',
-    label: 'Категории',
+    label: {
+      singular: 'категория',
+      plural: 'категории',
+    },
   },
 }

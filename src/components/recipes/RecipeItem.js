@@ -6,13 +6,13 @@ import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import Collapse from '@material-ui/core/Collapse'
-import { Box, Typography, Menu, MenuItem } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import IngredientButton from './IngredientButton.js'
 import CategoryButton from './CategoryButton.js'
+import _startCase from 'lodash/startCase'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -43,10 +43,6 @@ const useStyles = makeStyles(() => ({
     padding: '0 8px',
     marginTop: '10px',
   },
-  moreIcon: {
-    border: 'none',
-    backgroundColor: 'inherit',
-  },
 }))
 
 RecipeItem.propTypes = {
@@ -57,15 +53,6 @@ export default function RecipeItem(props) {
   const classes = useStyles()
   const { recipe } = props
   const [expanded, setExpanded] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-
-  const handleSettingsClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleSettingsClose = () => {
-    setAnchorEl(null)
-  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -77,24 +64,6 @@ export default function RecipeItem(props) {
         <Typography className={classes.header} variant="h5">
           {recipe.name}
         </Typography>
-        <Box component="button" className={classes.moreIcon}>
-          <MoreVertIcon onClick={handleSettingsClick} />
-        </Box>
-
-        <Menu
-          id="settings-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleSettingsClose}
-        >
-          <MenuItem onClick={handleSettingsClose}>
-            <Typography>Изменить</Typography>
-          </MenuItem>
-          <MenuItem onClick={handleSettingsClose}>
-            <Typography color="error">Удалить</Typography>
-          </MenuItem>
-        </Menu>
       </Box>
 
       <CardMedia className={classes.image} image={recipe.image} />
@@ -114,7 +83,7 @@ export default function RecipeItem(props) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className={classes.description}>
           <Typography variant="h6" className={classes.header}>
-            {ENTITIES.INGREDIENTS.label}
+            {_startCase(ENTITIES.INGREDIENTS.label.plural)}
           </Typography>
 
           <Box component="div">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -8,8 +8,9 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { ENTITIES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
-import { Fab, TextField } from '@material-ui/core'
+import { Fab, Menu, MenuItem, TextField, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import _startCase from 'lodash/startCase'
 
 const useStyles = makeStyles(() => {
   return {
@@ -32,7 +33,7 @@ const TabPanel = (props) => {
     <Box
       role="tabpanel"
       hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
+      id={`management-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
@@ -57,28 +58,49 @@ TabPanel.propTypes = {
 export default function ManagementContainer() {
   const classes = useStyles()
   const theme = useTheme()
-  const [value, setValue] = React.useState(0)
+  const [activeTab, setActiveTab] = React.useState(0)
+  const [dropdownAnchor, setDropdownAnchor] = useState(null)
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
+  const changeActiveTab = (event, newValue) => {
+    setActiveTab(newValue)
   }
 
-  const handleChangeIndex = (index) => {
-    setValue(index)
+  const changeActiveTabSwipeIndex = (index) => {
+    setActiveTab(index)
+  }
+
+  const openAddItemDropdown = (event) => {
+    setDropdownAnchor(event.currentTarget)
+  }
+
+  const closeAddItemDropdown = () => {
+    setDropdownAnchor(null)
+  }
+
+  const selectItem = (value) => {
+    if (value === ENTITIES.RECIPES.value) {
+      console.log('value', value)
+    } else if (value === ENTITIES.INGREDIENTS.value) {
+      console.log('value', value)
+    } else if (value === ENTITIES.CATEGORIES.value) {
+      console.log('value', value)
+    }
+
+    closeAddItemDropdown()
   }
 
   return (
     <Box>
       <AppBar className={classes.tabs} position="static" color="default">
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={activeTab}
+          onChange={changeActiveTab}
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label={ENTITIES.INGREDIENTS.label} {...a11yProps(0)} />
-          <Tab label={ENTITIES.CATEGORIES.label} {...a11yProps(1)} />
+          <Tab label={ENTITIES.INGREDIENTS.label.plural} {...a11yProps(0)} />
+          <Tab label={ENTITIES.CATEGORIES.label.plural} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
 
@@ -86,22 +108,36 @@ export default function ManagementContainer() {
 
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
+        index={activeTab}
+        onChangeIndex={changeActiveTabSwipeIndex}
       >
-        <TabPanel value={value} index={0} dir={theme.direction}>
+        <TabPanel value={activeTab} index={0} dir={theme.direction}>
           <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        <TabPanel value={activeTab} index={1} dir={theme.direction}>
           <TabContentContainer entity={ENTITIES.CATEGORIES.value} sortBy="firstLetter" />
         </TabPanel>
       </SwipeableViews>
 
       <Box className={classes.addButton}>
-        <Fab size="large" color="primary" aria-label="add">
+        <Fab size="large" color="primary" aria-label="add" onClick={openAddItemDropdown}>
           <AddIcon />
         </Fab>
       </Box>
+
+      <Menu
+        id="add-item-menu"
+        anchorEl={dropdownAnchor}
+        keepMounted
+        open={Boolean(dropdownAnchor)}
+        onClose={closeAddItemDropdown}
+      >
+        {Object.values(ENTITIES).map((item, index) => (
+          <MenuItem key={item.value + index} onClick={() => selectItem(item.value)}>
+            <Typography>{_startCase(item.label.singular)}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     </Box>
   )
 }

@@ -73,7 +73,9 @@ export default function TabContentItem(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{getDialogContent()}</DialogContentText>
+          <DialogContentText id="confirm-delete-dialog-description">
+            {getDialogContent()}
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDeleteConfirmModal}>
