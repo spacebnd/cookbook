@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ListItemText from '@material-ui/core/ListItemText'
 import {
   Button,
@@ -22,7 +22,7 @@ TabContentItem.propTypes = {
 }
 
 export default function TabContentItem({ item, entity }) {
-  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = React.useState(false)
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false)
 
   const openDeleteConfirmModal = () => {
     setConfirmDeleteModalOpen(true)

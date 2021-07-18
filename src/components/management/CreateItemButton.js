@@ -6,6 +6,8 @@ import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase.js'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { setActiveCreateModal } from '../../store/modules/ui.js'
 
 const useStyles = makeStyles(() => {
   return {
@@ -25,7 +27,8 @@ CreateItemButton.propTypes = {
   selectItemHandler: PropTypes.func,
 }
 
-export default function CreateItemButton({ selectItemHandler }) {
+export default function CreateItemButton() {
+  const dispatch = useDispatch()
   const [dropdownAnchor, setDropdownAnchor] = useState(null)
 
   const openAddItemDropdown = (event) => {
@@ -36,8 +39,8 @@ export default function CreateItemButton({ selectItemHandler }) {
     setDropdownAnchor(null)
   }
 
-  const selectItem = (value) => {
-    selectItemHandler(value)
+  const selectItemHandler = (value) => {
+    dispatch(setActiveCreateModal(value))
     closeAddItemDropdown()
   }
 
@@ -57,9 +60,9 @@ export default function CreateItemButton({ selectItemHandler }) {
         open={Boolean(dropdownAnchor)}
         onClose={closeAddItemDropdown}
       >
-        {Object.values(ENTITIES).map((item, index) => (
-          <MenuItem key={item.value + index} onClick={() => selectItem(item.value)}>
-            <Typography>{_startCase(item.label.singular)}</Typography>
+        {Object.values(ENTITIES).map((entity, index) => (
+          <MenuItem key={entity.value + index} onClick={() => selectItemHandler(entity.value)}>
+            <Typography>{_startCase(entity.label.singular)}</Typography>
           </MenuItem>
         ))}
       </Menu>

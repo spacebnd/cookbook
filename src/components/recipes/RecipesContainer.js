@@ -26,18 +26,18 @@ export default function RecipesContainer() {
   const allCategories = useSelector((state) => state.entities.allCategories)
   const [expanded, setExpanded] = useState(false)
 
-  const handleExpandClick = () => {
+  const expandClickHandler = () => {
     setExpanded(!expanded)
   }
 
   return (
     <Box component="div">
-      <Button variant="contained" size="small" fullWidth onClick={handleExpandClick}>
+      <Button variant="contained" size="small" fullWidth onClick={expandClickHandler}>
         <SearchIcon />
         {expanded ? (
-          <ExpandLessIcon onClick={handleExpandClick} />
+          <ExpandLessIcon onClick={expandClickHandler} />
         ) : (
-          <ExpandMoreIcon onClick={handleExpandClick} />
+          <ExpandMoreIcon onClick={expandClickHandler} />
         )}
       </Button>
       <Collapse in={expanded} timeout="auto" unmountOnExit>

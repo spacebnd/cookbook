@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -10,11 +10,15 @@ import { ENTITIES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
 import { TextField } from '@material-ui/core'
 import CreateItemButton from './CreateItemButton.js'
+import CreateItemModal from './CreateItemModal.js'
 
 const useStyles = makeStyles(() => {
   return {
-    tabs: {
+    tabsBar: {
       marginBottom: '10px',
+    },
+    tabRoot: {
+      textTransform: 'capitalize',
     },
   }
 })
@@ -49,7 +53,7 @@ TabPanel.propTypes = {
 export default function ManagementContainer() {
   const classes = useStyles()
   const theme = useTheme()
-  const [activeTab, setActiveTab] = React.useState(0)
+  const [activeTab, setActiveTab] = useState(0)
 
   const changeActiveTab = (event, newValue) => {
     setActiveTab(newValue)
@@ -59,19 +63,9 @@ export default function ManagementContainer() {
     setActiveTab(index)
   }
 
-  const selectItem = (value) => {
-    if (value === ENTITIES.RECIPES.value) {
-      console.log('select', value)
-    } else if (value === ENTITIES.INGREDIENTS.value) {
-      console.log('select', value)
-    } else if (value === ENTITIES.CATEGORIES.value) {
-      console.log('select', value)
-    }
-  }
-
   return (
     <Box>
-      <AppBar className={classes.tabs} position="static" color="default">
+      <AppBar className={classes.tabsBar} position="static" color="default">
         <Tabs
           value={activeTab}
           onChange={changeActiveTab}
@@ -79,9 +73,14 @@ export default function ManagementContainer() {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label={ENTITIES.RECIPES.label.plural} {...a11yProps(0)} />
-          <Tab label={ENTITIES.INGREDIENTS.label.plural} {...a11yProps(1)} />
-          <Tab label={ENTITIES.CATEGORIES.label.plural} {...a11yProps(2)} />
+          {Object.values(ENTITIES).map((entity, index) => (
+            <Tab
+              key={entity.value + index}
+              label={entity.label.plural}
+              classes={{ root: classes.tabRoot }}
+              {...a11yProps(index)}
+            />
+          ))}
         </Tabs>
       </AppBar>
 
@@ -103,7 +102,9 @@ export default function ManagementContainer() {
         </TabPanel>
       </SwipeableViews>
 
-      <CreateItemButton selectItemHandler={selectItem} />
+      <CreateItemButton />
+
+      <CreateItemModal />
     </Box>
   )
 }

@@ -53,7 +53,7 @@ export default function RecipeItem({ recipe }) {
   const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
 
-  const handleExpandClick = () => {
+  const expandClickHandler = () => {
     setExpanded(!expanded)
   }
 
@@ -73,9 +73,9 @@ export default function RecipeItem({ recipe }) {
           ))}
         </Box>
         {expanded ? (
-          <ExpandLessIcon onClick={handleExpandClick} />
+          <ExpandLessIcon onClick={expandClickHandler} />
         ) : (
-          <ExpandMoreIcon onClick={handleExpandClick} />
+          <ExpandMoreIcon onClick={expandClickHandler} />
         )}
       </CardActions>
 
