@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
+import DoneIcon from '@material-ui/icons/Done'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() => ({
   title: {
     flex: 1,
     marginLeft: '5px',
+    fontWeight: '500',
   },
 }))
 
@@ -42,7 +44,11 @@ export default function CreateItemModal() {
       title = `Новая ${ENTITIES.CATEGORIES.label.singular}`
     }
 
-    return <Typography className={classes.title}>{title}</Typography>
+    return (
+      <Typography className={classes.title} align="center">
+        {title}
+      </Typography>
+    )
   }
 
   const closeModalHandler = () => {
@@ -65,7 +71,7 @@ export default function CreateItemModal() {
           {getHeaderTitle()}
 
           <Button autoFocus color="inherit" onClick={closeModalHandler}>
-            Сохранить
+            <DoneIcon />
           </Button>
         </Toolbar>
       </AppBar>
