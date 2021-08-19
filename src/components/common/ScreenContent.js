@@ -1,13 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { SCREENS } from '../../common/constants.js'
+import { navigationBarHeight, SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import RecipesContainer from '../recipes/RecipesContainer.js'
 import ManagementContainer from '../management/ManagementContainer.js'
 
 const useStyles = makeStyles(() => {
-  const navigationBarHeight = 56
   return {
     root: {
       display: 'flex',

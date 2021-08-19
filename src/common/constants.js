@@ -32,3 +32,5 @@ export const ENTITIES = {
     },
   },
 }
+
+export const navigationBarHeight = 56

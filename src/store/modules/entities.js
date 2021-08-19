@@ -12,6 +12,7 @@ export const entitiesSlice = createSlice({
     allRecipes: [TEST_RECIPE_1, TEST_RECIPE_2],
     allIngredients: TEST_INGREDIENTS,
     allCategories: TEST_CATEGORIES,
+    allTypes: [],
   },
   reducers: {},
 })

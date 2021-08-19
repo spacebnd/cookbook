@@ -12,6 +12,7 @@ import Slide from '@material-ui/core/Slide'
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveCreateModal } from '../../store/modules/ui.js'
 import { ENTITIES } from '../../common/constants.js'
+import CreateItemForm from './CreateItemForm.js'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -75,6 +76,8 @@ export default function CreateItemModal() {
           </Button>
         </Toolbar>
       </AppBar>
+
+      <CreateItemForm />
     </Dialog>
   )
 }
