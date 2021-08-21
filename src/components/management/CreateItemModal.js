@@ -10,8 +10,12 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectActiveCreateModal, setActiveCreateModal } from '../../store/modules/ui.js'
-import { ENTITIES } from '../../common/constants.js'
+import {
+  selectActiveCreateModal,
+  setActiveCreateModal,
+  setActiveManagementTab,
+} from '../../store/modules/ui.js'
+import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import CreateItemForm from './CreateItemForm.js'
 
 const useStyles = makeStyles(() => ({
@@ -52,8 +56,12 @@ export default function CreateItemModal() {
     )
   }
 
-  const closeModalHandler = () => {
+  const closeModalHandler = (status) => {
     dispatch(setActiveCreateModal(null))
+
+    if (status === 'done') {
+      dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
+    }
   }
 
   return (
@@ -65,13 +73,18 @@ export default function CreateItemModal() {
     >
       <AppBar className={classes.header}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={closeModalHandler} aria-label="close">
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={() => closeModalHandler('close')}
+            aria-label="close"
+          >
             <CloseIcon />
           </IconButton>
 
           {getHeaderTitle()}
 
-          <Button autoFocus color="inherit" onClick={closeModalHandler}>
+          <Button autoFocus color="inherit" onClick={() => closeModalHandler('done')}>
             <DoneIcon />
           </Button>
         </Toolbar>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import SwipeableViews from 'react-swipeable-views'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -6,11 +6,13 @@ import AppBar from '@material-ui/core/AppBar'
 import Box from '@material-ui/core/Box'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { ENTITIES } from '../../common/constants.js'
+import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import TabContentContainer from './TabContentContainer.js'
 import { TextField } from '@material-ui/core'
 import CreateItemButton from './CreateItemButton.js'
 import CreateItemModal from './CreateItemModal.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectActiveManagementTab, setActiveManagementTab } from '../../store/modules/ui'
 
 const useStyles = makeStyles(() => {
   return {
@@ -53,21 +55,22 @@ TabPanel.propTypes = {
 export default function ManagementContainer() {
   const classes = useStyles()
   const theme = useTheme()
-  const [activeTab, setActiveTab] = useState(0)
+  const dispatch = useDispatch()
+  const activeManagementTab = useSelector(selectActiveManagementTab)
 
   const changeActiveTab = (event, newValue) => {
-    setActiveTab(newValue)
+    dispatch(setActiveManagementTab(newValue))
   }
 
   const changeActiveTabSwipeIndex = (index) => {
-    setActiveTab(index)
+    dispatch(setActiveManagementTab(index))
   }
 
   return (
     <Box>
       <AppBar className={classes.tabsBar} position="static" color="default">
         <Tabs
-          value={activeTab}
+          value={activeManagementTab}
           onChange={changeActiveTab}
           indicatorColor="primary"
           textColor="primary"
@@ -88,16 +91,28 @@ export default function ManagementContainer() {
 
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeTab}
+        index={activeManagementTab}
         onChangeIndex={changeActiveTabSwipeIndex}
       >
-        <TabPanel value={activeTab} index={0} dir={theme.direction}>
+        <TabPanel
+          value={activeManagementTab}
+          index={MANAGEMENT_TAB_INDEXES[ENTITIES.RECIPES.value]}
+          dir={theme.direction}
+        >
           <TabContentContainer entity={ENTITIES.RECIPES.value} sortBy="firstLetter" />
         </TabPanel>
-        <TabPanel value={activeTab} index={1} dir={theme.direction}>
+        <TabPanel
+          value={activeManagementTab}
+          index={MANAGEMENT_TAB_INDEXES[ENTITIES.INGREDIENTS.value]}
+          dir={theme.direction}
+        >
           <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
         </TabPanel>
-        <TabPanel value={activeTab} index={2} dir={theme.direction}>
+        <TabPanel
+          value={activeManagementTab}
+          index={MANAGEMENT_TAB_INDEXES[ENTITIES.CATEGORIES.value]}
+          dir={theme.direction}
+        >
           <TabContentContainer entity={ENTITIES.CATEGORIES.value} sortBy="firstLetter" />
         </TabPanel>
       </SwipeableViews>

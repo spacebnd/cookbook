@@ -33,4 +33,10 @@ export const ENTITIES = {
   },
 }
 
+export const MANAGEMENT_TAB_INDEXES = {
+  [ENTITIES.RECIPES.value]: 0,
+  [ENTITIES.INGREDIENTS.value]: 1,
+  [ENTITIES.CATEGORIES.value]: 2,
+}
+
 export const navigationBarHeight = 56
