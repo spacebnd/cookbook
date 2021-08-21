@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import RecipesContainer from '../recipes/RecipesContainer.js'
 import ManagementContainer from '../management/ManagementContainer.js'
+import { selectActiveScreen } from '../../store/modules/ui'
 
 const useStyles = makeStyles(() => {
   return {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(() => {
 
 export default function ScreenContent() {
   const classes = useStyles()
-  const activeScreen = useSelector((state) => state.ui.activeScreen)
+  const activeScreen = useSelector(selectActiveScreen)
 
   let screenContent
   if (activeScreen === SCREENS.RECIPES.value) {

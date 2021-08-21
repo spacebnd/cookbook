@@ -38,6 +38,12 @@ export const TEST_INGREDIENTS = [
   { id: 'i15', name: 'Name11', type: 'Прочее' },
 ]
 
+export const TEST_INGREDIENT_TYPES = [
+  { id: 'it1', name: 'Овощи' },
+  { id: 'it2', name: 'Фрукты' },
+  { id: 'it3', name: 'Прочее' },
+]
+
 export const TEST_CATEGORIES = [
   { id: 'с1', name: 'Первое' },
   { id: 'с2', name: 'Супы' },

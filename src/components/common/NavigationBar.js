@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setActiveScreen } from '../../store/modules/ui.js'
+import { selectActiveScreen, setActiveScreen } from '../../store/modules/ui.js'
 import { SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
 export default function NavigationBar() {
   const classes = useStyles()
 
-  const activeScreen = useSelector((state) => state.ui.activeScreen)
+  const activeScreen = useSelector(selectActiveScreen)
   const dispatch = useDispatch()
 
   const onNavigationItemClick = (event, value) => {

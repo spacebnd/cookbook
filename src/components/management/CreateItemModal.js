@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import { useDispatch, useSelector } from 'react-redux'
-import { setActiveCreateModal } from '../../store/modules/ui.js'
+import { selectActiveCreateModal, setActiveCreateModal } from '../../store/modules/ui.js'
 import { ENTITIES } from '../../common/constants.js'
 import CreateItemForm from './CreateItemForm.js'
 
@@ -32,7 +32,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function CreateItemModal() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const activeCreateModal = useSelector((state) => state.ui.activeCreateModal)
+  const activeCreateModal = useSelector(selectActiveCreateModal)
 
   const getHeaderTitle = () => {
     let title = ''

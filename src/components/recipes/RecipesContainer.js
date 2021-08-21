@@ -9,6 +9,11 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase'
+import {
+  selectAllCategories,
+  selectAllIngredients,
+  selectAllRecipes,
+} from '../../store/modules/entities'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -21,9 +26,9 @@ const useStyles = makeStyles(() => ({
 
 export default function RecipesContainer() {
   const classes = useStyles()
-  const allRecipes = useSelector((state) => state.entities.allRecipes)
-  const allIngredients = useSelector((state) => state.entities.allIngredients)
-  const allCategories = useSelector((state) => state.entities.allCategories)
+  const allRecipes = useSelector(selectAllRecipes)
+  const allIngredients = useSelector(selectAllIngredients)
+  const allCategories = useSelector(selectAllCategories)
   const [expanded, setExpanded] = useState(false)
 
   const expandClickHandler = () => {

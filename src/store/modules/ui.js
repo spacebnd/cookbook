@@ -20,4 +20,13 @@ export const uiSlice = createSlice({
 
 export const { setActiveScreen, setActiveCreateModal } = uiSlice.actions
 
+// selectors
+export const selectActiveScreen = (state) => {
+  return state.ui.activeScreen
+}
+
+export const selectActiveCreateModal = (state) => {
+  return state.ui.activeCreateModal
+}
+
 export default uiSlice.reducer
