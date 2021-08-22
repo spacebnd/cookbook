@@ -19,12 +19,7 @@ import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import { Box, TextField } from '@material-ui/core'
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import _startCase from 'lodash/startCase'
-import {
-  createRecipe,
-  selectAllCategories,
-  selectAllIngredients,
-  selectAllIngredientTypes,
-} from '../../store/modules/entities'
+import { createRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -54,9 +49,9 @@ export default function CreateItemModal() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const activeCreateModal = useSelector(selectActiveCreateModal)
-  const allCategories = useSelector(selectAllCategories)
-  const allIngredients = useSelector(selectAllIngredients)
-  const allIngredientTypes = useSelector(selectAllIngredientTypes)
+  const allCategories = useSelector(selectAllEntitiesByType(ENTITIES.CATEGORIES.value))
+  const allIngredients = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENTS.value))
+  const allIngredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 
   const [title, setTitle] = useState('')
   const [categories, setCategories] = useState([])
@@ -160,7 +155,7 @@ export default function CreateItemModal() {
         {activeCreateModal === ENTITIES.INGREDIENTS.value && (
           <Box className={classes.inputContainer}>
             <AutocompleteSearch
-              initialOptions={allIngredientTypes}
+              initialOptions={Object.values(allIngredientTypes)}
               label={_startCase(ENTITIES.INGREDIENT_TYPES.label.singular)}
               groupBy={'firstLetter'}
               limit={1}
@@ -173,7 +168,7 @@ export default function CreateItemModal() {
           <>
             <Box className={classes.inputContainer}>
               <AutocompleteSearch
-                initialOptions={allCategories}
+                initialOptions={Object.values(allCategories)}
                 label={_startCase(ENTITIES.CATEGORIES.label.plural)}
                 groupBy={'firstLetter'}
                 value={categories}
@@ -182,8 +177,9 @@ export default function CreateItemModal() {
             </Box>
             <Box className={classes.inputContainer}>
               <AutocompleteSearch
-                initialOptions={allIngredients}
+                initialOptions={Object.values(allIngredients)}
                 label={_startCase(ENTITIES.INGREDIENTS.label.plural)}
+                groupTypes={allIngredientTypes}
                 groupBy={'type'}
                 value={ingredients}
                 changeHandler={ingredientsInputHandler}

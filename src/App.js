@@ -3,8 +3,9 @@ import HomeScreen from './screens/HomeScreen.js'
 import LoginScreen from './screens/LoginScreen.js'
 import WebFont from 'webfontloader'
 import { useEffect } from 'react'
-import { getAllRecipes } from './store/modules/entities'
+import { subscribeToAllEntities } from './store/modules/entities'
 import { useDispatch } from 'react-redux'
+import { ENTITIES } from './common/constants'
 
 function App() {
   const dispatch = useDispatch()
@@ -16,7 +17,9 @@ function App() {
       },
     })
 
-    dispatch(getAllRecipes())
+    Object.values(ENTITIES).forEach((entity) => {
+      dispatch(subscribeToAllEntities(entity.value))
+    })
   }, [dispatch])
 
   return (

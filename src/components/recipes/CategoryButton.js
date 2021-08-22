@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { customStyles } from '../../common/theme.js'
+import { selectEntityById } from '../../store/modules/entities'
+import { useSelector } from 'react-redux'
+import { ENTITIES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,15 +17,16 @@ const useStyles = makeStyles(() => ({
 }))
 
 CategoryButton.propTypes = {
-  category: PropTypes.string,
+  categoryId: PropTypes.string,
 }
 
-export default function CategoryButton(props) {
+export default function CategoryButton({ categoryId }) {
   const classes = useStyles()
+  const category = useSelector(selectEntityById(ENTITIES.CATEGORIES.value, categoryId))
 
   return (
     <Box className={classes.root} component="button">
-      {props.category}
+      {category?.title}
     </Box>
   )
 }

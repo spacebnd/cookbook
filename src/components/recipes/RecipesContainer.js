@@ -9,11 +9,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase'
-import {
-  selectAllCategories,
-  selectAllIngredients,
-  selectAllRecipes,
-} from '../../store/modules/entities'
+import { selectAllEntitiesByType } from '../../store/modules/entities'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -26,9 +22,10 @@ const useStyles = makeStyles(() => ({
 
 export default function RecipesContainer() {
   const classes = useStyles()
-  const allRecipes = useSelector(selectAllRecipes)
-  const allIngredients = useSelector(selectAllIngredients)
-  const allCategories = useSelector(selectAllCategories)
+  const allRecipes = useSelector(selectAllEntitiesByType(ENTITIES.RECIPES.value))
+  const allIngredients = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENTS.value))
+  const allIngredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
+  const allCategories = useSelector(selectAllEntitiesByType(ENTITIES.CATEGORIES.value))
 
   const [expanded, setExpanded] = useState(false)
   const [ingredientFilters, setIngredientsFilters] = useState([])
@@ -68,8 +65,9 @@ export default function RecipesContainer() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Box className={classes.searchContainer}>
           <AutocompleteSearch
-            initialOptions={allIngredients}
+            initialOptions={Object.values(allIngredients)}
             label={_startCase(ENTITIES.INGREDIENTS.label.plural)}
+            groupTypes={allIngredientTypes}
             groupBy={'type'}
             value={ingredientFilters}
             changeHandler={ingredientsInputHandler}
@@ -77,7 +75,7 @@ export default function RecipesContainer() {
         </Box>
         <Box className={classes.searchContainer}>
           <AutocompleteSearch
-            initialOptions={allCategories}
+            initialOptions={Object.values(allCategories)}
             label={_startCase(ENTITIES.CATEGORIES.label.plural)}
             groupBy={'firstLetter'}
             value={categoryFilters}
@@ -86,7 +84,7 @@ export default function RecipesContainer() {
         </Box>
       </Collapse>
       <Box className={classes.recipes}>
-        {allRecipes.map((recipe) => (
+        {Object.values(allRecipes).map((recipe) => (
           <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
         ))}
       </Box>

@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
 AutocompleteSearch.propTypes = {
   options: PropTypes.array,
   label: PropTypes.string,
+  groupTypes: PropTypes.object,
   groupBy: PropTypes.string,
   limit: PropTypes.number,
   value: PropTypes.array,
@@ -33,6 +34,7 @@ export default function AutocompleteSearch({
   label,
   initialOptions,
   limitTags,
+  groupTypes,
   groupBy,
   limit,
   value,
@@ -40,7 +42,17 @@ export default function AutocompleteSearch({
 }) {
   const classes = useStyles()
 
-  const groupByHandler = groupBy ? (option) => option[groupBy] : null
+  const groupByHandler = groupBy
+    ? (option) => {
+        if (groupBy === 'type') {
+          const typeId = option.type
+          return groupTypes[typeId].title
+        } else {
+          return option[groupBy]
+        }
+      }
+    : null
+
   let options = initialOptions
 
   const [disableInput, setDisableInput] = useState(value.length >= limit)
@@ -69,10 +81,10 @@ export default function AutocompleteSearch({
       noOptionsText="Нет совпадений"
       groupBy={groupByHandler}
       limitTags={limitTags}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option) => option.title}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip size="small" label={option.name} {...getTagProps({ index })} disabled={false} />
+          <Chip size="small" label={option.title} {...getTagProps({ index })} disabled={false} />
         ))
       }
       renderInput={(params) => (

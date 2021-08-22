@@ -27,7 +27,7 @@ export const ENTITIES = {
     },
   },
   INGREDIENT_TYPES: {
-    value: 'ingredient-types',
+    value: 'ingredient_types',
     label: {
       singular: 'тип',
       plural: 'типы',

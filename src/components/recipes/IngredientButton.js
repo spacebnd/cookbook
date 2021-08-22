@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import { Box, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { customStyles } from '../../common/theme.js'
+import { useSelector } from 'react-redux'
+import { selectEntityById } from '../../store/modules/entities'
+import { ENTITIES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,16 +35,17 @@ const useStyles = makeStyles(() => ({
 }))
 
 IngredientButton.propTypes = {
-  ingredient: PropTypes.string,
+  ingredientId: PropTypes.string,
 }
 
-export default function IngredientButton(props) {
+export default function IngredientButton({ ingredientId }) {
   const classes = useStyles()
+  const ingredient = useSelector(selectEntityById(ENTITIES.INGREDIENTS.value, ingredientId))
 
   return (
     <Box className={classes.root}>
       <Box className={classes.button} component="button">
-        {props.ingredient}
+        {ingredient?.title}
       </Box>
       <TextField
         className={classes.unitsInput}

@@ -61,15 +61,15 @@ export default function RecipeItem({ recipe }) {
     <Card className={classes.root}>
       <Box className={classes.headerContainer}>
         <Typography className={classes.header} variant="h5">
-          {recipe.name}
+          {recipe.title}
         </Typography>
       </Box>
 
       <CardMedia className={classes.image} image={recipe.image} />
       <CardActions disableSpacing className={classes.cardActions}>
         <Box className={classes.categories}>
-          {recipe.categories.map((category) => (
-            <CategoryButton key={recipe.id + category} category={category} />
+          {Object.keys(recipe.categories).map((categoryId) => (
+            <CategoryButton key={recipe.id + categoryId} categoryId={categoryId} />
           ))}
         </Box>
         {expanded ? (
@@ -86,8 +86,8 @@ export default function RecipeItem({ recipe }) {
           </Typography>
 
           <Box component="div">
-            {recipe.ingredients.map((ingredient) => (
-              <IngredientButton key={recipe.id + ingredient} ingredient={ingredient} />
+            {Object.keys(recipe.ingredients).map((ingredientId) => (
+              <IngredientButton key={recipe.id + ingredientId} ingredientId={ingredientId} />
             ))}
           </Box>
 

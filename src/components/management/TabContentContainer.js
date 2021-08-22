@@ -1,5 +1,4 @@
 import React from 'react'
-import _startCase from 'lodash/startCase'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import { useSelector } from 'react-redux'
@@ -7,6 +6,8 @@ import List from '@material-ui/core/List'
 import TabContentItem from './TabContentItem.js'
 import PropTypes from 'prop-types'
 import { convertArrayToAlphabeticalGrouping } from '../../common/utils.js'
+import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { ENTITIES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,7 +22,9 @@ TabContentContainer.propTypes = {
 
 export default function TabContentContainer({ entity, sortBy }) {
   const classes = useStyles()
-  const allItems = useSelector((state) => state.entities[`all${_startCase(entity)}`])
+  const allItems = useSelector((state) => Object.values(state.entities[entity]))
+  const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
+
   const sortedItems = convertArrayToAlphabeticalGrouping(allItems)
     .slice()
     .sort((a, b) => {
@@ -34,7 +37,12 @@ export default function TabContentContainer({ entity, sortBy }) {
     <Box className={classes.root}>
       <List component="div">
         {sortedItems.map((item) => (
-          <TabContentItem key={entity + item.id} entity={entity} item={item} />
+          <TabContentItem
+            key={entity + item.id}
+            entity={entity}
+            item={item}
+            types={ENTITIES.INGREDIENTS.value ? ingredientTypes : null}
+          />
         ))}
       </List>
     </Box>

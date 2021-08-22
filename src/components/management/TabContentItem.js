@@ -21,8 +21,9 @@ TabContentItem.propTypes = {
   entity: PropTypes.string,
 }
 
-export default function TabContentItem({ item, entity }) {
+export default function TabContentItem({ item, entity, types }) {
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false)
+  const typeId = types ? item.type : null
 
   const openDeleteConfirmModal = () => {
     setConfirmDeleteModalOpen(true)
@@ -34,7 +35,7 @@ export default function TabContentItem({ item, entity }) {
 
   const getDialogContent = () => {
     let type = 'элемент'
-    const name = item.name
+    const name = item.title
 
     if (entity === ENTITIES.INGREDIENTS.value) {
       type = 'ингредиент'
@@ -54,7 +55,7 @@ export default function TabContentItem({ item, entity }) {
   return (
     <>
       <ListItem>
-        <ListItemText primary={item.name} secondary={item.type ? item.type : null} />
+        <ListItemText primary={item.title} secondary={item.type ? types[typeId].title : null} />
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="edit">
             <EditIcon />
