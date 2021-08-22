@@ -29,10 +29,30 @@ export default function RecipesContainer() {
   const allRecipes = useSelector(selectAllRecipes)
   const allIngredients = useSelector(selectAllIngredients)
   const allCategories = useSelector(selectAllCategories)
+
   const [expanded, setExpanded] = useState(false)
+  const [ingredientFilters, setIngredientsFilters] = useState([])
+  const [categoryFilters, setCategoriesFilters] = useState([])
+
+  const ingredientsInputHandler = (payload) => {
+    setIngredientsFilters(payload)
+  }
+
+  const categoriesInputHandler = (payload) => {
+    setCategoriesFilters(payload)
+  }
 
   const expandClickHandler = () => {
     setExpanded(!expanded)
+
+    if (expanded) {
+      resetAllFilters()
+    }
+  }
+
+  const resetAllFilters = () => {
+    setIngredientsFilters([])
+    setCategoriesFilters([])
   }
 
   return (
@@ -51,6 +71,8 @@ export default function RecipesContainer() {
             initialOptions={allIngredients}
             label={_startCase(ENTITIES.INGREDIENTS.label.plural)}
             groupBy={'type'}
+            value={ingredientFilters}
+            changeHandler={ingredientsInputHandler}
           />
         </Box>
         <Box className={classes.searchContainer}>
@@ -58,6 +80,8 @@ export default function RecipesContainer() {
             initialOptions={allCategories}
             label={_startCase(ENTITIES.CATEGORIES.label.plural)}
             groupBy={'firstLetter'}
+            value={categoryFilters}
+            changeHandler={categoriesInputHandler}
           />
         </Box>
       </Collapse>
