@@ -7,6 +7,7 @@ import {
   TEST_RECIPE_2,
 } from '../../common/testing-data.js'
 import { database } from '../../common/firebase'
+import { v4 as uuid4 } from 'uuid'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -30,7 +31,14 @@ export const getAllRecipes = () => (dispatch) => {
   database.ref('recipes/').on('value', (snapshot) => {
     const data = snapshot.val()
     // dispatch(setAllRecipes(data))
+    console.log('data', data, dispatch)
   })
+}
+
+export const createRecipe = (payload) => (dispatch) => {
+  const id = uuid4()
+  database.ref('recipes/' + id).set({ ...payload, id })
+  console.log(dispatch)
 }
 
 // selectors

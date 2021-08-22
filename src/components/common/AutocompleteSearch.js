@@ -24,14 +24,26 @@ AutocompleteSearch.propTypes = {
   options: PropTypes.array,
   label: PropTypes.string,
   groupBy: PropTypes.string,
+  limit: PropTypes.number,
+  value: PropTypes.array,
+  changeHandler: PropTypes.func,
 }
 
-export default function AutocompleteSearch({ label, initialOptions, groupBy }) {
+export default function AutocompleteSearch({
+  label,
+  initialOptions,
+  limitTags,
+  groupBy,
+  limit,
+  value,
+  changeHandler,
+}) {
   const classes = useStyles()
-  const [selectedValue, setSelectedValue] = useState([])
 
   const groupByHandler = groupBy ? (option) => option[groupBy] : null
   let options = initialOptions
+
+  const [disableInput, setDisableInput] = useState(value.length >= limit)
 
   if (groupBy === 'firstLetter') {
     options = convertArrayToAlphabeticalGrouping(initialOptions)
@@ -46,18 +58,21 @@ export default function AutocompleteSearch({ label, initialOptions, groupBy }) {
       }}
       size="small"
       multiple
-      value={selectedValue}
+      value={value}
+      disabled={disableInput}
       onChange={(event, newValue) => {
-        setSelectedValue(newValue)
+        setDisableInput(newValue.length >= limit)
+        changeHandler(newValue)
       }}
       options={options}
       getOptionSelected={(option, value) => option.id === value.id}
       noOptionsText="Нет совпадений"
       groupBy={groupByHandler}
+      limitTags={limitTags}
       getOptionLabel={(option) => option.name}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip size="small" label={option.name} {...getTagProps({ index })} />
+          <Chip size="small" label={option.name} {...getTagProps({ index })} disabled={false} />
         ))
       }
       renderInput={(params) => (
