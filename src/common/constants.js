@@ -9,6 +9,8 @@ export const SCREENS = {
   },
 }
 
+export const NAVIGATION_BAR_HEIGHT = 56 // px
+
 export const ENTITIES = {
   RECIPES: {
     value: 'recipes',
@@ -22,6 +24,13 @@ export const ENTITIES = {
     label: {
       singular: 'ингредиент',
       plural: 'ингредиенты',
+    },
+  },
+  INGREDIENT_TYPES: {
+    value: 'ingredient-types',
+    label: {
+      singular: 'тип',
+      plural: 'типы',
     },
   },
   CATEGORIES: {
@@ -38,5 +47,3 @@ export const MANAGEMENT_TAB_INDEXES = {
   [ENTITIES.INGREDIENTS.value]: 1,
   [ENTITIES.CATEGORIES.value]: 2,
 }
-
-export const navigationBarHeight = 56

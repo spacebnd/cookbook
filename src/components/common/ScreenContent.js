@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { navigationBarHeight, SCREENS } from '../../common/constants.js'
+import { NAVIGATION_BAR_HEIGHT, SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import RecipesContainer from '../recipes/RecipesContainer.js'
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => {
     root: {
       display: 'flex',
       flexDirection: 'column',
-      height: `calc(100vh - ${navigationBarHeight}px)`,
+      height: `calc(100vh - ${NAVIGATION_BAR_HEIGHT}px)`,
       width: '100%',
       boxSizing: 'border-box',
       padding: '10px',

@@ -28,8 +28,13 @@ CreateItemButton.propTypes = {
 }
 
 export default function CreateItemButton() {
+  const classes = useStyles()
   const dispatch = useDispatch()
   const [dropdownAnchor, setDropdownAnchor] = useState(null)
+
+  const items = Object.values(ENTITIES).filter(
+    (entity) => entity.value !== ENTITIES.INGREDIENT_TYPES.value
+  )
 
   const openAddItemDropdown = (event) => {
     setDropdownAnchor(event.currentTarget)
@@ -44,7 +49,6 @@ export default function CreateItemButton() {
     closeAddItemDropdown()
   }
 
-  const classes = useStyles()
   return (
     <>
       <Box className={classes.addButton}>
@@ -60,7 +64,7 @@ export default function CreateItemButton() {
         open={Boolean(dropdownAnchor)}
         onClose={closeAddItemDropdown}
       >
-        {Object.values(ENTITIES).map((entity, index) => (
+        {items.map((entity, index) => (
           <MenuItem key={entity.value + index} onClick={() => selectItemHandler(entity.value)}>
             <Typography>{_startCase(entity.label.singular)}</Typography>
           </MenuItem>

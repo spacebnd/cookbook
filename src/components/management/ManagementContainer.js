@@ -58,6 +58,10 @@ export default function ManagementContainer() {
   const dispatch = useDispatch()
   const activeManagementTab = useSelector(selectActiveManagementTab)
 
+  const tabs = Object.values(ENTITIES).filter(
+    (entity) => entity.value !== ENTITIES.INGREDIENT_TYPES.value
+  )
+
   const changeActiveTab = (event, newValue) => {
     dispatch(setActiveManagementTab(newValue))
   }
@@ -76,14 +80,16 @@ export default function ManagementContainer() {
           textColor="primary"
           variant="fullWidth"
         >
-          {Object.values(ENTITIES).map((entity, index) => (
-            <Tab
-              key={entity.value + index}
-              label={entity.label.plural}
-              classes={{ root: classes.tabRoot }}
-              {...a11yProps(index)}
-            />
-          ))}
+          {tabs.map((entity, index) => {
+            return (
+              <Tab
+                key={entity.value + index}
+                label={entity.label.plural}
+                classes={{ root: classes.tabRoot }}
+                {...a11yProps(index)}
+              />
+            )
+          })}
         </Tabs>
       </AppBar>
 

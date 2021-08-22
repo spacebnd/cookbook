@@ -42,7 +42,7 @@ export default function CreateItemForm() {
         <Box className={classes.inputContainer}>
           <AutocompleteSearch
             initialOptions={allIngredientTypes}
-            label="Тип ингредиента"
+            label={_startCase(ENTITIES.INGREDIENT_TYPES.label.singular)}
             groupBy={'firstLetter'}
           />
         </Box>
