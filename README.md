@@ -1,5 +1,4 @@
 # Getting Started with Create React App
-## (mobile only)
 
 ## Available Scripts
 
