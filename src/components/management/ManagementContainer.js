@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => {
     },
     tabRoot: {
       textTransform: 'capitalize',
+      fontSize: '13px',
     },
   }
 })
