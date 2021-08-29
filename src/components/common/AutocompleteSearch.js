@@ -42,6 +42,16 @@ export default function AutocompleteSearch({
 }) {
   const classes = useStyles()
 
+  const [disableInput, setDisableInput] = useState(value.length >= limit)
+
+  let options = initialOptions
+  if (groupBy === 'firstLetter') {
+    options = convertArrayToAlphabeticalGrouping(initialOptions)
+  } else if (groupBy === 'type') {
+    // fix material ui bug with incorrect grouping https://github.com/mui-org/material-ui/issues/21967
+    options.sort((a, b) => (a.type > b.type ? 1 : -1))
+  }
+
   const groupByHandler = groupBy
     ? (option) => {
         if (groupBy === 'type') {
@@ -52,14 +62,6 @@ export default function AutocompleteSearch({
         }
       }
     : null
-
-  let options = initialOptions
-
-  const [disableInput, setDisableInput] = useState(value.length >= limit)
-
-  if (groupBy === 'firstLetter') {
-    options = convertArrayToAlphabeticalGrouping(initialOptions)
-  }
 
   return (
     <Autocomplete
