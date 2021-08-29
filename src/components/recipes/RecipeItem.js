@@ -86,8 +86,12 @@ export default function RecipeItem({ recipe }) {
           </Typography>
 
           <Box component="div">
-            {Object.keys(recipe.ingredients).map((ingredientId) => (
-              <IngredientButton key={recipe.id + ingredientId} ingredientId={ingredientId} />
+            {Object.entries(recipe.ingredients).map((ingredientData) => (
+              <IngredientButton
+                key={recipe.id + ingredientData[0]}
+                ingredientId={ingredientData[0]}
+                ingredientQuantity={ingredientData[1]}
+              />
             ))}
           </Box>
 

@@ -38,7 +38,7 @@ IngredientButton.propTypes = {
   ingredientId: PropTypes.string,
 }
 
-export default function IngredientButton({ ingredientId }) {
+export default function IngredientButton({ ingredientId, ingredientQuantity }) {
   const classes = useStyles()
   const ingredient = useSelector(selectEntityById(ENTITIES.INGREDIENTS.value, ingredientId))
 
@@ -56,7 +56,7 @@ export default function IngredientButton({ ingredientId }) {
         }}
         variant="outlined"
         size="small"
-        value={'number-unit'}
+        value={ingredientQuantity}
         disabled
       />
     </Box>

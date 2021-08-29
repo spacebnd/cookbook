@@ -39,6 +39,9 @@ const useStyles = makeStyles(() => ({
   inputContainer: {
     marginTop: '15px',
   },
+  ingredientQuantityItem: {
+    marginTop: '15px',
+  },
 }))
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -152,6 +155,7 @@ export default function CreateItemModal() {
             fullWidth
           />
         </Box>
+
         {activeCreateModal === ENTITIES.INGREDIENTS.value && (
           <Box className={classes.inputContainer}>
             <AutocompleteSearch
@@ -164,6 +168,7 @@ export default function CreateItemModal() {
             />
           </Box>
         )}
+
         {activeCreateModal === ENTITIES.RECIPES.value && (
           <>
             <Box className={classes.inputContainer}>
@@ -175,6 +180,7 @@ export default function CreateItemModal() {
                 changeHandler={categoriesInputHandler}
               />
             </Box>
+
             <Box className={classes.inputContainer}>
               <AutocompleteSearch
                 initialOptions={Object.values(allIngredients)}
@@ -185,6 +191,29 @@ export default function CreateItemModal() {
                 changeHandler={ingredientsInputHandler}
               />
             </Box>
+
+            {ingredients.length > 0 && (
+              <Box>
+                {ingredients.map((ingredient) => (
+                  <Box key={ingredient.id} className={classes.ingredientQuantityItem}>
+                    <TextField
+                      id={`quantity-${ingredient.id}`}
+                      label={ingredient.title}
+                      placeholder="Введите количество"
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                        style: {
+                          fontSize: '14px',
+                        },
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            )}
+
             <Box className={classes.inputContainer}>
               <TextField
                 id="create-description"
