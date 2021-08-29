@@ -7,6 +7,7 @@ export const uiSlice = createSlice({
     activeScreen: SCREENS.RECIPES.value,
     activeManagementTab: MANAGEMENT_TAB_INDEXES[ENTITIES.RECIPES.value],
     activeCreateModal: null,
+    editableEntity: null,
   },
   reducers: {
     setActiveScreen: (state, action) => {
@@ -20,10 +21,15 @@ export const uiSlice = createSlice({
     setActiveCreateModal: (state, action) => {
       state.activeCreateModal = action.payload
     },
+
+    setEditableEntity: (state, action) => {
+      state.editableEntity = action.payload
+    },
   },
 })
 
-export const { setActiveScreen, setActiveManagementTab, setActiveCreateModal } = uiSlice.actions
+export const { setActiveScreen, setActiveManagementTab, setActiveCreateModal, setEditableEntity } =
+  uiSlice.actions
 
 // selectors
 export const selectActiveScreen = (state) => {
@@ -36,6 +42,10 @@ export const selectActiveManagementTab = (state) => {
 
 export const selectActiveCreateModal = (state) => {
   return state.ui.activeCreateModal
+}
+
+export const selectEditableEntity = (state) => {
+  return state.ui.editableEntity
 }
 
 export default uiSlice.reducer

@@ -39,8 +39,8 @@ export const selectAllEntitiesByType = (type) => (state) => {
   return state.entities[type]
 }
 
-export const selectEntityById = (type, id) => (state) => {
-  return state.entities[type][id]
+export const selectEntityById = (entity, id) => (state) => {
+  return state.entities[entity][id]
 }
 
 export default entitiesSlice.reducer

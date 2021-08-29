@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -12,6 +12,7 @@ import Slide from '@material-ui/core/Slide'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectActiveCreateModal,
+  selectEditableEntity,
   setActiveCreateModal,
   setActiveManagementTab,
 } from '../../store/modules/ui.js'
@@ -55,12 +56,37 @@ export default function CreateItemModal() {
   const allCategories = useSelector(selectAllEntitiesByType(ENTITIES.CATEGORIES.value))
   const allIngredients = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENTS.value))
   const allIngredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
+  const editableEntity = useSelector(selectEditableEntity)
 
   const [title, setTitle] = useState('')
   const [categories, setCategories] = useState([])
   const [ingredients, setIngredients] = useState([])
   const [ingredientType, setIngredientType] = useState([])
+  const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
+
+  useEffect(() => {
+    if (editableEntity) {
+      const categories = Object.keys(editableEntity.categories).map((categoryId) => {
+        return allCategories[categoryId]
+      })
+
+      const ingredients = []
+      const ingredientsQuantity = {}
+      Object.entries(editableEntity.ingredients).forEach((item) => {
+        const id = item[0]
+        const value = item[1]
+        ingredients.push(allIngredients[id])
+        ingredientsQuantity[id] = value
+      })
+
+      setTitle(editableEntity.title)
+      setCategories(categories)
+      setIngredients(ingredients)
+      setIngredientsQuantity(ingredientsQuantity)
+      setDescription(editableEntity.description)
+    }
+  }, [editableEntity, allCategories, allIngredients])
 
   const categoriesInputHandler = (payload) => {
     setCategories(payload)
@@ -72,6 +98,10 @@ export default function CreateItemModal() {
 
   const ingredientTypeInputHandler = (payload) => {
     setIngredientType(payload)
+  }
+
+  const ingredientQuantityHandler = (id, value) => {
+    setIngredientsQuantity((prevState) => ({ ...prevState, [id]: value }))
   }
 
   const closeModalHandler = () => {
@@ -101,6 +131,7 @@ export default function CreateItemModal() {
     setCategories([])
     setIngredients([])
     setIngredientType([])
+    setIngredientsQuantity({})
     setDescription('')
   }
 
@@ -208,6 +239,10 @@ export default function CreateItemModal() {
                           fontSize: '14px',
                         },
                       }}
+                      value={ingredientsQuantity[ingredient.id] ?? ''}
+                      onChange={(event) =>
+                        ingredientQuantityHandler(ingredient.id, event.target.value)
+                      }
                     />
                   </Box>
                 ))}

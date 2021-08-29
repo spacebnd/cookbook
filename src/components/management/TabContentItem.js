@@ -15,6 +15,8 @@ import DeleteIcon from '@material-ui/icons/Delete.js'
 import ListItem from '@material-ui/core/ListItem'
 import PropTypes from 'prop-types'
 import { ENTITIES } from '../../common/constants.js'
+import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
+import { useDispatch } from 'react-redux'
 
 TabContentItem.propTypes = {
   item: PropTypes.object,
@@ -22,6 +24,7 @@ TabContentItem.propTypes = {
 }
 
 export default function TabContentItem({ item, entity, types }) {
+  const dispatch = useDispatch()
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false)
   const typeId = types ? item.type : null
 
@@ -47,7 +50,12 @@ export default function TabContentItem({ item, entity, types }) {
     return `Вы уверены, что хотите удалить ${type} ${name}?`
   }
 
-  const deleteItem = () => {
+  const editItemHandler = () => {
+    dispatch(setEditableEntity(item))
+    dispatch(setActiveCreateModal(entity))
+  }
+
+  const deleteItemHandler = () => {
     console.log('deleteItem')
     closeDeleteConfirmModal()
   }
@@ -57,7 +65,7 @@ export default function TabContentItem({ item, entity, types }) {
       <ListItem>
         <ListItemText primary={item.title} secondary={item.type ? types[typeId].title : null} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="edit">
+          <IconButton edge="end" aria-label="edit" onClick={editItemHandler}>
             <EditIcon />
           </IconButton>
           <IconButton edge="end" aria-label="delete" onClick={openDeleteConfirmModal}>
@@ -81,7 +89,7 @@ export default function TabContentItem({ item, entity, types }) {
           <Button onClick={closeDeleteConfirmModal}>
             <Typography variant="button">Отмена</Typography>
           </Button>
-          <Button onClick={deleteItem}>
+          <Button onClick={deleteItemHandler}>
             <Typography variant="button" color="error">
               Да, удалить
             </Typography>
