@@ -67,26 +67,31 @@ export default function CreateItemModal() {
 
   useEffect(() => {
     if (editableEntity) {
-      const categories = Object.keys(editableEntity.categories).map((categoryId) => {
-        return allCategories[categoryId]
-      })
-
-      const ingredients = []
-      const ingredientsQuantity = {}
-      Object.entries(editableEntity.ingredients).forEach((item) => {
-        const id = item[0]
-        const value = item[1]
-        ingredients.push(allIngredients[id])
-        ingredientsQuantity[id] = value
-      })
-
       setTitle(editableEntity.title)
-      setCategories(categories)
-      setIngredients(ingredients)
-      setIngredientsQuantity(ingredientsQuantity)
-      setDescription(editableEntity.description)
+
+      if (activeCreateModal === ENTITIES.RECIPES.value) {
+        const categories = Object.keys(editableEntity.categories).map((categoryId) => {
+          return allCategories[categoryId]
+        })
+
+        const ingredients = []
+        const ingredientsQuantity = {}
+        Object.entries(editableEntity.ingredients).forEach((item) => {
+          const id = item[0]
+          const value = item[1]
+          ingredients.push(allIngredients[id])
+          ingredientsQuantity[id] = value
+        })
+
+        setCategories(categories)
+        setIngredients(ingredients)
+        setIngredientsQuantity(ingredientsQuantity)
+        setDescription(editableEntity.description)
+      } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
+        setIngredientType([allIngredientTypes[editableEntity.type]])
+      }
     }
-  }, [editableEntity, allCategories, allIngredients])
+  }, [editableEntity, activeCreateModal, allCategories, allIngredients, allIngredientTypes])
 
   const categoriesInputHandler = (payload) => {
     setCategories(payload)
