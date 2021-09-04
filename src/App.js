@@ -7,7 +7,7 @@ import { subscribeToAllEntities } from './store/modules/entities'
 import { useDispatch } from 'react-redux'
 import { ENTITIES } from './common/constants'
 
-function App() {
+export default function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,5 +35,3 @@ function App() {
     </BrowserRouter>
   )
 }
-
-export default App

@@ -21,6 +21,7 @@ import { Box, TextField } from '@material-ui/core'
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import _startCase from 'lodash/startCase'
 import { createRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
+import UploadImage from '../common/UploadImage'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -42,6 +43,12 @@ const useStyles = makeStyles(() => ({
   },
   ingredientQuantityItem: {
     marginTop: '15px',
+  },
+  uploadPhotoInput: {
+    display: 'none',
+  },
+  uploadPhotoLabel: {
+    color: '#757575',
   },
 }))
 
@@ -264,6 +271,10 @@ export default function CreateItemModal() {
                 multiline
                 fullWidth
               />
+            </Box>
+
+            <Box className={classes.inputContainer}>
+              <UploadImage />
             </Box>
           </>
         )}
