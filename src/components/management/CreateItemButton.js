@@ -5,7 +5,6 @@ import AddIcon from '@material-ui/icons/Add.js'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase.js'
 import { makeStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { setActiveCreateModal } from '../../store/modules/ui.js'
 
@@ -22,10 +21,6 @@ const useStyles = makeStyles(() => {
     },
   }
 })
-
-CreateItemButton.propTypes = {
-  selectItemHandler: PropTypes.func,
-}
 
 export default function CreateItemButton() {
   const classes = useStyles()

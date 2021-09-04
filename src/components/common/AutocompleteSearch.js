@@ -33,7 +33,6 @@ AutocompleteSearch.propTypes = {
 export default function AutocompleteSearch({
   label,
   initialOptions,
-  limitTags,
   groupTypes,
   groupBy,
   limit,
@@ -82,7 +81,6 @@ export default function AutocompleteSearch({
       getOptionSelected={(option, value) => option.id === value.id}
       noOptionsText="Нет совпадений"
       groupBy={groupByHandler}
-      limitTags={limitTags}
       getOptionLabel={(option) => option.title}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (

@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
 
 IngredientButton.propTypes = {
   ingredientId: PropTypes.string,
+  ingredientQuantity: PropTypes.string,
 }
 
 export default function IngredientButton({ ingredientId, ingredientQuantity }) {

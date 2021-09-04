@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux'
 TabContentItem.propTypes = {
   item: PropTypes.object,
   entity: PropTypes.string,
+  types: PropTypes.object,
 }
 
 export default function TabContentItem({ item, entity, types }) {
