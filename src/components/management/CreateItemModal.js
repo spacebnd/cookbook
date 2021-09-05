@@ -71,6 +71,7 @@ export default function CreateItemModal() {
   const [ingredientType, setIngredientType] = useState([])
   const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
 
   useEffect(() => {
     if (editableEntity) {
@@ -94,6 +95,7 @@ export default function CreateItemModal() {
         setIngredients(ingredients)
         setIngredientsQuantity(ingredientsQuantity)
         setDescription(editableEntity.description)
+        setImage(editableEntity.image)
       } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
         setIngredientType([allIngredientTypes[editableEntity.type]])
       }
@@ -129,6 +131,7 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredients
       payload.description = description
+      payload.image = image
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }
@@ -273,9 +276,7 @@ export default function CreateItemModal() {
               />
             </Box>
 
-            <Box className={classes.inputContainer}>
-              <UploadImage />
-            </Box>
+            <UploadImage setImage={setImage} image={image} title={title} />
           </>
         )}
       </Box>
