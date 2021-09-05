@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import { ENTITIES } from '../../common/constants.js'
+import { ENTITIES, SCREENS } from '../../common/constants.js'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
@@ -9,10 +9,13 @@ import CardActions from '@material-ui/core/CardActions'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import Collapse from '@material-ui/core/Collapse'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Button, Typography } from '@material-ui/core'
 import IngredientButton from './IngredientButton.js'
 import CategoryButton from './CategoryButton.js'
 import _startCase from 'lodash/startCase'
+import EditIcon from '@material-ui/icons/Edit'
+import { setActiveCreateModal, setActiveScreen, setEditableEntity } from '../../store/modules/ui'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -43,6 +46,11 @@ const useStyles = makeStyles(() => ({
     padding: '0 8px',
     marginTop: '10px',
   },
+  editButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '20px 8px 10px',
+  },
 }))
 
 RecipeItem.propTypes = {
@@ -51,10 +59,17 @@ RecipeItem.propTypes = {
 
 export default function RecipeItem({ recipe }) {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [expanded, setExpanded] = useState(false)
 
   const expandClickHandler = () => {
     setExpanded(!expanded)
+  }
+
+  const editItemHandler = () => {
+    dispatch(setActiveScreen(SCREENS.MANAGEMENT.value))
+    dispatch(setEditableEntity(recipe))
+    dispatch(setActiveCreateModal(ENTITIES.RECIPES.value))
   }
 
   return (
@@ -100,6 +115,18 @@ export default function RecipeItem({ recipe }) {
           </Typography>
           <Typography>{recipe.description}</Typography>
         </CardContent>
+
+        <Box className={classes.editButtonContainer}>
+          <Button
+            variant="outlined"
+            fullWidth
+            size="small"
+            startIcon={<EditIcon />}
+            onClick={editItemHandler}
+          >
+            Редактировать
+          </Button>
+        </Box>
       </Collapse>
     </Card>
   )
