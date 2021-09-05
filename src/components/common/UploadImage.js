@@ -30,6 +30,7 @@ export default function UploadImage({ setImage, image, title }) {
 
   const uploadHandler = async (event) => {
     const file = event.target.files[0]
+    if (!file) return
     const base64 = await convertToBase64(file)
     setImage(base64)
   }
