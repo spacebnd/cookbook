@@ -15,6 +15,7 @@ import {
   selectEditableEntity,
   setActiveCreateModal,
   setActiveManagementTab,
+  setEditableEntity,
 } from '../../store/modules/ui.js'
 import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import { Box, TextField } from '@material-ui/core'
@@ -31,6 +32,7 @@ const useStyles = makeStyles(() => ({
     flex: 1,
     marginLeft: '5px',
     fontWeight: '500',
+    fontSize: '15px',
   },
   form: {
     width: '100%',
@@ -44,11 +46,8 @@ const useStyles = makeStyles(() => ({
   ingredientQuantityItem: {
     marginTop: '15px',
   },
-  uploadPhotoInput: {
-    display: 'none',
-  },
-  uploadPhotoLabel: {
-    color: '#757575',
+  uploadImageContainer: {
+    marginBottom: '15px',
   },
 }))
 
@@ -121,6 +120,7 @@ export default function CreateItemModal() {
   const closeModalHandler = () => {
     dispatch(setActiveCreateModal(null))
     resetAllInputs()
+    dispatch(setEditableEntity(null))
   }
 
   const submitHandler = () => {
@@ -148,17 +148,18 @@ export default function CreateItemModal() {
     setIngredientType([])
     setIngredientsQuantity({})
     setDescription('')
+    setImage('')
   }
 
   const getHeaderTitle = () => {
-    let title = ''
+    let title = editableEntity ? 'Редактировать ' : 'Новый '
 
     if (activeCreateModal === ENTITIES.RECIPES.value) {
-      title = `Новый ${ENTITIES.RECIPES.label.singular}`
+      title += `${ENTITIES.RECIPES.label.singular}`
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
-      title = `Новый ${ENTITIES.INGREDIENTS.label.singular}`
+      title += `${ENTITIES.INGREDIENTS.label.singular}`
     } else if (activeCreateModal === ENTITIES.CATEGORIES.value) {
-      title = `Новая ${ENTITIES.CATEGORIES.label.singular}`
+      title += `${ENTITIES.CATEGORIES.label.singular}`
     }
 
     return (
@@ -276,7 +277,9 @@ export default function CreateItemModal() {
               />
             </Box>
 
-            <UploadImage setImage={setImage} image={image} title={title} />
+            <Box className={classes.uploadImageContainer}>
+              <UploadImage setImage={setImage} image={image} title={title} />
+            </Box>
           </>
         )}
       </Box>
