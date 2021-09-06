@@ -23,6 +23,7 @@ import AutocompleteSearch from '../common/AutocompleteSearch'
 import _startCase from 'lodash/startCase'
 import { createRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
 import UploadImage from '../common/UploadImage'
+import { defaultRecipeImage } from '../../assets/images/defaultRecipeImage'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -70,7 +71,7 @@ export default function CreateItemModal() {
   const [ingredientType, setIngredientType] = useState([])
   const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState(null)
 
   useEffect(() => {
     if (editableEntity) {
@@ -131,7 +132,7 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredients
       payload.description = description
-      payload.image = image
+      payload.image = image ?? defaultRecipeImage
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }
@@ -148,7 +149,7 @@ export default function CreateItemModal() {
     setIngredientType([])
     setIngredientsQuantity({})
     setDescription('')
-    setImage('')
+    setImage(null)
   }
 
   const getHeaderTitle = () => {

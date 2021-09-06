@@ -62,7 +62,8 @@ export default function UploadImage({ setImage, image, title }) {
         <Typography className={classes.uploadPhotoLabel} display="inline">
           {labelContent}
         </Typography>
-        <img src={image} alt={title} className={classes.uploadPreview} />
+
+        {image && <img src={image} alt={title} className={classes.uploadPreview} />}
       </label>
     </>
   )
