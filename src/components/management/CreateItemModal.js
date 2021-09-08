@@ -130,7 +130,7 @@ export default function CreateItemModal() {
     }
     if (activeCreateModal === ENTITIES.RECIPES.value) {
       payload.categories = categories
-      payload.ingredients = ingredients
+      payload.ingredients = ingredientsQuantity
       payload.description = description
       payload.image = image ?? defaultRecipeImage
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {

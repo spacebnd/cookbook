@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { v4 as uuidv4 } from 'uuid'
 import { database } from '../../common/firebase'
 
 export const entitiesSlice = createSlice({
@@ -19,8 +20,8 @@ export const entitiesSlice = createSlice({
 export const { setEntity } = entitiesSlice.actions
 
 // actions
-export const subscribeToAllEntities = (type) => (dispatch) => {
-  database.ref(type + '/').on('value', (snapshot) => {
+export const subscribeToAllEntities = (type) => async (dispatch) => {
+  await database.ref(type + '/').on('value', (snapshot) => {
     const payload = {
       type: type,
       value: snapshot.val(),
@@ -29,9 +30,14 @@ export const subscribeToAllEntities = (type) => (dispatch) => {
   })
 }
 
-export const createRecipe = () => () => {
-  // const id = uuid4()
-  // database.ref('recipes/' + id).set({ ...payload, id })
+export const createRecipe = (recipeData) => async () => {
+  const id = uuidv4()
+
+  const payload = {
+    ...recipeData,
+    categories: Object.fromEntries(recipeData.categories.map((item) => [item.id, true])),
+  }
+  await database.ref('recipes/' + id).set({ ...payload, id })
 }
 
 // selectors

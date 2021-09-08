@@ -15,6 +15,7 @@ const useStyles = makeStyles(() => ({
   uploadPreview: {
     maxWidth: '100%',
     maxHeight: '200px',
+    border: '1px dashed #757575',
     opacity: 0.5,
   },
 }))
