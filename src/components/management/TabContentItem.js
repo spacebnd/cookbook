@@ -17,6 +17,7 @@ import PropTypes from 'prop-types'
 import { ENTITIES } from '../../common/constants.js'
 import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
 import { useDispatch } from 'react-redux'
+import { deleteRecipe } from '../../store/modules/entities'
 
 TabContentItem.propTypes = {
   item: PropTypes.object,
@@ -57,7 +58,7 @@ export default function TabContentItem({ item, entity, types }) {
   }
 
   const deleteItemHandler = () => {
-    console.log('deleteItem')
+    dispatch(deleteRecipe(item.id))
     closeDeleteConfirmModal()
   }
 

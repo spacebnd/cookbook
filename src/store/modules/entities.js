@@ -39,6 +39,10 @@ export const saveRecipe = (recipeData, id) => async () => {
   await database.ref('recipes/' + targetId).set({ ...payload, id })
 }
 
+export const deleteRecipe = (id) => async () => {
+  await database.ref('recipes/' + id).remove()
+}
+
 // selectors
 export const selectAllEntitiesByType = (type) => (state) => {
   return state.entities[type]
