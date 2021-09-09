@@ -113,7 +113,11 @@ export default function RecipeItem({ recipe }) {
           <Typography variant="h6" className={classes.header}>
             Способ приготовления
           </Typography>
-          <Typography>{recipe.description}</Typography>
+          <Typography component="div">
+            {recipe.description.split('\n').map((i, key) => {
+              return <p key={key}>{i}</p>
+            })}
+          </Typography>
         </CardContent>
 
         <Box className={classes.editButtonContainer}>
