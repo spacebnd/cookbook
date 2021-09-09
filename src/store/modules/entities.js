@@ -30,13 +30,13 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
   })
 }
 
-export const createRecipe = (recipeData) => async () => {
-  const id = uuidv4()
+export const saveRecipe = (recipeData, id) => async () => {
+  const targetId = id ? id : uuidv4()
   const payload = {
     ...recipeData,
     categories: Object.fromEntries(recipeData.categories.map((item) => [item.id, true])),
   }
-  await database.ref('recipes/' + id).set({ ...payload, id })
+  await database.ref('recipes/' + targetId).set({ ...payload, id })
 }
 
 // selectors

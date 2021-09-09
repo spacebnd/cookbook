@@ -21,7 +21,7 @@ import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import { Box, TextField } from '@material-ui/core'
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import _startCase from 'lodash/startCase'
-import { createRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
+import { saveRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
 import UploadImage from '../common/UploadImage'
 import { defaultRecipeImage } from '../../assets/images/defaultRecipeImage'
 import _isEmpty from 'lodash/isEmpty'
@@ -189,7 +189,8 @@ export default function CreateItemModal() {
   }
 
   const saveEntity = (payload) => {
-    dispatch(createRecipe(payload))
+    const id = editableEntity ? editableEntity.id : null
+    dispatch(saveRecipe(payload, id))
     dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
     closeModalHandler()
   }
