@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 import { database } from '../../common/firebase'
+import { ENTITIES } from '../../common/constants'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -30,17 +31,26 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
   })
 }
 
-export const saveRecipe = (recipeData, id) => async () => {
+export const saveEntityToDatabase = (entityData, id, entity) => async () => {
   const targetId = id ? id : uuidv4()
-  const payload = {
-    ...recipeData,
-    categories: Object.fromEntries(recipeData.categories.map((item) => [item.id, true])),
+
+  let payload
+  if (entity === ENTITIES.RECIPES.value) {
+    payload = {
+      ...entityData,
+      categories: Object.fromEntries(entityData.categories.map((item) => [item.id, true])),
+    }
+  } else if (entity === ENTITIES.INGREDIENTS.value) {
+    payload = { title: entityData.title, type: entityData.ingredientType[0].id }
+  } else if (entity === ENTITIES.CATEGORIES.value) {
+    payload = { ...entityData }
   }
-  await database.ref('recipes/' + targetId).set({ ...payload, id })
+
+  await database.ref(`${entity}/` + targetId).set({ ...payload, id: targetId })
 }
 
-export const deleteRecipe = (id) => async () => {
-  await database.ref('recipes/' + id).remove()
+export const deleteEntityFromDatabase = (id, entity) => async () => {
+  await database.ref(`${entity}/` + id).remove()
 }
 
 // selectors
