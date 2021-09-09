@@ -28,6 +28,7 @@ AutocompleteSearch.propTypes = {
   limit: PropTypes.number,
   value: PropTypes.array,
   changeHandler: PropTypes.func,
+  error: PropTypes.bool,
 }
 
 export default function AutocompleteSearch({
@@ -38,6 +39,7 @@ export default function AutocompleteSearch({
   limit,
   value,
   changeHandler,
+  error,
 }) {
   const classes = useStyles()
 
@@ -88,7 +90,7 @@ export default function AutocompleteSearch({
         ))
       }
       renderInput={(params) => (
-        <TextField size="small" {...params} variant="outlined" label={label} />
+        <TextField size="small" {...params} variant="outlined" label={label} error={error} />
       )}
     />
   )

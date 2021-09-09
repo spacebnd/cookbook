@@ -24,6 +24,7 @@ import _startCase from 'lodash/startCase'
 import { createRecipe, selectAllEntitiesByType } from '../../store/modules/entities'
 import UploadImage from '../common/UploadImage'
 import { defaultRecipeImage } from '../../assets/images/defaultRecipeImage'
+import _isEmpty from 'lodash/isEmpty'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -72,6 +73,7 @@ export default function CreateItemModal() {
   const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
   const [image, setImage] = useState(null)
+  const [fieldsWithError, setFieldsWithError] = useState([])
 
   useEffect(() => {
     if (editableEntity) {
@@ -108,6 +110,15 @@ export default function CreateItemModal() {
 
   const ingredientsInputHandler = (payload) => {
     setIngredients(payload)
+
+    Object.keys(ingredientsQuantity).forEach((ingredientWithQuantityId) => {
+      if (!payload.some((ingredient) => ingredient.id === ingredientWithQuantityId)) {
+        const updatedIngredientsQuantity = { ...ingredientsQuantity }
+        delete updatedIngredientsQuantity[ingredientWithQuantityId]
+
+        setIngredientsQuantity(updatedIngredientsQuantity)
+      }
+    })
   }
 
   const ingredientTypeInputHandler = (payload) => {
@@ -115,7 +126,13 @@ export default function CreateItemModal() {
   }
 
   const ingredientQuantityHandler = (id, value) => {
-    setIngredientsQuantity((prevState) => ({ ...prevState, [id]: value }))
+    if (!value) {
+      const updatedIngredientsQuantity = { ...ingredientsQuantity }
+      delete updatedIngredientsQuantity[id]
+      setIngredientsQuantity(updatedIngredientsQuantity)
+    } else {
+      setIngredientsQuantity((prevState) => ({ ...prevState, [id]: value }))
+    }
   }
 
   const closeModalHandler = () => {
@@ -124,7 +141,7 @@ export default function CreateItemModal() {
     dispatch(setEditableEntity(null))
   }
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const payload = {
       title,
     }
@@ -137,6 +154,41 @@ export default function CreateItemModal() {
       payload.ingredientType = ingredientType
     }
 
+    const isFormValid = validateFields(payload)
+    if (isFormValid) saveEntity(payload)
+  }
+
+  const validateFields = (fields) => {
+    const fieldsWithError = []
+
+    const isIngredientsValid = (ingredientsQuantity) => {
+      return (
+        !_isEmpty(ingredientsQuantity) &&
+        ingredients.length === Object.values(ingredientsQuantity).length
+      )
+    }
+
+    Object.keys(fields).forEach((field) => {
+      if (
+        (field === 'title' && !fields[field]) ||
+        (field === 'categories' && !fields[field].length) ||
+        (field === 'ingredients' && !isIngredientsValid(fields[field])) ||
+        (field === 'description' && !fields[field]) ||
+        (field === 'ingredientType' && !fields[field].length)
+      ) {
+        fieldsWithError.push(field)
+      }
+    })
+
+    if (fieldsWithError.length) {
+      setFieldsWithError(fieldsWithError)
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const saveEntity = (payload) => {
     dispatch(createRecipe(payload))
     dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
     closeModalHandler()
@@ -150,6 +202,8 @@ export default function CreateItemModal() {
     setIngredientsQuantity({})
     setDescription('')
     setImage(null)
+
+    setFieldsWithError([])
   }
 
   const getHeaderTitle = () => {
@@ -201,6 +255,7 @@ export default function CreateItemModal() {
             variant="outlined"
             size="small"
             fullWidth
+            error={fieldsWithError.includes('title')}
           />
         </Box>
 
@@ -213,6 +268,7 @@ export default function CreateItemModal() {
               limit={1}
               value={ingredientType}
               changeHandler={ingredientTypeInputHandler}
+              error={fieldsWithError.includes('ingredientType')}
             />
           </Box>
         )}
@@ -226,6 +282,7 @@ export default function CreateItemModal() {
                 groupBy={'firstLetter'}
                 value={categories}
                 changeHandler={categoriesInputHandler}
+                error={fieldsWithError.includes('categories')}
               />
             </Box>
 
@@ -237,6 +294,7 @@ export default function CreateItemModal() {
                 groupBy={'type'}
                 value={ingredients}
                 changeHandler={ingredientsInputHandler}
+                error={fieldsWithError.includes('ingredients')}
               />
             </Box>
 
@@ -260,6 +318,7 @@ export default function CreateItemModal() {
                       onChange={(event) =>
                         ingredientQuantityHandler(ingredient.id, event.target.value)
                       }
+                      error={!ingredientsQuantity[ingredient.id]}
                     />
                   </Box>
                 ))}
@@ -275,6 +334,7 @@ export default function CreateItemModal() {
                 variant="outlined"
                 multiline
                 fullWidth
+                error={fieldsWithError.includes('description')}
               />
             </Box>
 

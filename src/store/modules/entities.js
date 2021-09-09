@@ -32,7 +32,6 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
 
 export const createRecipe = (recipeData) => async () => {
   const id = uuidv4()
-
   const payload = {
     ...recipeData,
     categories: Object.fromEntries(recipeData.categories.map((item) => [item.id, true])),
