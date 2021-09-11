@@ -7,6 +7,8 @@ import { subscribeToAllEntities } from './store/modules/entities'
 import { useDispatch } from 'react-redux'
 import { ENTITIES } from './common/constants'
 
+// test comment
+
 export default function App() {
   const dispatch = useDispatch()
 

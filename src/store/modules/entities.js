@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 import { database } from '../../common/firebase'
 import { ENTITIES } from '../../common/constants'
+import _cloneDeep from 'lodash/cloneDeep.js'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -49,7 +50,17 @@ export const saveEntityToDatabase = (entityData, id, entity) => async () => {
   await database.ref(`${entity}/` + targetId).set({ ...payload, id: targetId })
 }
 
-export const deleteEntityFromDatabase = (id, entity) => async () => {
+export const deleteEntityFromDatabase = (id, entity) => async (_, getState) => {
+  if (entity !== ENTITIES.RECIPES.value) {
+    const recipes = _cloneDeep(getState().entities.recipes)
+    for (const recipeId in recipes) {
+      if (id in recipes[recipeId][entity]) {
+        delete recipes[recipeId][entity][id]
+      }
+    }
+    await database.ref(`${ENTITIES.RECIPES.value}/`).set({ ...recipes })
+  }
+
   await database.ref(`${entity}/` + id).remove()
 }
 
