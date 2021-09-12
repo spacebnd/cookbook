@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Box, Button, Collapse } from '@material-ui/core'
+import { Box, Button, Collapse, TextField } from '@material-ui/core'
 import RecipeItem from './RecipeItem.js'
 import AutocompleteSearch from '../common/AutocompleteSearch.js'
 import SearchIcon from '@material-ui/icons/Search'
@@ -91,7 +91,11 @@ export default function RecipesContainer() {
             changeHandler={categoriesInputHandler}
           />
         </Box>
+        <Box className={classes.searchContainer}>
+          <TextField variant="outlined" size="small" fullWidth label="Название" />
+        </Box>
       </Collapse>
+
       <Box className={classes.recipes}>
         {sortedRecipes.map((recipe) => (
           <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />

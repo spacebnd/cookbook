@@ -23,6 +23,9 @@ const useStyles = makeStyles(() => {
       textTransform: 'capitalize',
       fontSize: '13px',
     },
+    searchContainer: {
+      marginTop: '15px',
+    },
   }
 })
 
@@ -94,7 +97,9 @@ export default function ManagementContainer() {
         </Tabs>
       </AppBar>
 
-      <TextField variant="outlined" size="small" fullWidth placeholder="Поиск" />
+      <Box className={classes.searchContainer}>
+        <TextField variant="outlined" size="small" fullWidth label="Поиск" />
+      </Box>
 
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
