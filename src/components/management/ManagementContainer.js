@@ -113,7 +113,7 @@ export default function ManagementContainer() {
           index={MANAGEMENT_TAB_INDEXES[ENTITIES.INGREDIENTS.value]}
           dir={theme.direction}
         >
-          <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="type" />
+          <TabContentContainer entity={ENTITIES.INGREDIENTS.value} sortBy="firstLetter" />
         </TabPanel>
         <TabPanel
           value={activeManagementTab}

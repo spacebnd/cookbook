@@ -3,7 +3,13 @@ import { Chip, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import PropTypes from 'prop-types'
-import { convertArrayToAlphabeticalGrouping } from '../../common/utils.js'
+import {
+  convertArrayToAlphabeticalGroupingByTitle,
+  convertArrayToAlphabeticalGroupingByType,
+} from '../../common/utils.js'
+import { useSelector } from 'react-redux'
+import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { ENTITIES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   listbox: {
@@ -44,14 +50,20 @@ export default function AutocompleteSearch({
   const classes = useStyles()
 
   const [disableInput, setDisableInput] = useState(value.length >= limit)
+  const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 
   let options = initialOptions
   if (groupBy === 'firstLetter') {
-    options = convertArrayToAlphabeticalGrouping(initialOptions)
+    options = convertArrayToAlphabeticalGroupingByTitle(initialOptions)
   } else if (groupBy === 'type') {
-    // fix material ui bug with incorrect grouping https://github.com/mui-org/material-ui/issues/21967
-    options.sort((a, b) => (a.type > b.type ? 1 : -1))
+    options = convertArrayToAlphabeticalGroupingByType(initialOptions, ingredientTypes)
   }
+
+  options.sort((a, b) => {
+    if (a.firstLetter < b.firstLetter) return -1
+    if (a.firstLetter > b.firstLetter) return 1
+    return 0
+  })
 
   const groupByHandler = groupBy
     ? (option) => {

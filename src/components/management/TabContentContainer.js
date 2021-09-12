@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import List from '@material-ui/core/List'
 import TabContentItem from './TabContentItem.js'
 import PropTypes from 'prop-types'
-import { convertArrayToAlphabeticalGrouping } from '../../common/utils.js'
+import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils.js'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { ENTITIES } from '../../common/constants'
 
@@ -25,7 +25,7 @@ export default function TabContentContainer({ entity, sortBy }) {
   const allItems = useSelector((state) => Object.values(state.entities[entity]))
   const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 
-  const sortedItems = convertArrayToAlphabeticalGrouping(allItems)
+  const sortedItems = convertArrayToAlphabeticalGroupingByTitle(allItems)
     .slice()
     .sort((a, b) => {
       if (a[sortBy] < b[sortBy]) return -1

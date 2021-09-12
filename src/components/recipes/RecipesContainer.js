@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -52,6 +53,14 @@ export default function RecipesContainer() {
     setCategoriesFilters([])
   }
 
+  const sortedRecipes = convertArrayToAlphabeticalGroupingByTitle(Object.values(allRecipes))
+    .slice()
+    .sort((a, b) => {
+      if (a.firstLetter < b.firstLetter) return -1
+      if (a.firstLetter > b.firstLetter) return 1
+      return 0
+    })
+
   return (
     <Box component="div">
       <Button variant="contained" size="small" fullWidth onClick={expandClickHandler}>
@@ -84,7 +93,7 @@ export default function RecipesContainer() {
         </Box>
       </Collapse>
       <Box className={classes.recipes}>
-        {Object.values(allRecipes).map((recipe) => (
+        {sortedRecipes.map((recipe) => (
           <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
         ))}
       </Box>
