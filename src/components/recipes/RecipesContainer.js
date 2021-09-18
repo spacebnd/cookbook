@@ -55,6 +55,12 @@ export default function RecipesContainer() {
     }
   }
 
+  const applyFilterOnClickOfCategoryButton = (categoryId) => {
+    resetAllFilters()
+    setExpanded(true)
+    setCategoriesFilters((prevState) => [...prevState, allCategories[categoryId]])
+  }
+
   const resetAllFilters = () => {
     setIngredientsFilters([])
     setCategoriesFilters([])
@@ -181,7 +187,11 @@ export default function RecipesContainer() {
 
       <Box className={classes.recipes}>
         {sortedRecipes.map((recipe) => (
-          <RecipeItem key={`recipe${recipe.id}`} recipe={recipe} />
+          <RecipeItem
+            key={`recipe${recipe.id}`}
+            recipe={recipe}
+            applyFilterOnClickOfCategoryButton={applyFilterOnClickOfCategoryButton}
+          />
         ))}
       </Box>
     </Box>

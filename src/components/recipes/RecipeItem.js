@@ -55,9 +55,10 @@ const useStyles = makeStyles(() => ({
 
 RecipeItem.propTypes = {
   recipe: PropTypes.object,
+  applyFilterOnClickOfCategoryButton: PropTypes.func,
 }
 
-export default function RecipeItem({ recipe }) {
+export default function RecipeItem({ recipe, applyFilterOnClickOfCategoryButton }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [expanded, setExpanded] = useState(false)
@@ -84,7 +85,11 @@ export default function RecipeItem({ recipe }) {
       <CardActions disableSpacing className={classes.cardActions}>
         <Box className={classes.categories}>
           {Object.keys(recipe.categories).map((categoryId) => (
-            <CategoryButton key={recipe.id + categoryId} categoryId={categoryId} />
+            <CategoryButton
+              key={recipe.id + categoryId}
+              categoryId={categoryId}
+              applyFilterOnClickOfCategoryButton={applyFilterOnClickOfCategoryButton}
+            />
           ))}
         </Box>
         {expanded ? (

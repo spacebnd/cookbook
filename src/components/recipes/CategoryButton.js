@@ -18,14 +18,19 @@ const useStyles = makeStyles(() => ({
 
 CategoryButton.propTypes = {
   categoryId: PropTypes.string,
+  applyFilterOnClickOfCategoryButton: PropTypes.func,
 }
 
-export default function CategoryButton({ categoryId }) {
+export default function CategoryButton({ categoryId, applyFilterOnClickOfCategoryButton }) {
   const classes = useStyles()
   const category = useSelector(selectEntityById(ENTITIES.CATEGORIES.value, categoryId))
 
+  const categoryButtonHandler = () => {
+    applyFilterOnClickOfCategoryButton(categoryId)
+  }
+
   return (
-    <Box className={classes.root} component="button">
+    <Box className={classes.root} component="button" onClick={categoryButtonHandler}>
       {category?.title}
     </Box>
   )
