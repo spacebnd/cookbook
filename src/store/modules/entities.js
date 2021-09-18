@@ -32,22 +32,38 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
   })
 }
 
-export const saveEntityToDatabase = (entityData, id, entity) => async () => {
+export const saveEntityToDatabase = (entityData, id, entity) => async (_, getState) => {
   const targetId = id ? id : uuidv4()
 
   let payload
+  let existingEntities
+
   if (entity === ENTITIES.RECIPES.value) {
+    existingEntities = getState().entities.recipes
+
     payload = {
       ...entityData,
       categories: Object.fromEntries(entityData.categories.map((item) => [item.id, true])),
     }
   } else if (entity === ENTITIES.INGREDIENTS.value) {
+    existingEntities = getState().entities.ingredients
+
     payload = { title: entityData.title, type: entityData.ingredientType[0].id }
   } else if (entity === ENTITIES.CATEGORIES.value) {
+    existingEntities = getState().entities.categories
+
     payload = { ...entityData }
   }
 
-  await database.ref(`${entity}/` + targetId).set({ ...payload, id: targetId })
+  if (
+    Object.values(existingEntities).some(
+      (entity) => entity.title.toLowerCase() === entityData.title.toLowerCase().trim()
+    )
+  ) {
+    console.error('c таким названием уже существует')
+  } else {
+    await database.ref(`${entity}/` + targetId).set({ ...payload, id: targetId })
+  }
 }
 
 export const deleteEntityFromDatabase = (id, entity) => async (_, getState) => {
