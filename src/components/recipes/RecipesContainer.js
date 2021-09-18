@@ -62,12 +62,27 @@ export default function RecipesContainer() {
   }
 
   const filterRecipes = (initialArray, filters) => {
-    return initialArray.filter((recipe) => {
+    let ingredientMatchingCounter = {}
+
+    const checkAndCountIngredients = (recipe, filters) => {
+      let isRecipeSatisfiesIngredientFilter = false
+
+      filters.forEach((ingredient) => {
+        if (Object.keys(recipe.ingredients).includes(ingredient.id)) {
+          ingredientMatchingCounter[recipe.id]++
+          isRecipeSatisfiesIngredientFilter = true
+        }
+      })
+
+      return isRecipeSatisfiesIngredientFilter
+    }
+
+    const filteredRecipes = initialArray.filter((recipe) => {
+      ingredientMatchingCounter[recipe.id] = 0
+
       const isRecipeSatisfiesIngredientFilter = !filters.ingredients.length
         ? true
-        : filters.ingredients.some((ingredient) => {
-            return Object.keys(recipe.ingredients).includes(ingredient.id)
-          })
+        : checkAndCountIngredients(recipe, filters.ingredients)
 
       const isRecipeSatisfiesCategoryFilter = !filters.categories.length
         ? true
@@ -83,6 +98,11 @@ export default function RecipesContainer() {
         isRecipeSatisfiesTitleFilter
       )
     })
+
+    return {
+      filteredRecipes,
+      ingredientMatchingCounter,
+    }
   }
 
   let sortedRecipes = convertArrayToAlphabeticalGroupingByTitle(Object.values(allRecipes))
@@ -99,7 +119,22 @@ export default function RecipesContainer() {
       categories: categoryFilters,
       title: titleFilter,
     }
-    sortedRecipes = filterRecipes(sortedRecipes, filters, ENTITIES.RECIPES.value)
+
+    const { filteredRecipes, ingredientMatchingCounter } = filterRecipes(
+      sortedRecipes,
+      filters,
+      ENTITIES.RECIPES.value
+    )
+
+    sortedRecipes = filteredRecipes
+
+    if (ingredientFilters.length) {
+      sortedRecipes.sort((a, b) => {
+        if (ingredientMatchingCounter[b.id] > ingredientMatchingCounter[a.id]) return 1
+        if (ingredientMatchingCounter[b.id] < ingredientMatchingCounter[a.id]) return -1
+        return 0
+      })
+    }
   }
 
   return (
