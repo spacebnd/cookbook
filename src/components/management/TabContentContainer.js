@@ -18,20 +18,31 @@ const useStyles = makeStyles(() => ({
 TabContentContainer.propTypes = {
   entity: PropTypes.string,
   sortBy: PropTypes.string,
+  titleFilter: PropTypes.string,
 }
 
-export default function TabContentContainer({ entity, sortBy }) {
+export default function TabContentContainer({ entity, sortBy, titleFilter }) {
   const classes = useStyles()
   const allItems = useSelector((state) => Object.values(state.entities[entity]))
   const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 
-  const sortedItems = convertArrayToAlphabeticalGroupingByTitle(allItems)
+  const filterEntitiesByTitle = (initialArray, filterString) => {
+    return initialArray.filter((entity) => {
+      return entity.title.toLowerCase().includes(filterString)
+    })
+  }
+
+  let sortedItems = convertArrayToAlphabeticalGroupingByTitle(allItems)
     .slice()
     .sort((a, b) => {
       if (a[sortBy] < b[sortBy]) return -1
       if (a[sortBy] > b[sortBy]) return 1
       return 0
     })
+
+  if (titleFilter) {
+    sortedItems = filterEntitiesByTitle(sortedItems, titleFilter)
+  }
 
   return (
     <Box className={classes.root}>
