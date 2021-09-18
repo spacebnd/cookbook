@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Button, Collapse, TextField } from '@material-ui/core'
 import RecipeItem from './RecipeItem.js'
@@ -9,6 +9,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase'
+import _debounce from 'lodash/debounce'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
 
@@ -31,6 +32,8 @@ export default function RecipesContainer() {
   const [expanded, setExpanded] = useState(false)
   const [ingredientFilters, setIngredientsFilters] = useState([])
   const [categoryFilters, setCategoriesFilters] = useState([])
+  const [titleFilter, setTitleFilter] = useState('')
+  const titleValue = useRef(null)
 
   const ingredientsInputHandler = (payload) => {
     setIngredientsFilters(payload)
@@ -38,6 +41,10 @@ export default function RecipesContainer() {
 
   const categoriesInputHandler = (payload) => {
     setCategoriesFilters(payload)
+  }
+
+  const titleInputHandler = () => {
+    setTitleFilter(titleValue.current.value.toLowerCase())
   }
 
   const expandClickHandler = () => {
@@ -51,15 +58,49 @@ export default function RecipesContainer() {
   const resetAllFilters = () => {
     setIngredientsFilters([])
     setCategoriesFilters([])
+    setTitleFilter('')
   }
 
-  const sortedRecipes = convertArrayToAlphabeticalGroupingByTitle(Object.values(allRecipes))
+  const filterRecipes = (initialArray, filters) => {
+    return initialArray.filter((recipe) => {
+      const isRecipeSatisfiesIngredientFilter = !filters.ingredients.length
+        ? true
+        : filters.ingredients.some((ingredient) => {
+            return Object.keys(recipe.ingredients).includes(ingredient.id)
+          })
+
+      const isRecipeSatisfiesCategoryFilter = !filters.categories.length
+        ? true
+        : filters.categories.some((category) => {
+            return Object.keys(recipe.categories).includes(category.id)
+          })
+
+      const isRecipeSatisfiesTitleFilter = recipe.title.toLowerCase().includes(filters.title)
+
+      return (
+        isRecipeSatisfiesIngredientFilter &&
+        isRecipeSatisfiesCategoryFilter &&
+        isRecipeSatisfiesTitleFilter
+      )
+    })
+  }
+
+  let sortedRecipes = convertArrayToAlphabeticalGroupingByTitle(Object.values(allRecipes))
     .slice()
     .sort((a, b) => {
       if (a.firstLetter < b.firstLetter) return -1
       if (a.firstLetter > b.firstLetter) return 1
       return 0
     })
+
+  if (ingredientFilters.length || categoryFilters.length || titleFilter) {
+    const filters = {
+      ingredients: ingredientFilters,
+      categories: categoryFilters,
+      title: titleFilter,
+    }
+    sortedRecipes = filterRecipes(sortedRecipes, filters, ENTITIES.RECIPES.value)
+  }
 
   return (
     <Box component="div">
@@ -92,7 +133,14 @@ export default function RecipesContainer() {
           />
         </Box>
         <Box className={classes.searchContainer}>
-          <TextField variant="outlined" size="small" fullWidth label="Название" />
+          <TextField
+            label="Название"
+            variant="outlined"
+            size="small"
+            fullWidth
+            inputRef={titleValue}
+            onChange={_debounce(titleInputHandler, 500)}
+          />
         </Box>
       </Collapse>
 
