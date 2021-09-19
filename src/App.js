@@ -1,16 +1,18 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import HomeScreen from './screens/HomeScreen.js'
 import LoginScreen from './screens/LoginScreen.js'
 import WebFont from 'webfontloader'
 import { useEffect } from 'react'
-import { subscribeToAllEntities } from './store/modules/entities'
-import { useDispatch } from 'react-redux'
-import { ENTITIES } from './common/constants'
-
-// test comment
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsUserAuth, setIsUserAuth } from './store/modules/auth'
+import firebase from 'firebase/app'
 
 export default function App() {
   const dispatch = useDispatch()
+  const isUserAuth = useSelector(selectIsUserAuth)
+
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch(setIsUserAuth(!!user))
+  })
 
   useEffect(() => {
     WebFont.load({
@@ -18,22 +20,7 @@ export default function App() {
         families: ['Montserrat'],
       },
     })
-
-    Object.values(ENTITIES).forEach((entity) => {
-      dispatch(subscribeToAllEntities(entity.value))
-    })
   }, [dispatch])
 
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <HomeScreen />
-        </Route>
-        <Route path="/login">
-          <LoginScreen />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  )
+  return isUserAuth ? <HomeScreen /> : <LoginScreen />
 }
