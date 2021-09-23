@@ -4,12 +4,17 @@ import { ENTITIES, MANAGEMENT_TAB_INDEXES, SCREENS } from '../../common/constant
 export const uiSlice = createSlice({
   name: 'ui',
   initialState: {
+    isLoading: true,
     activeScreen: SCREENS.RECIPES.value,
     activeManagementTab: MANAGEMENT_TAB_INDEXES[ENTITIES.RECIPES.value],
     activeCreateModal: null,
     editableEntity: null,
   },
   reducers: {
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
+
     setActiveScreen: (state, action) => {
       state.activeScreen = action.payload
     },
@@ -28,10 +33,19 @@ export const uiSlice = createSlice({
   },
 })
 
-export const { setActiveScreen, setActiveManagementTab, setActiveCreateModal, setEditableEntity } =
-  uiSlice.actions
+export const {
+  setIsLoading,
+  setActiveScreen,
+  setActiveManagementTab,
+  setActiveCreateModal,
+  setEditableEntity,
+} = uiSlice.actions
 
 // selectors
+export const selectIsLoading = (state) => {
+  return state.ui.isLoading
+}
+
 export const selectActiveScreen = (state) => {
   return state.ui.activeScreen
 }

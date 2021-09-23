@@ -1,6 +1,5 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
-import * as firebaseui from 'firebaseui'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBUyxI1umlkhwHq1q8GeVMN4FOZeTCkQx4',
@@ -15,4 +14,3 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 export const database = firebase.database()
-export const authUi = new firebaseui.auth.AuthUI(firebase.auth())

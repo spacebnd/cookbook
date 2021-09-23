@@ -2,17 +2,15 @@ import HomeScreen from './screens/HomeScreen.js'
 import LoginScreen from './screens/LoginScreen.js'
 import WebFont from 'webfontloader'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectIsUserAuth, setIsUserAuth } from './store/modules/auth'
-import firebase from 'firebase/app'
+import { useDispatch } from 'react-redux'
+import { BrowserRouter, Switch, useHistory } from 'react-router-dom'
+import PrivateRoute from './components/auth/PrivateRoute'
+import PublicRoute from './components/auth/PublicRoute'
+import './index.css'
 
 export default function App() {
   const dispatch = useDispatch()
-  const isUserAuth = useSelector(selectIsUserAuth)
-
-  firebase.auth().onAuthStateChanged((user) => {
-    dispatch(setIsUserAuth(!!user))
-  })
+  const history = useHistory()
 
   useEffect(() => {
     WebFont.load({
@@ -22,5 +20,12 @@ export default function App() {
     })
   }, [dispatch])
 
-  return isUserAuth ? <HomeScreen /> : <LoginScreen />
+  return (
+    <BrowserRouter>
+      <Switch>
+        <PrivateRoute component={HomeScreen} path="/" exact />
+        <PublicRoute component={LoginScreen} history={history} path="/login" exact />
+      </Switch>
+    </BrowserRouter>
+  )
 }
