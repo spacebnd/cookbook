@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 import { database } from '../../common/firebase'
-import { ENTITIES } from '../../common/constants'
+import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
 import _cloneDeep from 'lodash/cloneDeep.js'
+import { setStatusAlert } from './ui'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -32,7 +33,7 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
   })
 }
 
-export const saveEntityToDatabase = (entityData, id, entity) => async (_, getState) => {
+export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch, getState) => {
   const targetId = id ? id : uuidv4()
 
   let payload
@@ -60,13 +61,37 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (_, getSta
       (entity) => entity.title.toLowerCase() === entityData.title.toLowerCase().trim()
     )
   ) {
-    console.error('c таким названием уже существует')
+    dispatch(
+      setStatusAlert({
+        message: STATUS_ALERT_MESSAGES.DUPLICATION_ERROR,
+        type: STATUS_ALERT_TYPES.ERROR,
+      })
+    )
   } else {
-    await database.ref(`${entity}/` + targetId).set({ ...payload, id: targetId })
+    await database
+      .ref(`${entity}/` + targetId)
+      .set({ ...payload, id: targetId })
+      .then(() => {
+        dispatch(
+          setStatusAlert({
+            message: STATUS_ALERT_MESSAGES.SAVE_SUCCESS,
+            type: STATUS_ALERT_TYPES.SUCCESS,
+          })
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+        dispatch(
+          setStatusAlert({
+            message: STATUS_ALERT_MESSAGES.UNKNOWN_ERROR,
+            type: STATUS_ALERT_TYPES.ERROR,
+          })
+        )
+      })
   }
 }
 
-export const deleteEntityFromDatabase = (id, entity) => async (_, getState) => {
+export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getState) => {
   if (entity !== ENTITIES.RECIPES.value) {
     const recipes = _cloneDeep(getState().entities.recipes)
     for (const recipeId in recipes) {
@@ -77,7 +102,26 @@ export const deleteEntityFromDatabase = (id, entity) => async (_, getState) => {
     await database.ref(`${ENTITIES.RECIPES.value}/`).set({ ...recipes })
   }
 
-  await database.ref(`${entity}/` + id).remove()
+  await database
+    .ref(`${entity}/` + id)
+    .remove()
+    .then(() => {
+      dispatch(
+        setStatusAlert({
+          message: STATUS_ALERT_MESSAGES.DELETE_SUCCESS,
+          type: STATUS_ALERT_TYPES.SUCCESS,
+        })
+      )
+    })
+    .catch((error) => {
+      console.error(error)
+      dispatch(
+        setStatusAlert({
+          message: STATUS_ALERT_MESSAGES.UNKNOWN_ERROR,
+          type: STATUS_ALERT_TYPES.ERROR,
+        })
+      )
+    })
 }
 
 // selectors

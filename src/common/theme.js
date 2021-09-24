@@ -60,4 +60,14 @@ export const customStyles = {
       backgroundColor: '#aed5cc',
     },
   },
+
+  statusAlertSuccess: {
+    color: '#4ebb92',
+    justifyContent: 'center',
+  },
+
+  statusAlertError: {
+    color: '#b22e2e',
+    justifyContent: 'center',
+  },
 }

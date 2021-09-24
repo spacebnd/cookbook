@@ -5,6 +5,7 @@ import ScreenContent from '../components/common/ScreenContent.js'
 import { ENTITIES } from '../common/constants'
 import { subscribeToAllEntities } from '../store/modules/entities'
 import { useDispatch } from 'react-redux'
+import StatusAlert from '../components/common/StatusAlert'
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ export default function HomeScreen() {
 
   return (
     <Box component="div">
+      <StatusAlert />
       <ScreenContent />
       <NavigationBar />
     </Box>

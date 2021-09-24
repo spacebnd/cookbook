@@ -9,6 +9,10 @@ export const uiSlice = createSlice({
     activeManagementTab: MANAGEMENT_TAB_INDEXES[ENTITIES.RECIPES.value],
     activeCreateModal: null,
     editableEntity: null,
+    statusAlert: {
+      message: null,
+      type: null,
+    },
   },
   reducers: {
     setIsLoading: (state, action) => {
@@ -30,6 +34,10 @@ export const uiSlice = createSlice({
     setEditableEntity: (state, action) => {
       state.editableEntity = action.payload
     },
+
+    setStatusAlert: (state, action) => {
+      state.statusAlert = action.payload
+    },
   },
 })
 
@@ -39,6 +47,7 @@ export const {
   setActiveManagementTab,
   setActiveCreateModal,
   setEditableEntity,
+  setStatusAlert,
 } = uiSlice.actions
 
 // selectors
@@ -60,6 +69,10 @@ export const selectActiveCreateModal = (state) => {
 
 export const selectEditableEntity = (state) => {
   return state.ui.editableEntity
+}
+
+export const selectStatusAlert = (state) => {
+  return state.ui.statusAlert
 }
 
 export default uiSlice.reducer
