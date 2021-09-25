@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Button, Collapse, TextField } from '@material-ui/core'
+import { Box, Button, Collapse, TextField, Typography } from '@material-ui/core'
 import RecipeItem from './RecipeItem.js'
 import AutocompleteSearch from '../common/AutocompleteSearch.js'
 import SearchIcon from '@material-ui/icons/Search'
@@ -18,6 +18,10 @@ import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
 const useStyles = makeStyles(() => ({
   searchContainer: {
     marginTop: '15px',
+  },
+  searchStatusContainer: {
+    marginTop: '15px',
+    textAlign: 'center',
   },
   recipes: {
     marginTop: '15px',
@@ -129,6 +133,7 @@ export default function RecipesContainer() {
       return 0
     })
 
+  let filterStatusMessage = null
   if (ingredientFilters.length || categoryFilters.length || titleFilter) {
     const filters = {
       ingredients: ingredientFilters,
@@ -151,6 +156,8 @@ export default function RecipesContainer() {
         return 0
       })
     }
+
+    filterStatusMessage = `Найдено ${sortedRecipes.length} рецептов`
   }
 
   return (
@@ -200,6 +207,12 @@ export default function RecipesContainer() {
           />
         </Box>
       </Collapse>
+
+      {filterStatusMessage && (
+        <Box className={classes.searchStatusContainer}>
+          <Typography variant="caption">{filterStatusMessage}</Typography>
+        </Box>
+      )}
 
       <Box className={classes.recipes}>
         {sortedRecipes.map((recipe) => (
