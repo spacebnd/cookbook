@@ -22,10 +22,6 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const loaderStyles = {
-  position: 'absolute',
-}
-
 export default function LoginScreen() {
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -62,7 +58,7 @@ export default function LoginScreen() {
       <Box className={isLoading ? classes.hidden : null}>
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
       </Box>
-      {isLoading && <Loader styles={loaderStyles} />}
+      {isLoading && <Loader />}
     </Box>
   )
 }

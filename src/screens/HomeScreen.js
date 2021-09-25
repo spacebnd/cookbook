@@ -4,11 +4,14 @@ import NavigationBar from '../components/common/NavigationBar.js'
 import ScreenContent from '../components/common/ScreenContent.js'
 import { ENTITIES } from '../common/constants'
 import { subscribeToAllEntities } from '../store/modules/entities'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import StatusAlert from '../components/common/StatusAlert'
+import Loader from '../components/common/Loader'
+import { selectIsLoading } from '../store/modules/ui'
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
+  const isLoading = useSelector(selectIsLoading)
 
   useEffect(() => {
     Object.values(ENTITIES).forEach((entity) => {
@@ -21,6 +24,7 @@ export default function HomeScreen() {
       <StatusAlert />
       <ScreenContent />
       <NavigationBar />
+      {isLoading && <Loader />}
     </Box>
   )
 }

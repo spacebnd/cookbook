@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Collapse, TextField } from '@material-ui/core'
 import RecipeItem from './RecipeItem.js'
 import AutocompleteSearch from '../common/AutocompleteSearch.js'
@@ -9,9 +9,11 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase'
+import isEmpty from 'lodash/isEmpty'
 import _debounce from 'lodash/debounce'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
+import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -24,16 +26,24 @@ const useStyles = makeStyles(() => ({
 
 export default function RecipesContainer() {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const allRecipes = useSelector(selectAllEntitiesByType(ENTITIES.RECIPES.value))
   const allIngredients = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENTS.value))
   const allIngredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
   const allCategories = useSelector(selectAllEntitiesByType(ENTITIES.CATEGORIES.value))
+  const isLoading = useSelector(selectIsLoading)
 
   const [expanded, setExpanded] = useState(false)
   const [ingredientFilters, setIngredientsFilters] = useState([])
   const [categoryFilters, setCategoriesFilters] = useState([])
   const [titleFilter, setTitleFilter] = useState('')
   const titleValue = useRef(null)
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(setIsLoading(isEmpty(allRecipes)))
+    })
+  }, [dispatch, allRecipes])
 
   const ingredientsInputHandler = (payload) => {
     setIngredientsFilters(payload)
@@ -145,7 +155,13 @@ export default function RecipesContainer() {
 
   return (
     <Box component="div">
-      <Button variant="contained" size="small" fullWidth onClick={expandClickHandler}>
+      <Button
+        variant="contained"
+        size="small"
+        fullWidth
+        onClick={expandClickHandler}
+        disabled={isLoading}
+      >
         <SearchIcon />
         {expanded ? (
           <ExpandLessIcon onClick={expandClickHandler} />
