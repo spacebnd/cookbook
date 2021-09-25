@@ -34,7 +34,8 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
 }
 
 export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch, getState) => {
-  const targetId = id ? id : uuidv4()
+  const isEdit = !!id
+  const targetId = isEdit ? id : uuidv4()
 
   let payload
   let existingEntities
@@ -57,6 +58,7 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
   }
 
   if (
+    !isEdit &&
     Object.values(existingEntities).some(
       (entity) => entity.title.toLowerCase() === entityData.title.toLowerCase().trim()
     )
