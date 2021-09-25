@@ -17,6 +17,9 @@ import _debounce from 'lodash/debounce'
 
 const useStyles = makeStyles(() => {
   return {
+    root: {
+      paddingBottom: '40px',
+    },
     tabsBar: {
       marginBottom: '10px',
     },
@@ -84,7 +87,7 @@ export default function ManagementContainer() {
   }
 
   return (
-    <Box>
+    <Box className={classes.root}>
       <AppBar className={classes.tabsBar} position="static" color="default">
         <Tabs
           value={activeManagementTab}
