@@ -6,12 +6,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import SubjectIcon from '@material-ui/icons/Subject'
 import SettingsIcon from '@material-ui/icons/Settings'
+import { theme } from '../../common/theme'
 
 const useStyles = makeStyles(() => ({
   root: {
     position: 'fixed',
     bottom: 0,
     width: '100%',
+    backgroundColor: theme.palette.primary.dark,
   },
 }))
 

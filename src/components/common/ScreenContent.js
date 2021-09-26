@@ -6,6 +6,7 @@ import { Box } from '@material-ui/core'
 import RecipesContainer from '../recipes/RecipesContainer.js'
 import ManagementContainer from '../management/ManagementContainer.js'
 import { selectActiveScreen } from '../../store/modules/ui'
+import { customStyles } from '../../common/theme'
 
 const useStyles = makeStyles(() => {
   return {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(() => {
       width: '100%',
       boxSizing: 'border-box',
       padding: '10px',
-      backgroundColor: 'lightgray',
+      backgroundColor: customStyles.background,
       overflowY: 'auto',
     },
   }

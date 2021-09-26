@@ -18,6 +18,8 @@ import { ENTITIES } from '../../common/constants.js'
 import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
 import { useDispatch } from 'react-redux'
 import { deleteEntityFromDatabase } from '../../store/modules/entities'
+import { makeStyles } from '@material-ui/core/styles'
+import { customStyles } from '../../common/theme'
 
 TabContentItem.propTypes = {
   item: PropTypes.object,
@@ -25,7 +27,14 @@ TabContentItem.propTypes = {
   types: PropTypes.object,
 }
 
+const useStyles = makeStyles(() => ({
+  deleteButton: {
+    color: customStyles.statusAlertError.color,
+  },
+}))
+
 export default function TabContentItem({ item, entity, types }) {
+  const classes = useStyles()
   const dispatch = useDispatch()
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false)
   const typeId = types ? item.type : null
@@ -92,7 +101,7 @@ export default function TabContentItem({ item, entity, types }) {
             <Typography variant="button">Отмена</Typography>
           </Button>
           <Button onClick={deleteItemHandler}>
-            <Typography variant="button" color="error">
+            <Typography variant="button" className={classes.deleteButton} color="error">
               Да, удалить
             </Typography>
           </Button>

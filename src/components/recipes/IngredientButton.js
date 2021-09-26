@@ -15,16 +15,20 @@ const useStyles = makeStyles(() => ({
   },
   button: {
     ...customStyles.customButtonBase,
-    ...customStyles.customButtonIngredient,
+    ...customStyles.customButton,
     width: '55%',
     padding: '4px',
     marginRight: '5px',
     fontSize: '12px',
+    fontWeight: '500',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
   },
   unitsInput: {
     width: '45%',
+    // boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
+    borderRadius: '5px',
   },
   unitsInputRoot: {
     padding: '4px',
@@ -55,7 +59,6 @@ export default function IngredientButton({ ingredientId, ingredientQuantity }) {
             className: classes.unitsInputRoot,
           },
         }}
-        variant="outlined"
         size="small"
         value={ingredientQuantity}
         disabled

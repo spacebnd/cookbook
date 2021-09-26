@@ -14,8 +14,12 @@ import _debounce from 'lodash/debounce'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
 import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
+import { customStyles } from '../../common/theme'
 
 const useStyles = makeStyles(() => ({
+  filtersButton: {
+    backgroundColor: customStyles.card,
+  },
   searchContainer: {
     marginTop: '15px',
   },
@@ -163,6 +167,7 @@ export default function RecipesContainer() {
   return (
     <Box component="div">
       <Button
+        className={classes.filtersButton}
         variant="contained"
         size="small"
         fullWidth

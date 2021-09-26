@@ -16,11 +16,15 @@ import _startCase from 'lodash/startCase'
 import EditIcon from '@material-ui/icons/Edit'
 import { setActiveCreateModal, setActiveScreen, setEditableEntity } from '../../store/modules/ui'
 import { useDispatch } from 'react-redux'
+import { customStyles } from '../../common/theme'
 
 const useStyles = makeStyles(() => ({
   root: {
     marginBottom: '10px',
     paddingBottom: '10px',
+    backgroundColor: customStyles.card,
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
+    borderRadius: '10px',
   },
   headerContainer: {
     display: 'flex',
