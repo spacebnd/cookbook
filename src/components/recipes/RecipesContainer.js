@@ -15,6 +15,7 @@ import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
 import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
 import { customStyles } from '../../common/theme'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles(() => ({
   filtersButton: {
@@ -32,7 +33,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function RecipesContainer() {
+RecipesContainer.propTypes = {
+  screenContentRootRef: PropTypes.object,
+}
+
+export default function RecipesContainer({ screenContentRootRef }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const allRecipes = useSelector(selectAllEntitiesByType(ENTITIES.RECIPES.value))
@@ -77,6 +82,7 @@ export default function RecipesContainer() {
     resetAllFilters()
     setExpanded(true)
     setCategoriesFilters((prevState) => [...prevState, allCategories[categoryId]])
+    screenContentRootRef.current.scrollTo(0, 0)
   }
 
   const resetAllFilters = () => {

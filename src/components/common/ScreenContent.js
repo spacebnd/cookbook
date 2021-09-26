@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { NAVIGATION_BAR_HEIGHT, SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
@@ -24,16 +24,17 @@ const useStyles = makeStyles(() => {
 export default function ScreenContent() {
   const classes = useStyles()
   const activeScreen = useSelector(selectActiveScreen)
+  const screenContentRootRef = useRef(null)
 
   let screenContent
   if (activeScreen === SCREENS.RECIPES.value) {
-    screenContent = <RecipesContainer />
+    screenContent = <RecipesContainer screenContentRootRef={screenContentRootRef} />
   } else if (activeScreen === SCREENS.MANAGEMENT.value) {
     screenContent = <ManagementContainer />
   }
 
   return (
-    <Box component="div" className={classes.root}>
+    <Box ref={screenContentRootRef} component="div" className={classes.root}>
       {screenContent}
     </Box>
   )
