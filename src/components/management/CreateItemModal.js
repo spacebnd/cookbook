@@ -23,7 +23,7 @@ import AutocompleteSearch from '../common/AutocompleteSearch'
 import _startCase from 'lodash/startCase'
 import { saveEntityToDatabase, selectAllEntitiesByType } from '../../store/modules/entities'
 import UploadImage from '../common/UploadImage'
-import { defaultRecipeImage } from '../../assets/images/defaultRecipeImage'
+import { defaultRecipeImage } from '../../common/default-recipe-image'
 import _isEmpty from 'lodash/isEmpty'
 
 const useStyles = makeStyles(() => ({

@@ -10,8 +10,6 @@ import { selectActiveScreen } from '../../store/modules/ui'
 const useStyles = makeStyles(() => {
   return {
     root: {
-      display: 'flex',
-      flexDirection: 'column',
       height: `calc(100vh - ${NAVIGATION_BAR_HEIGHT}px)`,
       width: '100%',
       boxSizing: 'border-box',

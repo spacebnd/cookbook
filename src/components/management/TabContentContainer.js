@@ -12,6 +12,9 @@ import { ENTITIES } from '../../common/constants'
 const useStyles = makeStyles(() => ({
   root: {
     padding: '10px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 }))
 
