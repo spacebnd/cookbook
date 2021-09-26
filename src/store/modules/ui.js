@@ -5,6 +5,7 @@ export const uiSlice = createSlice({
   name: 'ui',
   initialState: {
     isLoading: true,
+    deviceInfo: null,
     activeScreen: SCREENS.RECIPES.value,
     activeManagementTab: MANAGEMENT_TAB_INDEXES[ENTITIES.RECIPES.value],
     activeCreateModal: null,
@@ -17,6 +18,10 @@ export const uiSlice = createSlice({
   reducers: {
     setIsLoading: (state, action) => {
       state.isLoading = action.payload
+    },
+
+    setDeviceData: (state, action) => {
+      state.deviceInfo = action.payload
     },
 
     setActiveScreen: (state, action) => {
@@ -43,6 +48,7 @@ export const uiSlice = createSlice({
 
 export const {
   setIsLoading,
+  setDeviceData,
   setActiveScreen,
   setActiveManagementTab,
   setActiveCreateModal,
@@ -53,6 +59,10 @@ export const {
 // selectors
 export const selectIsLoading = (state) => {
   return state.ui.isLoading
+}
+
+export const selectIsDesktop = (state) => {
+  return state.ui.deviceInfo?.platform?.type === 'desktop'
 }
 
 export const selectActiveScreen = (state) => {

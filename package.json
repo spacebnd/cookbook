@@ -13,6 +13,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@reduxjs/toolkit": "^1.6.0",
+    "bowser": "^2.11.0",
     "firebase": "^8.10.0",
     "lodash": "^4.17.21",
     "node-sass": "6.0.1",

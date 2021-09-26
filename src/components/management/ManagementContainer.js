@@ -176,7 +176,7 @@ export default function ManagementContainer() {
       </Box>
 
       <Box className={classes.logoContainer}>
-        <img src={logo} className={classes.logo} alt="Cookbook logo" />
+        <img src={logo} className={classes.logo} alt="CookBook logo" />
       </Box>
 
       <CreateItemButton />
