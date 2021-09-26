@@ -14,7 +14,7 @@ import CreateItemModal from './CreateItemModal.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectActiveManagementTab, setActiveManagementTab } from '../../store/modules/ui'
 import _debounce from 'lodash/debounce'
-import logo from '../../assets/images/logo-variant3.png'
+import logo from '../../assets/images/logo-variant2.png'
 
 const useStyles = makeStyles(() => {
   return {
