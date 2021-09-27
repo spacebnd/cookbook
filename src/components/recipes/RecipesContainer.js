@@ -167,7 +167,7 @@ export default function RecipesContainer({ screenContentRootRef }) {
       })
     }
 
-    filterStatusMessage = `Найдено ${sortedRecipes.length} рецептов`
+    filterStatusMessage = `Найдено: ${sortedRecipes.length}`
   }
 
   return (
