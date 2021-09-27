@@ -6,7 +6,7 @@ export const theme = createMuiTheme({
       light: '#c5cae9',
       main: '#9499b7',
       dark: '#51546c',
-      contrastText: '#212121',
+      contrastText: '#212121FF',
     },
   },
   typography: {
@@ -23,6 +23,7 @@ export const customStyles = {
     textTransform: 'lowercase',
     border: 'none',
     borderRadius: '5px',
+    color: '#212121FF',
     backgroundColor: '#eef2fd',
   },
   statusAlertSuccess: {
