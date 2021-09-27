@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core'
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#C5CAE9',
+      light: '#c5cae9',
       main: '#9499b7',
       dark: '#51546c',
       contrastText: '#212121',
@@ -15,8 +15,8 @@ export const theme = createMuiTheme({
 })
 
 export const customStyles = {
-  background: '#EEEEEE',
-  card: '#FFFFFF',
+  background: '#eeeeee',
+  card: '#ffffff',
   customButtonBase: {
     fontFamily: 'Montserrat',
     fontSize: '14px',
@@ -37,7 +37,7 @@ export const customStyles = {
     },
   },
   customButton: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: '#eef2fd',
     '&:hover': {
       backgroundColor: '#bedaee',
     },
