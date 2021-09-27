@@ -27,11 +27,9 @@ export const customStyles = {
     backgroundColor: '#eef2fd',
   },
   statusAlertSuccess: {
-    color: '#4ebb92',
-    justifyContent: 'center',
+    color: '#2d8365',
   },
   statusAlertError: {
     color: '#b22e2e',
-    justifyContent: 'center',
   },
 }

@@ -38,6 +38,7 @@ export const ENTITIES = {
     label: {
       singular: 'категория',
       plural: 'категории',
+      genitive: 'категорию',
     },
   },
 }
@@ -48,21 +49,14 @@ export const MANAGEMENT_TAB_INDEXES = {
   [ENTITIES.CATEGORIES.value]: 2,
 }
 
-export const STATUS_ALERT_CONFIG = {
-  duration: 1000,
-  vertical: 'top',
-  horizontal: 'center',
-  direction: 'down',
-}
-
 export const STATUS_ALERT_TYPES = {
   SUCCESS: 'success',
   ERROR: 'error',
 }
 
 export const STATUS_ALERT_MESSAGES = {
-  SAVE_SUCCESS: '\u2714 Сохранено',
-  DELETE_SUCCESS: '\u2714 Удалено',
-  UNKNOWN_ERROR: '\u2717 Произошла ошибка',
-  DUPLICATION_ERROR: '\u2717 Уже существует',
+  SAVE_SUCCESS: '\u2714 сохранено',
+  DELETE_SUCCESS: '\u2714 удалено',
+  UNKNOWN_ERROR: '\u2717 произошла ошибка',
+  DUPLICATION_ERROR: '\u2717 уже существует',
 }

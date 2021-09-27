@@ -215,7 +215,7 @@ export default function CreateItemModal() {
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       title += `${ENTITIES.INGREDIENTS.label.singular}`
     } else if (activeCreateModal === ENTITIES.CATEGORIES.value) {
-      title += `${ENTITIES.CATEGORIES.label.singular}`
+      title += `${ENTITIES.CATEGORIES.label.genitive}`
     }
 
     return (

@@ -1,12 +1,24 @@
 import * as React from 'react'
-import { Slide, Snackbar } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectStatusAlert, setStatusAlert } from '../../store/modules/ui'
-import { STATUS_ALERT_CONFIG } from '../../common/constants'
 import { makeStyles } from '@material-ui/core/styles'
 import { customStyles } from '../../common/theme'
+import { useEffect } from 'react'
+import clsx from 'clsx'
+import { STATUS_ALERT_TYPES } from '../../common/constants'
+import { Box, Fade, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
+  root: {
+    position: 'fixed',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  message: {
+    fontWeight: 500,
+  },
   success: {
     ...customStyles.statusAlertSuccess,
   },
@@ -15,42 +27,42 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-function SlideTransition(props) {
-  return <Slide {...props} direction={STATUS_ALERT_CONFIG.direction} />
-}
-
-export default function TransitionsSnackbar() {
+export default function StatusAlert() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const statusAlert = useSelector(selectStatusAlert)
+  const [checked, setChecked] = React.useState(false)
 
-  const handleClose = () => {
-    dispatch(
-      setStatusAlert({
-        message: null,
-        type: null,
-      })
-    )
-  }
+  useEffect(() => {
+    setChecked(!!statusAlert.message)
 
-  const snackbarContentProps = {
-    classes: {
-      root: classes[statusAlert.type],
-    },
-  }
+    setTimeout(() => {
+      setChecked(false)
+    }, 1000)
+
+    setTimeout(() => {
+      dispatch(
+        setStatusAlert({
+          message: null,
+          type: null,
+        })
+      )
+    }, 1500)
+  }, [dispatch, statusAlert.message])
 
   return (
-    <Snackbar
-      open={!!statusAlert.message}
-      message={statusAlert.message}
-      onClose={handleClose}
-      autoHideDuration={STATUS_ALERT_CONFIG.duration}
-      anchorOrigin={{
-        vertical: STATUS_ALERT_CONFIG.vertical,
-        horizontal: STATUS_ALERT_CONFIG.horizontal,
-      }}
-      TransitionComponent={SlideTransition}
-      ContentProps={snackbarContentProps}
-    />
+    <Fade in={checked} timeout={500}>
+      <Box
+        className={clsx({
+          [classes.root]: true,
+          [classes.success]: statusAlert.type === STATUS_ALERT_TYPES.SUCCESS,
+          [classes.error]: statusAlert.type === STATUS_ALERT_TYPES.ERROR,
+        })}
+      >
+        <Typography className={classes.message} variant="caption">
+          {statusAlert.message}
+        </Typography>
+      </Box>
+    </Fade>
   )
 }
