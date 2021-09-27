@@ -14,7 +14,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: '5px',
   },
   button: {
-    ...customStyles.customButtonBase,
     ...customStyles.customButton,
     width: '55%',
     padding: '4px',

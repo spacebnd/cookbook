@@ -9,7 +9,6 @@ import { ENTITIES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   root: {
-    ...customStyles.customButtonBase,
     ...customStyles.customButton,
     padding: '4px',
     margin: '0 5px 5px 0',

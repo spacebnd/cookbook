@@ -17,33 +17,13 @@ export const theme = createMuiTheme({
 export const customStyles = {
   background: '#eeeeee',
   card: '#ffffff',
-  customButtonBase: {
+  customButton: {
     fontFamily: 'Montserrat',
     fontSize: '14px',
     textTransform: 'lowercase',
     border: 'none',
     borderRadius: '5px',
-    transition:
-      'background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;',
-    '&:hover': {
-      boxShadow: 'none',
-      transition:
-        'background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;',
-    },
-    '&:active': {
-      boxShadow: 'none',
-      transition:
-        'background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;',
-    },
-  },
-  customButton: {
     backgroundColor: '#eef2fd',
-    '&:hover': {
-      backgroundColor: '#bedaee',
-    },
-    '&:active': {
-      backgroundColor: '#bedaee',
-    },
   },
   statusAlertSuccess: {
     color: '#4ebb92',
