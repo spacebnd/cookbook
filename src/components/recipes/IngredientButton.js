@@ -1,11 +1,10 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { customStyles } from '../../common/theme.js'
 import { useSelector } from 'react-redux'
 import { selectEntityById } from '../../store/modules/entities'
 import { ENTITIES } from '../../common/constants'
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, TextField } from '@material-ui/core'
+import { customStyles } from '../../common/theme.js'
 
 const useStyles = makeStyles(() => ({
   root: {

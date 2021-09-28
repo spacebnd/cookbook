@@ -1,7 +1,6 @@
-import React from 'react'
-import { Box, CircularProgress } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
+import { Box, CircularProgress } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
   root: {

@@ -1,12 +1,13 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { selectActiveScreen } from '../../store/modules/ui'
 import { NAVIGATION_BAR_HEIGHT, SCREENS } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
+import { customStyles } from '../../common/theme'
+
 import RecipesContainer from '../recipes/RecipesContainer.js'
 import ManagementContainer from '../management/ManagementContainer.js'
-import { selectActiveScreen } from '../../store/modules/ui'
-import { customStyles } from '../../common/theme'
 
 const useStyles = makeStyles(() => {
   return {

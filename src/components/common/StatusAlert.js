@@ -1,12 +1,11 @@
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectStatusAlert, setStatusAlert } from '../../store/modules/ui'
-import { makeStyles } from '@material-ui/core/styles'
-import { customStyles } from '../../common/theme'
-import { useEffect } from 'react'
-import clsx from 'clsx'
 import { STATUS_ALERT_TYPES } from '../../common/constants'
 import { Box, Fade, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
+import { customStyles } from '../../common/theme'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,7 +30,7 @@ export default function StatusAlert() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const statusAlert = useSelector(selectStatusAlert)
-  const [checked, setChecked] = React.useState(false)
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     setChecked(!!statusAlert.message)

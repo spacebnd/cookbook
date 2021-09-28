@@ -1,13 +1,13 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
-import { useSelector } from 'react-redux'
-import List from '@material-ui/core/List'
-import TabContentItem from './TabContentItem.js'
 import PropTypes from 'prop-types'
-import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils.js'
+import { useSelector } from 'react-redux'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
 import { ENTITIES } from '../../common/constants'
+import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils.js'
+import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import List from '@material-ui/core/List'
+
+import TabContentItem from './TabContentItem.js'
 
 const useStyles = makeStyles(() => ({
   root: {

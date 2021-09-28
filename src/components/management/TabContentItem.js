@@ -1,5 +1,10 @@
-import React, { useState } from 'react'
-import ListItemText from '@material-ui/core/ListItemText'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
+import { deleteEntityFromDatabase } from '../../store/modules/entities'
+import { ENTITIES } from '../../common/constants.js'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   Button,
   Dialog,
@@ -10,15 +15,10 @@ import {
   ListItemSecondaryAction,
   Typography,
 } from '@material-ui/core'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import EditIcon from '@material-ui/icons/Edit.js'
 import DeleteIcon from '@material-ui/icons/Delete.js'
-import ListItem from '@material-ui/core/ListItem'
-import PropTypes from 'prop-types'
-import { ENTITIES } from '../../common/constants.js'
-import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
-import { useDispatch } from 'react-redux'
-import { deleteEntityFromDatabase } from '../../store/modules/entities'
-import { makeStyles } from '@material-ui/core/styles'
 import { customStyles } from '../../common/theme'
 
 TabContentItem.propTypes = {

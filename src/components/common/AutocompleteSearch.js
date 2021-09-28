@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import { Chip, TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { ENTITIES } from '../../common/constants'
 import {
   convertArrayToAlphabeticalGroupingByTitle,
   convertArrayToAlphabeticalGroupingByType,
 } from '../../common/utils.js'
-import { useSelector } from 'react-redux'
-import { selectAllEntitiesByType } from '../../store/modules/entities'
-import { ENTITIES } from '../../common/constants'
+import { makeStyles } from '@material-ui/core/styles'
+import { Chip, TextField } from '@material-ui/core'
+
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles(() => ({
   listbox: {

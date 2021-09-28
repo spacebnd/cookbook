@@ -1,21 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Button, Collapse, TextField, Typography } from '@material-ui/core'
-import RecipeItem from './RecipeItem.js'
-import AutocompleteSearch from '../common/AutocompleteSearch.js'
+import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
+import { ENTITIES } from '../../common/constants.js'
+import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
+import _startCase from 'lodash/startCase'
+import _isEmpty from 'lodash/isEmpty'
+import _debounce from 'lodash/debounce'
+import { Box, Button, Typography, Collapse, TextField } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { makeStyles } from '@material-ui/core/styles'
-import { ENTITIES } from '../../common/constants.js'
-import _startCase from 'lodash/startCase'
-import isEmpty from 'lodash/isEmpty'
-import _debounce from 'lodash/debounce'
-import { selectAllEntitiesByType } from '../../store/modules/entities'
-import { convertArrayToAlphabeticalGroupingByTitle } from '../../common/utils'
-import { selectIsLoading, setIsLoading } from '../../store/modules/ui'
 import { customStyles } from '../../common/theme'
-import PropTypes from 'prop-types'
+
+import AutocompleteSearch from '../common/AutocompleteSearch.js'
+import RecipeItem from './RecipeItem.js'
 
 const useStyles = makeStyles(() => ({
   filtersButton: {
@@ -54,7 +55,7 @@ export default function RecipesContainer({ screenContentRootRef }) {
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(setIsLoading(isEmpty(allRecipes)))
+      dispatch(setIsLoading(_isEmpty(allRecipes)))
     })
   }, [dispatch, allRecipes])
 

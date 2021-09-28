@@ -1,9 +1,8 @@
-import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import { PhotoCamera } from '@material-ui/icons'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import { PhotoCamera } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
 
 const useStyles = makeStyles(() => ({
   uploadPhotoInput: {

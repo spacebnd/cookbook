@@ -1,4 +1,16 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { forwardRef, useEffect, useState } from 'react'
+import { saveEntityToDatabase, selectAllEntitiesByType } from '../../store/modules/entities'
+import {
+  selectActiveCreateModal,
+  selectEditableEntity,
+  setActiveCreateModal,
+  setActiveManagementTab,
+  setEditableEntity,
+} from '../../store/modules/ui.js'
+import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
+import _startCase from 'lodash/startCase'
+import _isEmpty from 'lodash/isEmpty'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -9,22 +21,11 @@ import DoneIcon from '@material-ui/icons/Done'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  selectActiveCreateModal,
-  selectEditableEntity,
-  setActiveCreateModal,
-  setActiveManagementTab,
-  setEditableEntity,
-} from '../../store/modules/ui.js'
-import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import { Box, TextField } from '@material-ui/core'
-import AutocompleteSearch from '../common/AutocompleteSearch'
-import _startCase from 'lodash/startCase'
-import { saveEntityToDatabase, selectAllEntitiesByType } from '../../store/modules/entities'
-import UploadImage from '../common/UploadImage'
 import { defaultRecipeImage } from '../../common/default-recipe-image'
-import _isEmpty from 'lodash/isEmpty'
+
+import AutocompleteSearch from '../common/AutocompleteSearch'
+import UploadImage from '../common/UploadImage'
 
 const useStyles = makeStyles(() => ({
   header: {

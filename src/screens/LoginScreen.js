@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setIsUserAuth } from '../store/modules/auth'
+import { selectIsLoading, setIsLoading } from '../store/modules/ui'
 import { Box } from '@material-ui/core'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import { useDispatch, useSelector } from 'react-redux'
-import { setIsUserAuth } from '../store/modules/auth'
-import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+
 import Loader from '../components/common/Loader'
-import { selectIsLoading, setIsLoading } from '../store/modules/ui'
 
 const useStyles = makeStyles(() => ({
   root: {

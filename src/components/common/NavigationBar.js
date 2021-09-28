@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectActiveScreen, selectIsLoading, setActiveScreen } from '../../store/modules/ui.js'
 import { SCREENS } from '../../common/constants.js'

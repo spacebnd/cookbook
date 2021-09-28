@@ -1,17 +1,18 @@
-import HomeScreen from './screens/HomeScreen.js'
-import LoginScreen from './screens/LoginScreen.js'
-import WebFont from 'webfontloader'
+import { BrowserRouter, Switch, useHistory } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Switch, useHistory } from 'react-router-dom'
-import PrivateRoute from './components/auth/PrivateRoute'
-import PublicRoute from './components/auth/PublicRoute'
-import './index.css'
-import Bowser from 'bowser'
 import { selectIsDesktop, setDeviceData } from './store/modules/ui'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import WebFont from 'webfontloader'
+import Bowser from 'bowser'
 import logo from './assets/images/logo-variant2.png'
+import './index.css'
+
+import LoginScreen from './screens/LoginScreen.js'
+import PrivateRoute from './components/auth/PrivateRoute'
+import PublicRoute from './components/auth/PublicRoute'
+import HomeScreen from './screens/HomeScreen.js'
 
 const useStyles = makeStyles(() => ({
   root: {

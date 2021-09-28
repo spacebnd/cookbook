@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import Box from '@material-ui/core/Box'
-import { Fab, Menu, MenuItem, Typography } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add.js'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setActiveCreateModal } from '../../store/modules/ui.js'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase.js'
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch } from 'react-redux'
-import { setActiveCreateModal } from '../../store/modules/ui.js'
+import { Fab, Menu, MenuItem, Typography } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import AddIcon from '@material-ui/icons/Add.js'
 
 const useStyles = makeStyles(() => {
   return {

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
-import { database } from '../../common/firebase'
-import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
-import _cloneDeep from 'lodash/cloneDeep.js'
 import { setStatusAlert } from './ui'
+import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
+import { database } from '../../common/firebase'
+import _cloneDeep from 'lodash/cloneDeep.js'
+import { v4 as uuidv4 } from 'uuid'
 
 export const entitiesSlice = createSlice({
   name: 'entities',

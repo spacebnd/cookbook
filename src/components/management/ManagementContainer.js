@@ -1,20 +1,21 @@
-import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
+import { useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectActiveManagementTab, setActiveManagementTab } from '../../store/modules/ui'
+import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
+import _debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { TextField } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Box from '@material-ui/core/Box'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
+import logo from '../../assets/images/logo-variant2.png'
+
 import TabContentContainer from './TabContentContainer.js'
-import { TextField } from '@material-ui/core'
 import CreateItemButton from './CreateItemButton.js'
 import CreateItemModal from './CreateItemModal.js'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectActiveManagementTab, setActiveManagementTab } from '../../store/modules/ui'
-import _debounce from 'lodash/debounce'
-import logo from '../../assets/images/logo-variant2.png'
 
 const useStyles = makeStyles(() => {
   return {
