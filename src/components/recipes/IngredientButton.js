@@ -20,13 +20,13 @@ const useStyles = makeStyles(() => ({
     marginRight: '5px',
     fontSize: '12px',
     fontWeight: '500',
+    textAlign: 'center',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
   },
   unitsInput: {
     width: '45%',
-    // boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
     borderRadius: '5px',
   },
   unitsInputRoot: {
@@ -48,9 +48,7 @@ export default function IngredientButton({ ingredientId, ingredientQuantity }) {
 
   return (
     <Box className={classes.root}>
-      <Box className={classes.button} component="button">
-        {ingredient?.title}
-      </Box>
+      <Box className={classes.button}>{ingredient?.title}</Box>
       <TextField
         className={classes.unitsInput}
         InputProps={{
