@@ -22,10 +22,10 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import { Box, TextField } from '@material-ui/core'
-import { defaultRecipeImage } from '../../common/default-recipe-image'
 
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import UploadImage from '../common/UploadImage'
+import { getImageUrl } from '../../common/utils'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -150,7 +150,7 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredientsQuantity
       payload.description = description
-      payload.image = image ?? defaultRecipeImage
+      payload.image = image ?? (await getImageUrl('default-image'))
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }

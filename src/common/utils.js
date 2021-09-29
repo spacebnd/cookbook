@@ -1,3 +1,5 @@
+import { storage } from './firebase'
+
 export const convertArrayToAlphabeticalGroupingByTitle = (initialArray) => {
   return initialArray.map((option) => {
     const firstLetter = option.title[0].toUpperCase()
@@ -22,4 +24,9 @@ export const convertArrayToAlphabeticalGroupingByType = (initialArray, types) =>
       return initialArray
     }
   })
+}
+
+export const getImageUrl = (imageName) => {
+  const path = 'recipes'
+  return storage.ref().child(`${path}/${imageName}.png`).getDownloadURL()
 }

@@ -37,6 +37,7 @@ const useStyles = makeStyles(() => ({
   },
   image: {
     height: '200px',
+    backgroundSize: 'contain',
   },
   categories: {
     flexWrap: 'wrap',
