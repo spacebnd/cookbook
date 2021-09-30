@@ -25,7 +25,7 @@ import { Box, TextField } from '@material-ui/core'
 
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import UploadImage from '../common/UploadImage'
-import { getImageUrl } from '../../common/utils'
+import { getImageUrlFromStorage } from '../../common/utils'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -150,7 +150,7 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredientsQuantity
       payload.description = description
-      payload.image = image ?? (await getImageUrl('default-image'))
+      payload.image = image ?? (await getImageUrlFromStorage('default-image'))
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }

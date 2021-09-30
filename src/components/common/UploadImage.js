@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { PhotoCamera } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
+import { uploadImageToStorageAndGetUrl } from '../../common/utils'
 
 const useStyles = makeStyles(() => ({
   uploadPhotoInput: {
@@ -31,17 +32,9 @@ export default function UploadImage({ setImage, image, title }) {
   const uploadHandler = async (event) => {
     const file = event.target.files[0]
     if (!file) return
-    const base64 = await convertToBase64(file)
-    setImage(base64)
+    const imageUrl = await uploadImageToStorageAndGetUrl(file)
+    setImage(imageUrl)
   }
-
-  const convertToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = (error) => reject(error)
-    })
 
   const labelContent = (image ? 'Заменить' : 'Загрузить') + ' изображение'
 

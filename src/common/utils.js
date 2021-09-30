@@ -1,4 +1,5 @@
 import { storage } from './firebase'
+import { v4 as uuidv4 } from 'uuid'
 
 export const convertArrayToAlphabeticalGroupingByTitle = (initialArray) => {
   return initialArray.map((option) => {
@@ -26,7 +27,15 @@ export const convertArrayToAlphabeticalGroupingByType = (initialArray, types) =>
   })
 }
 
-export const getImageUrl = (imageName) => {
+export const getImageUrlFromStorage = (fileName) => {
   const path = 'recipes'
-  return storage.ref().child(`${path}/${imageName}.png`).getDownloadURL()
+  return storage.ref().child(`${path}/${fileName}.png`).getDownloadURL()
+}
+
+export const uploadImageToStorageAndGetUrl = async (file) => {
+  const path = 'recipes'
+  const fileName = uuidv4()
+  const snapshot = await storage.ref().child(`${path}/${fileName}.png`).put(file)
+
+  return await snapshot.ref.getDownloadURL()
 }
