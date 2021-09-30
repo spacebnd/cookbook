@@ -48,13 +48,14 @@ export default function TabContentItem({ item, entity, types }) {
   }
 
   const getDialogContent = () => {
-    let type = 'элемент'
+    let type
     const name = item.title
 
-    if (entity === ENTITIES.INGREDIENTS.value) {
+    if (entity === ENTITIES.RECIPES.value) {
+      type = 'рецепт'
+    } else if (entity === ENTITIES.INGREDIENTS.value) {
       type = 'ингредиент'
-    }
-    if (entity === ENTITIES.CATEGORIES.value) {
+    } else if (entity === ENTITIES.CATEGORIES.value) {
       type = 'категорию'
     }
 
