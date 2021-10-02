@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectActiveManagementTab, setActiveManagementTab } from '../../store/modules/ui'
+import {
+  selectActiveManagementTab,
+  selectIsLoading,
+  setActiveManagementTab,
+} from '../../store/modules/ui'
 import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import _debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
@@ -16,6 +20,7 @@ import logo from '../../assets/images/logo-variant2.png'
 import TabContentContainer from './TabContentContainer.js'
 import CreateItemButton from './CreateItemButton.js'
 import CreateItemModal from './CreateItemModal.js'
+import Loader from '../common/Loader'
 
 const useStyles = makeStyles(() => {
   return {
@@ -78,6 +83,7 @@ export default function ManagementContainer() {
   const classes = useStyles()
   const theme = useTheme()
   const dispatch = useDispatch()
+  const isLoading = useSelector(selectIsLoading)
   const activeManagementTab = useSelector(selectActiveManagementTab)
   const [titleFilter, setTitleFilter] = useState('')
   const titleValue = useRef(null)
@@ -183,6 +189,8 @@ export default function ManagementContainer() {
       <CreateItemButton />
 
       <CreateItemModal />
+
+      {isLoading && <Loader />}
     </Box>
   )
 }

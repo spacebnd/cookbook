@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { selectAllEntitiesByType } from '../../store/modules/entities'
+import { selectIsLoading } from '../../store/modules/ui'
 import { ENTITIES } from '../../common/constants'
 import {
   convertArrayToAlphabeticalGroupingByTitle,
@@ -49,7 +50,7 @@ export default function AutocompleteSearch({
   error,
 }) {
   const classes = useStyles()
-
+  const isLoading = useSelector(selectIsLoading)
   const [disableInput, setDisableInput] = useState(value.length >= limit)
   const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 
@@ -87,7 +88,7 @@ export default function AutocompleteSearch({
       size="small"
       multiple
       value={value}
-      disabled={disableInput}
+      disabled={disableInput || isLoading}
       onChange={(event, newValue) => {
         setDisableInput(newValue.length >= limit)
         changeHandler(newValue)

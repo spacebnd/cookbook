@@ -37,7 +37,7 @@ export default function StatusAlert() {
 
     setTimeout(() => {
       setChecked(false)
-    }, 1000)
+    }, 1500)
 
     setTimeout(() => {
       dispatch(
@@ -46,7 +46,7 @@ export default function StatusAlert() {
           type: null,
         })
       )
-    }, 1500)
+    }, 2000)
   }, [dispatch, statusAlert.message])
 
   return (

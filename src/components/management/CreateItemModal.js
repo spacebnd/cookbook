@@ -4,11 +4,13 @@ import { saveEntityToDatabase, selectAllEntitiesByType } from '../../store/modul
 import {
   selectActiveCreateModal,
   selectEditableEntity,
+  selectIsLoading,
   setActiveCreateModal,
   setActiveManagementTab,
   setEditableEntity,
 } from '../../store/modules/ui.js'
 import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
+import { getBase64ImageFromStorage } from '../../common/utils'
 import _startCase from 'lodash/startCase'
 import _isEmpty from 'lodash/isEmpty'
 import { makeStyles } from '@material-ui/core/styles'
@@ -24,9 +26,7 @@ import Slide from '@material-ui/core/Slide'
 import { Box, TextField } from '@material-ui/core'
 
 import AutocompleteSearch from '../common/AutocompleteSearch'
-import UploadImage from '../common/UploadImage'
-import { deleteImageFromStorage, getImageUrlFromStorage } from '../../common/utils'
-import { DEFAULT_IMAGE_NAME } from '../../common/firebase'
+import UploadImage from './UploadImage'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -62,6 +62,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function CreateItemModal() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const isLoading = useSelector(selectIsLoading)
   const activeCreateModal = useSelector(selectActiveCreateModal)
   const allCategories = useSelector(selectAllEntitiesByType(ENTITIES.CATEGORIES.value))
   const allIngredients = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENTS.value))
@@ -74,7 +75,13 @@ export default function CreateItemModal() {
   const [ingredientType, setIngredientType] = useState([])
   const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
-  const [imageData, setImageData] = useState(null)
+  const [imageData, setImageData] = useState({
+    url: null,
+    file: null,
+    fileName: null,
+    base64: null,
+  })
+  const [isImageReplaced, setIsImageReplaced] = useState(false)
   const [fieldsWithError, setFieldsWithError] = useState([])
 
   useEffect(() => {
@@ -85,7 +92,6 @@ export default function CreateItemModal() {
         const categories = Object.keys(editableEntity.categories).map((categoryId) => {
           return allCategories[categoryId]
         })
-
         const ingredients = []
         const ingredientsQuantity = {}
         Object.entries(editableEntity.ingredients).forEach((item) => {
@@ -99,7 +105,18 @@ export default function CreateItemModal() {
         setIngredients(ingredients)
         setIngredientsQuantity(ingredientsQuantity)
         setDescription(editableEntity.description)
-        setImageData(editableEntity.image)
+
+        getBase64ImageFromStorage(editableEntity.image.url).then((data) => {
+          setImageData((prevState) => {
+            return {
+              ...prevState,
+              base64: data.base64,
+              file: data.file,
+              url: editableEntity.image.url,
+              fileName: editableEntity.image.fileName,
+            }
+          })
+        })
       } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
         setIngredientType([allIngredientTypes[editableEntity.type]])
       }
@@ -138,17 +155,6 @@ export default function CreateItemModal() {
   }
 
   const closeHandler = async () => {
-    const isCreationCanceledButImageUploaded =
-      !editableEntity && imageData?.url && imageData.fileName !== DEFAULT_IMAGE_NAME
-    const isEditingCanceledButImageChanged =
-      editableEntity &&
-      editableEntity.image?.fileName === DEFAULT_IMAGE_NAME &&
-      imageData.image?.fileName !== DEFAULT_IMAGE_NAME
-
-    if (isCreationCanceledButImageUploaded || isEditingCanceledButImageChanged) {
-      await deleteImageFromStorage(imageData.fileName)
-    }
-
     closeModal()
   }
 
@@ -166,12 +172,8 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredientsQuantity
       payload.description = description
-
-      const imageUrl = imageData?.url ?? (await getImageUrlFromStorage(DEFAULT_IMAGE_NAME))
-      payload.image = {
-        url: imageUrl,
-        fileName: imageData?.fileName ? imageData.fileName : DEFAULT_IMAGE_NAME,
-      }
+      payload.isImageReplaced = isImageReplaced
+      payload.imageData = imageData
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }
@@ -210,9 +212,9 @@ export default function CreateItemModal() {
     }
   }
 
-  const saveEntity = (payload) => {
+  const saveEntity = async (payload) => {
     const id = editableEntity ? editableEntity.id : null
-    dispatch(saveEntityToDatabase(payload, id, activeCreateModal))
+    await dispatch(saveEntityToDatabase(payload, id, activeCreateModal))
     dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
     closeModal()
   }
@@ -226,9 +228,11 @@ export default function CreateItemModal() {
     setDescription('')
     setImageData({
       url: null,
+      file: null,
       fileName: null,
+      base64: null,
     })
-
+    setIsImageReplaced(false)
     setFieldsWithError([])
   }
 
@@ -259,13 +263,19 @@ export default function CreateItemModal() {
     >
       <AppBar className={classes.header}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={closeHandler} aria-label="close">
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={closeHandler}
+            aria-label="close"
+            disabled={isLoading}
+          >
             <CloseIcon />
           </IconButton>
 
           {getHeaderTitle()}
 
-          <Button autoFocus color="inherit" onClick={submitHandler}>
+          <Button autoFocus color="inherit" onClick={submitHandler} disabled={isLoading}>
             <DoneIcon />
           </Button>
         </Toolbar>
@@ -282,6 +292,7 @@ export default function CreateItemModal() {
             size="small"
             fullWidth
             error={fieldsWithError.includes('title')}
+            disabled={isLoading}
           />
         </Box>
 
@@ -345,6 +356,7 @@ export default function CreateItemModal() {
                         ingredientQuantityHandler(ingredient.id, event.target.value)
                       }
                       error={!ingredientsQuantity[ingredient.id]}
+                      disabled={isLoading}
                     />
                   </Box>
                 ))}
@@ -361,11 +373,18 @@ export default function CreateItemModal() {
                 multiline
                 fullWidth
                 error={fieldsWithError.includes('description')}
+                disabled={isLoading}
               />
             </Box>
 
             <Box className={classes.uploadImageContainer}>
-              <UploadImage imageData={imageData} title={title} setImageData={setImageData} />
+              <UploadImage
+                imageData={imageData}
+                setImageData={setImageData}
+                title={title}
+                editableEntity={editableEntity}
+                setIsImageReplaced={setIsImageReplaced}
+              />
             </Box>
           </>
         )}

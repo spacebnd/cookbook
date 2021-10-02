@@ -26,6 +26,7 @@ TabContentContainer.propTypes = {
 
 export default function TabContentContainer({ entity, sortBy, titleFilter }) {
   const classes = useStyles()
+
   const allItems = useSelector((state) => Object.values(state.entities[entity]))
   const ingredientTypes = useSelector(selectAllEntitiesByType(ENTITIES.INGREDIENT_TYPES.value))
 

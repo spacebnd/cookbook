@@ -1,10 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setStatusAlert } from './ui'
-import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
+import { setIsLoading, setStatusAlert } from './ui'
 import { database, DEFAULT_IMAGE_NAME } from '../../common/firebase'
+import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
+import {
+  deleteImageFromStorage,
+  getImageUrlFromStorage,
+  uploadImageToStorage,
+} from '../../common/utils'
 import _cloneDeep from 'lodash/cloneDeep.js'
+import _pick from 'lodash/pick'
 import { v4 as uuidv4 } from 'uuid'
-import { deleteImageFromStorage } from '../../common/utils'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -35,6 +40,8 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
 }
 
 export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch, getState) => {
+  dispatch(setIsLoading(true))
+
   const currentState = getState()
   const isEdit = !!id
   const targetId = isEdit ? id : uuidv4()
@@ -45,8 +52,35 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
   if (entity === ENTITIES.RECIPES.value) {
     existingEntities = currentState.entities.recipes
 
+    let imageDataToSave
+    if (isEdit && !entityData.isImageReplaced) {
+      imageDataToSave = entityData.imageData
+    } else {
+      if (entityData.isImageReplaced) {
+        const prevImageFileName = existingEntities[id].image.fileName
+
+        if (prevImageFileName !== DEFAULT_IMAGE_NAME) {
+          deleteImageFromStorage(prevImageFileName)
+        }
+      }
+
+      if (entityData.imageData.file) {
+        imageDataToSave = await uploadImageToStorage(entityData.imageData.file)
+      } else {
+        const defaultImageUrl = await getImageUrlFromStorage(DEFAULT_IMAGE_NAME)
+        imageDataToSave = {
+          url: defaultImageUrl,
+          fileName: DEFAULT_IMAGE_NAME,
+        }
+      }
+    }
+
     payload = {
-      ...entityData,
+      ..._pick(entityData, 'title', 'ingredients', 'categories', 'description'),
+      image: {
+        url: imageDataToSave.url,
+        fileName: imageDataToSave.fileName,
+      },
       categories: Object.fromEntries(entityData.categories.map((item) => [item.id, true])),
     }
   } else if (entity === ENTITIES.INGREDIENTS.value) {
@@ -65,18 +99,13 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
       (entity) => entity.title.toLowerCase() === entityData.title.toLowerCase().trim()
     )
   ) {
-    if (entity === ENTITIES.RECIPES.value) {
-      if (entityData.image?.url && entityData.image.fileName !== DEFAULT_IMAGE_NAME) {
-        // delete uploaded image from storage after unsuccessful attempt to create recipe
-        await deleteImageFromStorage(entityData.image.fileName)
-      }
-    }
     dispatch(
       setStatusAlert({
         message: STATUS_ALERT_MESSAGES.DUPLICATION_ERROR,
         type: STATUS_ALERT_TYPES.ERROR,
       })
     )
+    dispatch(setIsLoading(false))
   } else {
     await database
       .ref(`${entity}/` + targetId)
@@ -98,12 +127,16 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
           })
         )
       })
+      .finally(() => {
+        dispatch(setIsLoading(false))
+      })
   }
 }
 
 export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getState) => {
+  dispatch(setIsLoading(true))
+
   const currentState = getState()
-  const entityToDelete = currentState.entities[entity][id]
 
   if (entity !== ENTITIES.RECIPES.value) {
     // find and delete nonexistent item from recipes
@@ -114,10 +147,12 @@ export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getStat
       }
     }
     await database.ref(`${ENTITIES.RECIPES.value}/`).set({ ...recipes })
-  } else if (entity === ENTITIES.RECIPES.value) {
-    // delete image of nonexistent recipe from storage
-    if (entityToDelete.image.fileName !== DEFAULT_IMAGE_NAME) {
-      await deleteImageFromStorage(entityToDelete.image.fileName)
+  } else {
+    const entityToDelete = currentState.entities.recipes[id]
+    const prevImageFileName = entityToDelete.image.fileName
+
+    if (prevImageFileName !== DEFAULT_IMAGE_NAME) {
+      deleteImageFromStorage(prevImageFileName)
     }
   }
 
@@ -140,6 +175,9 @@ export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getStat
           type: STATUS_ALERT_TYPES.ERROR,
         })
       )
+    })
+    .finally(() => {
+      dispatch(setIsLoading(false))
     })
 }
 

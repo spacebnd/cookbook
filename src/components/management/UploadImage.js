@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
-import { uploadImageToStorage } from '../../common/utils'
+import { useSelector } from 'react-redux'
+import { selectIsLoading } from '../../store/modules/ui'
+import { convertFileToBase64 } from '../../common/utils'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { PhotoCamera } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectIsLoading, setIsLoading, setStatusAlert } from '../../store/modules/ui'
-import Loader from './Loader'
-import { STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
+
+import Loader from '../common/Loader'
 
 const useStyles = makeStyles(() => ({
   uploadPhotoInput: {
@@ -25,32 +25,38 @@ const useStyles = makeStyles(() => ({
 }))
 
 UploadImage.propTypes = {
-  title: PropTypes.string,
   imageData: PropTypes.object,
   setImageData: PropTypes.func,
+  title: PropTypes.string,
+  editableEntity: PropTypes.object,
+  setIsImageReplaced: PropTypes.func,
 }
 
-export default function UploadImage({ imageData, setImageData, title }) {
-  const dispatch = useDispatch()
+export default function UploadImage({
+  imageData,
+  setImageData,
+  title,
+  editableEntity,
+  setIsImageReplaced,
+}) {
   const classes = useStyles()
   const isLoading = useSelector(selectIsLoading)
 
   const uploadHandler = async (event) => {
-    try {
-      dispatch(setIsLoading(true))
+    const file = event.target.files[0]
 
-      const file = event.target.files[0]
-      if (!file) return
-      const imageData = await uploadImageToStorage(file)
-      setImageData(imageData)
-    } catch (error) {
-      setStatusAlert({
-        message: STATUS_ALERT_MESSAGES.UNKNOWN_ERROR,
-        type: STATUS_ALERT_TYPES.ERROR,
-      })
-    } finally {
-      dispatch(setIsLoading(false))
-    }
+    if (!file) return
+    const base64 = await convertFileToBase64(file)
+
+    if (editableEntity) setIsImageReplaced(true)
+
+    setImageData((prevState) => {
+      return {
+        ...prevState,
+        base64,
+        file,
+      }
+    })
   }
 
   const labelContent = (imageData?.url ? 'Заменить' : 'Загрузить') + ' изображение'
@@ -63,18 +69,24 @@ export default function UploadImage({ imageData, setImageData, title }) {
         id="upload picture"
         type="file"
         onChange={uploadHandler}
+        disabled={isLoading}
       />
 
       <label htmlFor="upload picture">
-        <IconButton color="primary" aria-label="upload picture" component="span">
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          disabled={isLoading}
+        >
           <PhotoCamera />
         </IconButton>
         <Typography className={classes.uploadPhotoLabel} display="inline">
           {labelContent}
         </Typography>
 
-        {imageData?.url && (
-          <img src={imageData.url} alt={title} className={classes.uploadPreview} />
+        {imageData?.base64 && (
+          <img src={imageData.base64} alt={title} className={classes.uploadPreview} />
         )}
       </label>
       {isLoading && <Loader />}

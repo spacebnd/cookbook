@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsLoading, setActiveCreateModal, setEditableEntity } from '../../store/modules/ui'
 import { deleteEntityFromDatabase } from '../../store/modules/entities'
 import { ENTITIES } from '../../common/constants.js'
 import { makeStyles } from '@material-ui/core/styles'
@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
 export default function TabContentItem({ item, entity, types }) {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const isLoading = useSelector(selectIsLoading)
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false)
   const typeId = types ? item.type : null
 
@@ -67,8 +68,8 @@ export default function TabContentItem({ item, entity, types }) {
     dispatch(setActiveCreateModal(entity))
   }
 
-  const deleteItemHandler = () => {
-    dispatch(deleteEntityFromDatabase(item.id, entity))
+  const deleteItemHandler = async () => {
+    await dispatch(deleteEntityFromDatabase(item.id, entity))
     closeDeleteConfirmModal()
   }
 
@@ -77,10 +78,15 @@ export default function TabContentItem({ item, entity, types }) {
       <ListItem>
         <ListItemText primary={item.title} secondary={item.type ? types[typeId].title : null} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="edit" onClick={editItemHandler}>
+          <IconButton edge="end" aria-label="edit" onClick={editItemHandler} disabled={isLoading}>
             <EditIcon />
           </IconButton>
-          <IconButton edge="end" aria-label="delete" onClick={openDeleteConfirmModal}>
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={openDeleteConfirmModal}
+            disabled={isLoading}
+          >
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>

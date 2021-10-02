@@ -1,6 +1,6 @@
 import { storage, RECIPE_IMAGES_PATH } from './firebase'
-import { v4 as uuidv4 } from 'uuid'
 import compressImage from 'browser-image-compression'
+import { v4 as uuidv4 } from 'uuid'
 
 export const convertArrayToAlphabeticalGroupingByTitle = (initialArray) => {
   return initialArray.map((option) => {
@@ -26,6 +26,39 @@ export const convertArrayToAlphabeticalGroupingByType = (initialArray, types) =>
       return initialArray
     }
   })
+}
+
+export const convertFileToBase64 = (file) => {
+  try {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getBase64ImageFromStorage = async (url) => {
+  const response = await fetch(url)
+  const blob = await response.blob()
+
+  try {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(blob)
+      reader.onload = () =>
+        resolve({
+          base64: reader.result,
+          file: blob,
+        })
+      reader.onerror = (error) => reject(error)
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const getImageUrlFromStorage = (fileName) => {

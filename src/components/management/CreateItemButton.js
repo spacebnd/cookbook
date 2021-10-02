@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setActiveCreateModal } from '../../store/modules/ui.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsLoading, setActiveCreateModal } from '../../store/modules/ui.js'
 import { ENTITIES } from '../../common/constants.js'
 import _startCase from 'lodash/startCase.js'
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => {
 export default function CreateItemButton() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const isLoading = useSelector(selectIsLoading)
   const [dropdownAnchor, setDropdownAnchor] = useState(null)
 
   const items = Object.values(ENTITIES).filter(
@@ -47,7 +48,13 @@ export default function CreateItemButton() {
   return (
     <>
       <Box className={classes.addButton}>
-        <Fab size="large" color="primary" aria-label="add" onClick={openAddItemDropdown}>
+        <Fab
+          size="large"
+          color="primary"
+          aria-label="add"
+          onClick={openAddItemDropdown}
+          disabled={isLoading}
+        >
           <AddIcon />
         </Fab>
       </Box>
