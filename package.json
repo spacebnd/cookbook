@@ -16,6 +16,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@reduxjs/toolkit": "^1.6.0",
     "bowser": "^2.11.0",
+    "browser-image-compression": "^1.0.16",
     "clsx": "^1.1.1",
     "firebase": "^8.10.0",
     "lodash": "^4.17.21",

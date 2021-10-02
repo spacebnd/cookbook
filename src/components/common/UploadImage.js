@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
+import { uploadImageToStorageAndGetUrl } from '../../common/utils'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { PhotoCamera } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
-import { uploadImageToStorageAndGetUrl } from '../../common/utils'
 
 const useStyles = makeStyles(() => ({
   uploadPhotoInput: {
