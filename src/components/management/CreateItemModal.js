@@ -52,6 +52,7 @@ const useStyles = makeStyles(() => ({
   },
   uploadImageContainer: {
     marginBottom: '15px',
+    minHeight: '200px',
   },
 }))
 
