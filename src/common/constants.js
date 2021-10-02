@@ -55,8 +55,8 @@ export const STATUS_ALERT_TYPES = {
 }
 
 export const STATUS_ALERT_MESSAGES = {
-  SAVE_SUCCESS: '\u2714 сохранено',
-  DELETE_SUCCESS: '\u2714 удалено',
-  UNKNOWN_ERROR: '\u2717 произошла ошибка',
-  DUPLICATION_ERROR: '\u2717 уже существует',
+  SAVE_SUCCESS: 'сохранено',
+  DELETE_SUCCESS: 'удалено',
+  UNKNOWN_ERROR: 'произошла ошибка',
+  DUPLICATION_ERROR: 'уже существует',
 }
