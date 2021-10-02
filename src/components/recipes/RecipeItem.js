@@ -87,7 +87,7 @@ export default function RecipeItem({ recipe, applyFilterOnClickOfCategoryButton 
         </Typography>
       </Box>
 
-      <CardMedia className={classes.image} image={recipe.image} />
+      <CardMedia className={classes.image} image={recipe.image?.url} />
       <CardActions disableSpacing className={classes.cardActions}>
         <Box className={classes.categories}>
           {Object.keys(recipe.categories).map((categoryId) => (

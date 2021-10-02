@@ -25,7 +25,8 @@ import { Box, TextField } from '@material-ui/core'
 
 import AutocompleteSearch from '../common/AutocompleteSearch'
 import UploadImage from '../common/UploadImage'
-import { getImageUrlFromStorage } from '../../common/utils'
+import { deleteImageFromStorage, getImageUrlFromStorage } from '../../common/utils'
+import { DEFAULT_IMAGE_NAME } from '../../common/firebase'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -73,7 +74,7 @@ export default function CreateItemModal() {
   const [ingredientType, setIngredientType] = useState([])
   const [ingredientsQuantity, setIngredientsQuantity] = useState({})
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState(null)
+  const [imageData, setImageData] = useState(null)
   const [fieldsWithError, setFieldsWithError] = useState([])
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export default function CreateItemModal() {
         setIngredients(ingredients)
         setIngredientsQuantity(ingredientsQuantity)
         setDescription(editableEntity.description)
-        setImage(editableEntity.image)
+        setImageData(editableEntity.image)
       } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
         setIngredientType([allIngredientTypes[editableEntity.type]])
       }
@@ -136,7 +137,22 @@ export default function CreateItemModal() {
     }
   }
 
-  const closeModalHandler = () => {
+  const closeHandler = async () => {
+    const isCreationCanceledButImageUploaded =
+      !editableEntity && imageData?.url && imageData.fileName !== DEFAULT_IMAGE_NAME
+    const isEditingCanceledButImageChanged =
+      editableEntity &&
+      editableEntity.image?.fileName === DEFAULT_IMAGE_NAME &&
+      imageData.image?.fileName !== DEFAULT_IMAGE_NAME
+
+    if (isCreationCanceledButImageUploaded || isEditingCanceledButImageChanged) {
+      await deleteImageFromStorage(imageData.fileName)
+    }
+
+    closeModal()
+  }
+
+  const closeModal = () => {
     dispatch(setActiveCreateModal(null))
     resetAllInputs()
     dispatch(setEditableEntity(null))
@@ -150,7 +166,12 @@ export default function CreateItemModal() {
       payload.categories = categories
       payload.ingredients = ingredientsQuantity
       payload.description = description
-      payload.image = image ?? (await getImageUrlFromStorage('default-image'))
+
+      const imageUrl = imageData?.url ?? (await getImageUrlFromStorage(DEFAULT_IMAGE_NAME))
+      payload.image = {
+        url: imageUrl,
+        fileName: imageData?.fileName ? imageData.fileName : DEFAULT_IMAGE_NAME,
+      }
     } else if (activeCreateModal === ENTITIES.INGREDIENTS.value) {
       payload.ingredientType = ingredientType
     }
@@ -193,7 +214,7 @@ export default function CreateItemModal() {
     const id = editableEntity ? editableEntity.id : null
     dispatch(saveEntityToDatabase(payload, id, activeCreateModal))
     dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
-    closeModalHandler()
+    closeModal()
   }
 
   const resetAllInputs = () => {
@@ -203,7 +224,10 @@ export default function CreateItemModal() {
     setIngredientType([])
     setIngredientsQuantity({})
     setDescription('')
-    setImage(null)
+    setImageData({
+      url: null,
+      fileName: null,
+    })
 
     setFieldsWithError([])
   }
@@ -230,12 +254,12 @@ export default function CreateItemModal() {
     <Dialog
       fullScreen
       open={!!activeCreateModal}
-      onClose={closeModalHandler}
+      onClose={closeModal}
       TransitionComponent={Transition}
     >
       <AppBar className={classes.header}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={closeModalHandler} aria-label="close">
+          <IconButton edge="start" color="inherit" onClick={closeHandler} aria-label="close">
             <CloseIcon />
           </IconButton>
 
@@ -341,7 +365,7 @@ export default function CreateItemModal() {
             </Box>
 
             <Box className={classes.uploadImageContainer}>
-              <UploadImage setImage={setImage} image={image} title={title} />
+              <UploadImage imageData={imageData} title={title} setImageData={setImageData} />
             </Box>
           </>
         )}

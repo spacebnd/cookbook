@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { uploadImageToStorageAndGetUrl } from '../../common/utils'
+import { uploadImageToStorage } from '../../common/utils'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { PhotoCamera } from '@material-ui/icons'
@@ -25,12 +25,12 @@ const useStyles = makeStyles(() => ({
 }))
 
 UploadImage.propTypes = {
-  setImage: PropTypes.func,
-  image: PropTypes.string,
   title: PropTypes.string,
+  imageData: PropTypes.object,
+  setImageData: PropTypes.func,
 }
 
-export default function UploadImage({ setImage, image, title }) {
+export default function UploadImage({ imageData, setImageData, title }) {
   const dispatch = useDispatch()
   const classes = useStyles()
   const isLoading = useSelector(selectIsLoading)
@@ -38,10 +38,11 @@ export default function UploadImage({ setImage, image, title }) {
   const uploadHandler = async (event) => {
     try {
       dispatch(setIsLoading(true))
+
       const file = event.target.files[0]
       if (!file) return
-      const imageUrl = await uploadImageToStorageAndGetUrl(file)
-      setImage(imageUrl)
+      const imageData = await uploadImageToStorage(file)
+      setImageData(imageData)
     } catch (error) {
       setStatusAlert({
         message: STATUS_ALERT_MESSAGES.UNKNOWN_ERROR,
@@ -52,7 +53,7 @@ export default function UploadImage({ setImage, image, title }) {
     }
   }
 
-  const labelContent = (image ? 'Заменить' : 'Загрузить') + ' изображение'
+  const labelContent = (imageData?.url ? 'Заменить' : 'Загрузить') + ' изображение'
 
   return (
     <>
@@ -72,7 +73,9 @@ export default function UploadImage({ setImage, image, title }) {
           {labelContent}
         </Typography>
 
-        {image && <img src={image} alt={title} className={classes.uploadPreview} />}
+        {imageData?.url && (
+          <img src={imageData.url} alt={title} className={classes.uploadPreview} />
+        )}
       </label>
       {isLoading && <Loader />}
     </>

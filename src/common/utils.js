@@ -1,4 +1,4 @@
-import { storage } from './firebase'
+import { storage, RECIPE_IMAGES_PATH } from './firebase'
 import { v4 as uuidv4 } from 'uuid'
 import compressImage from 'browser-image-compression'
 
@@ -29,20 +29,54 @@ export const convertArrayToAlphabeticalGroupingByType = (initialArray, types) =>
 }
 
 export const getImageUrlFromStorage = (fileName) => {
-  const path = 'recipes'
-  return storage.ref().child(`${path}/${fileName}.png`).getDownloadURL()
+  try {
+    return storage
+      .ref()
+      .child(RECIPE_IMAGES_PATH + fileName)
+      .getDownloadURL()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-export const uploadImageToStorageAndGetUrl = async (file) => {
-  const path = 'recipes'
-  const fileName = uuidv4()
+export const uploadImageToStorage = async (file) => {
+  const extension = file.type.match(/image\/(.*)/)[1]
+  const fileName = `${uuidv4()}.${extension}`
+
+  const imageData = {
+    url: null,
+    fileName,
+  }
 
   const compressOptions = {
     maxSizeMB: 0.5,
     useWebWorker: true,
   }
-  const compressedImage = await compressImage(file, compressOptions)
-  const snapshot = await storage.ref().child(`${path}/${fileName}.png`).put(compressedImage)
 
-  return await snapshot.ref.getDownloadURL()
+  try {
+    const compressedImage = await compressImage(file, compressOptions)
+    const snapshot = await storage
+      .ref()
+      .child(RECIPE_IMAGES_PATH + fileName)
+      .put(compressedImage)
+    imageData.url = await snapshot.ref.getDownloadURL()
+  } catch (error) {
+    console.error(error)
+  }
+
+  return {
+    url: imageData.url,
+    fileName,
+  }
+}
+
+export const deleteImageFromStorage = async (fileName) => {
+  try {
+    await storage
+      .ref()
+      .child(RECIPE_IMAGES_PATH + fileName)
+      .delete()
+  } catch (error) {
+    console.error(error)
+  }
 }

@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { setStatusAlert } from './ui'
 import { ENTITIES, STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
-import { database } from '../../common/firebase'
+import { database, DEFAULT_IMAGE_NAME } from '../../common/firebase'
 import _cloneDeep from 'lodash/cloneDeep.js'
 import { v4 as uuidv4 } from 'uuid'
+import { deleteImageFromStorage } from '../../common/utils'
 
 export const entitiesSlice = createSlice({
   name: 'entities',
@@ -34,6 +35,7 @@ export const subscribeToAllEntities = (type) => async (dispatch) => {
 }
 
 export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch, getState) => {
+  const currentState = getState()
   const isEdit = !!id
   const targetId = isEdit ? id : uuidv4()
 
@@ -41,18 +43,18 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
   let existingEntities
 
   if (entity === ENTITIES.RECIPES.value) {
-    existingEntities = getState().entities.recipes
+    existingEntities = currentState.entities.recipes
 
     payload = {
       ...entityData,
       categories: Object.fromEntries(entityData.categories.map((item) => [item.id, true])),
     }
   } else if (entity === ENTITIES.INGREDIENTS.value) {
-    existingEntities = getState().entities.ingredients
+    existingEntities = currentState.entities.ingredients
 
     payload = { title: entityData.title, type: entityData.ingredientType[0].id }
   } else if (entity === ENTITIES.CATEGORIES.value) {
-    existingEntities = getState().entities.categories
+    existingEntities = currentState.entities.categories
 
     payload = { ...entityData }
   }
@@ -63,6 +65,12 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
       (entity) => entity.title.toLowerCase() === entityData.title.toLowerCase().trim()
     )
   ) {
+    if (entity === ENTITIES.RECIPES.value) {
+      if (entityData.image?.url && entityData.image.fileName !== DEFAULT_IMAGE_NAME) {
+        // delete uploaded image from storage after unsuccessful attempt to create recipe
+        await deleteImageFromStorage(entityData.image.fileName)
+      }
+    }
     dispatch(
       setStatusAlert({
         message: STATUS_ALERT_MESSAGES.DUPLICATION_ERROR,
@@ -94,14 +102,23 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
 }
 
 export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getState) => {
+  const currentState = getState()
+  const entityToDelete = currentState.entities[entity][id]
+
   if (entity !== ENTITIES.RECIPES.value) {
-    const recipes = _cloneDeep(getState().entities.recipes)
+    // find and delete nonexistent item from recipes
+    const recipes = _cloneDeep(currentState.entities.recipes)
     for (const recipeId in recipes) {
       if (id in recipes[recipeId][entity]) {
         delete recipes[recipeId][entity][id]
       }
     }
     await database.ref(`${ENTITIES.RECIPES.value}/`).set({ ...recipes })
+  } else if (entity === ENTITIES.RECIPES.value) {
+    // delete image of nonexistent recipe from storage
+    if (entityToDelete.image.fileName !== DEFAULT_IMAGE_NAME) {
+      await deleteImageFromStorage(entityToDelete.image.fileName)
+    }
   }
 
   await database
