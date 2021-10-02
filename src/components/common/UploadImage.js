@@ -4,6 +4,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { PhotoCamera } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsLoading, setIsLoading, setStatusAlert } from '../../store/modules/ui'
+import Loader from './Loader'
+import { STATUS_ALERT_MESSAGES, STATUS_ALERT_TYPES } from '../../common/constants'
 
 const useStyles = makeStyles(() => ({
   uploadPhotoInput: {
@@ -27,13 +31,25 @@ UploadImage.propTypes = {
 }
 
 export default function UploadImage({ setImage, image, title }) {
+  const dispatch = useDispatch()
   const classes = useStyles()
+  const isLoading = useSelector(selectIsLoading)
 
   const uploadHandler = async (event) => {
-    const file = event.target.files[0]
-    if (!file) return
-    const imageUrl = await uploadImageToStorageAndGetUrl(file)
-    setImage(imageUrl)
+    try {
+      dispatch(setIsLoading(true))
+      const file = event.target.files[0]
+      if (!file) return
+      const imageUrl = await uploadImageToStorageAndGetUrl(file)
+      setImage(imageUrl)
+    } catch (error) {
+      setStatusAlert({
+        message: STATUS_ALERT_MESSAGES.UNKNOWN_ERROR,
+        type: STATUS_ALERT_TYPES.ERROR,
+      })
+    } finally {
+      dispatch(setIsLoading(false))
+    }
   }
 
   const labelContent = (image ? 'Заменить' : 'Загрузить') + ' изображение'
@@ -58,6 +74,7 @@ export default function UploadImage({ setImage, image, title }) {
 
         {image && <img src={image} alt={title} className={classes.uploadPreview} />}
       </label>
+      {isLoading && <Loader />}
     </>
   )
 }
