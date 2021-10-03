@@ -5,6 +5,7 @@ import { setIsUserAuth } from '../store/modules/auth'
 import { selectIsLoading, setIsLoading } from '../store/modules/ui'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import LogRocket from 'logrocket'
 import { Box } from '@material-ui/core'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { makeStyles } from '@material-ui/core/styles'
@@ -33,6 +34,7 @@ export default function LoginScreen() {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch(setIsUserAuth(true))
+        LogRocket.identify(user.uid)
         history.push('/')
       }
 
