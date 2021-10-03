@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import 'firebase/storage'
+import 'firebase/app-check'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBUyxI1umlkhwHq1q8GeVMN4FOZeTCkQx4',
@@ -13,6 +14,9 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
+
+const appCheck = firebase.appCheck()
+appCheck.activate('6Ld9KKYcAAAAAE7tHQIiTBhoCLvvBfkq35PG63gZ', true)
 
 export const database = firebase.database()
 export const storage = firebase.storage()
