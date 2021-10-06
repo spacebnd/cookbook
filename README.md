@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# CookBook
+
+![Preview](./src/assets/images/preview.jpg?raw=true)
 
 ## Available Scripts
 
