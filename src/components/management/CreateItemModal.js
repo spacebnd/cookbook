@@ -6,10 +6,10 @@ import {
   selectEditableEntity,
   selectIsLoading,
   setActiveCreateModal,
-  setActiveManagementTab,
+  setActiveScreen,
   setEditableEntity,
 } from '../../store/modules/ui.js'
-import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
+import { ENTITIES, SCREENS } from '../../common/constants.js'
 import { getBase64ImageFromStorage } from '../../common/utils'
 import _startCase from 'lodash/startCase'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -215,7 +215,7 @@ export default function CreateItemModal() {
   const saveEntity = async (payload) => {
     const id = editableEntity ? editableEntity.id : null
     await dispatch(saveEntityToDatabase(payload, id, activeCreateModal))
-    dispatch(setActiveManagementTab(MANAGEMENT_TAB_INDEXES[activeCreateModal]))
+    dispatch(setActiveScreen(SCREENS.RECIPES.value))
     closeModal()
   }
 
