@@ -37,7 +37,6 @@ const useStyles = makeStyles(() => ({
   },
   image: {
     height: '200px',
-    backgroundSize: 'cover',
   },
   categories: {
     flexWrap: 'wrap',
@@ -87,7 +86,13 @@ export default function RecipeItem({ recipe, applyFilterOnClickOfCategoryButton 
         </Typography>
       </Box>
 
-      <CardMedia className={classes.image} image={recipe.image?.url} />
+      <CardMedia
+        className={classes.image}
+        style={{
+          backgroundSize: recipe.image?.url?.includes('default-image') ? 'contain' : 'cover',
+        }}
+        image={recipe.image?.url}
+      />
       <CardActions disableSpacing className={classes.cardActions}>
         <Box className={classes.categories}>
           {Object.keys(recipe.categories).map((categoryId) => (
