@@ -76,12 +76,13 @@ export const saveEntityToDatabase = (entityData, id, entity) => async (dispatch,
     }
 
     payload = {
-      ..._pick(entityData, 'title', 'ingredients', 'categories', 'description'),
+      ..._pick(entityData, 'title', 'categories', 'description'),
       image: {
         url: imageDataToSave.url,
         fileName: imageDataToSave.fileName,
       },
       categories: Object.fromEntries(entityData.categories.map((item) => [item.id, true])),
+      ingredients: Array.from(entityData.ingredients, ([id, value]) => ({ id, value })),
     }
   } else if (entity === ENTITIES.INGREDIENTS.value) {
     existingEntities = currentState.entities.ingredients

@@ -12,7 +12,7 @@ import {
 import { ENTITIES, MANAGEMENT_TAB_INDEXES } from '../../common/constants.js'
 import { getBase64ImageFromStorage } from '../../common/utils'
 import _startCase from 'lodash/startCase'
-import _isEmpty from 'lodash/isEmpty'
+import _cloneDeep from 'lodash/cloneDeep'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -74,7 +74,7 @@ export default function CreateItemModal() {
   const [categories, setCategories] = useState([])
   const [ingredients, setIngredients] = useState([])
   const [ingredientType, setIngredientType] = useState([])
-  const [ingredientsQuantity, setIngredientsQuantity] = useState({})
+  const [ingredientsQuantity, setIngredientsQuantity] = useState(new Map())
   const [description, setDescription] = useState('')
   const [imageData, setImageData] = useState({
     url: null,
@@ -94,12 +94,11 @@ export default function CreateItemModal() {
           return allCategories[categoryId]
         })
         const ingredients = []
-        const ingredientsQuantity = {}
-        Object.entries(editableEntity.ingredients).forEach((item) => {
-          const id = item[0]
-          const value = item[1]
-          ingredients.push(allIngredients[id])
-          ingredientsQuantity[id] = value
+        const ingredientsQuantity = new Map()
+
+        editableEntity.ingredients.forEach((item) => {
+          ingredients.push(allIngredients[item.id])
+          ingredientsQuantity.set(item.id, item.value)
         })
 
         setCategories(categories)
@@ -131,14 +130,13 @@ export default function CreateItemModal() {
   const ingredientsInputHandler = (payload) => {
     setIngredients(payload)
 
-    Object.keys(ingredientsQuantity).forEach((ingredientWithQuantityId) => {
+    for (const ingredientWithQuantityId of ingredientsQuantity.keys()) {
       if (!payload.some((ingredient) => ingredient.id === ingredientWithQuantityId)) {
-        const updatedIngredientsQuantity = { ...ingredientsQuantity }
-        delete updatedIngredientsQuantity[ingredientWithQuantityId]
-
+        const updatedIngredientsQuantity = _cloneDeep(ingredientsQuantity)
+        updatedIngredientsQuantity.delete(ingredientWithQuantityId)
         setIngredientsQuantity(updatedIngredientsQuantity)
       }
-    })
+    }
   }
 
   const ingredientTypeInputHandler = (payload) => {
@@ -147,11 +145,15 @@ export default function CreateItemModal() {
 
   const ingredientQuantityHandler = (id, value) => {
     if (!value) {
-      const updatedIngredientsQuantity = { ...ingredientsQuantity }
-      delete updatedIngredientsQuantity[id]
+      const updatedIngredientsQuantity = _cloneDeep(ingredientsQuantity)
+      updatedIngredientsQuantity.delete(id)
       setIngredientsQuantity(updatedIngredientsQuantity)
     } else {
-      setIngredientsQuantity((prevState) => ({ ...prevState, [id]: value }))
+      setIngredientsQuantity((prevState) => {
+        const updatedState = _cloneDeep(prevState)
+        updatedState.set(id, value)
+        return updatedState
+      })
     }
   }
 
@@ -187,10 +189,7 @@ export default function CreateItemModal() {
     const fieldsWithError = []
 
     const isIngredientsValid = (ingredientsQuantity) => {
-      return (
-        !_isEmpty(ingredientsQuantity) &&
-        ingredients.length === Object.values(ingredientsQuantity).length
-      )
+      return ingredientsQuantity.size && ingredients.length === ingredientsQuantity.size
     }
 
     Object.keys(fields).forEach((field) => {
@@ -225,7 +224,7 @@ export default function CreateItemModal() {
     setCategories([])
     setIngredients([])
     setIngredientType([])
-    setIngredientsQuantity({})
+    setIngredientsQuantity(new Map())
     setDescription('')
     setImageData({
       url: null,
@@ -352,11 +351,11 @@ export default function CreateItemModal() {
                           fontSize: '14px',
                         },
                       }}
-                      value={ingredientsQuantity[ingredient.id] ?? ''}
+                      value={ingredientsQuantity.get(ingredient.id) ?? ''}
                       onChange={(event) =>
                         ingredientQuantityHandler(ingredient.id, event.target.value)
                       }
-                      error={!ingredientsQuantity[ingredient.id]}
+                      error={!ingredientsQuantity.get(ingredient.id)}
                       disabled={isLoading}
                     />
                   </Box>

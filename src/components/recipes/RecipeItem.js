@@ -112,11 +112,11 @@ export default function RecipeItem({ recipe, applyFilterOnClickOfCategoryButton 
           </Typography>
 
           <Box component="div">
-            {Object.entries(recipe.ingredients).map((ingredientData) => (
+            {recipe.ingredients.map((ingredientData) => (
               <IngredientButton
-                key={recipe.id + ingredientData[0]}
-                ingredientId={ingredientData[0]}
-                ingredientQuantity={ingredientData[1]}
+                key={recipe.id + ingredientData.id}
+                ingredientId={ingredientData.id}
+                ingredientQuantity={ingredientData.value}
               />
             ))}
           </Box>
