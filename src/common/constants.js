@@ -59,4 +59,5 @@ export const STATUS_ALERT_MESSAGES = {
   DELETE_SUCCESS: 'удалено',
   UNKNOWN_ERROR: 'произошла ошибка',
   DUPLICATION_ERROR: 'уже существует',
+  ALREADY_IN_USE: 'невозможно удалить, так как элемент используется',
 }

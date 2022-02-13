@@ -143,8 +143,18 @@ export const deleteEntityFromDatabase = (id, entity) => async (dispatch, getStat
     // find and delete nonexistent item from recipes
     const recipes = _cloneDeep(currentState.entities.recipes)
     for (const recipeId in recipes) {
-      if (id in recipes[recipeId][entity]) {
-        delete recipes[recipeId][entity][id]
+      if (
+        id in recipes[recipeId][entity] ||
+        recipes[recipeId][entity].some((item) => item.id === id)
+      ) {
+        dispatch(
+          setStatusAlert({
+            message: STATUS_ALERT_MESSAGES.ALREADY_IN_USE,
+            type: STATUS_ALERT_TYPES.ERROR,
+          })
+        )
+        dispatch(setIsLoading(false))
+        return
       }
     }
     await database.ref(`${ENTITIES.RECIPES.value}/`).set({ ...recipes })

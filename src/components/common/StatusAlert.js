@@ -13,6 +13,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
+    backgroundColor: customStyles.background,
     zIndex: 10,
   },
   message: {
